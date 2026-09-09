@@ -14,5 +14,5 @@ class Lookbook extends Model
         return ['published_at'=>'datetime'];
     }
 
-    public function items(): HasMany { return $this->hasMany(LookbookItem::class); }
+    public function items(): HasMany { return $this->hasMany(LookbookItem::class)->orderBy('sort_order'); }
 }

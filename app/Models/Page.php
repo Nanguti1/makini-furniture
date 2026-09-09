@@ -14,5 +14,5 @@ class Page extends Model
         return ['published_at'=>'datetime'];
     }
 
-    public function sections(): HasMany { return $this->hasMany(PageSection::class); }
+    public function sections(): HasMany { return $this->hasMany(PageSection::class)->orderBy('sort_order'); }
 }
