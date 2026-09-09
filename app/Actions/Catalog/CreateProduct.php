@@ -1,0 +1,4 @@
+<?php
+namespace App\Actions\Catalog;
+use App\Models\Product; use App\Services\Catalog\SlugService; use Illuminate\Support\Facades\DB;
+class CreateProduct { public function __construct(private SlugService $slugs) {} /** @param array<string,mixed> $attributes */ public function handle(array $attributes): Product { return DB::transaction(function() use($attributes) { $attributes['slug']=$attributes['slug']??$this->slugs->unique(new Product,$attributes['name']); $relations=collect($attributes)->only(['categories','collections','materials','finishes','colors','tags','features','rooms'])->all(); foreach(array_keys($relations) as $key) unset($attributes[$key]); $product=Product::create($attributes); foreach($relations as $relation=>$ids) $product->$relation()->sync($ids); return $product->load(array_keys($relations)); }); } }
