@@ -30,3 +30,20 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('products/{product}/publish', [\App\Http\Controllers\Admin\Catalog\ProductController::class, 'publish'])->name('products.publish');
     Route::post('products/{product}/unpublish', [\App\Http\Controllers\Admin\Catalog\ProductController::class, 'unpublish'])->name('products.unpublish');
 });
+
+Route::middleware(['auth', 'verified'])->group(function (): void {
+    Route::get('/orders', [\App\Http\Controllers\Storefront\Commerce\OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders', [\App\Http\Controllers\Storefront\Commerce\OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{order}', [\App\Http\Controllers\Storefront\Commerce\OrderController::class, 'show'])->name('orders.show');
+});
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function (): void {
+    Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/status', [\App\Http\Controllers\Admin\OrderController::class, 'update'])->name('orders.status');
+    Route::post('/orders/{order}/cancel', [\App\Http\Controllers\Admin\OrderController::class, 'cancel'])->name('orders.cancel');
+});
+
+Route::get('/cart', [\App\Http\Controllers\Storefront\Commerce\CartController::class, 'show'])->name('cart.show');
+Route::post('/carts/{cart}/items', [\App\Http\Controllers\Storefront\Commerce\CartController::class, 'store'])->name('cart.items.store');
+Route::patch('/cart-items/{item}', [\App\Http\Controllers\Storefront\Commerce\CartController::class, 'update'])->name('cart.items.update');
+Route::delete('/cart-items/{item}', [\App\Http\Controllers\Storefront\Commerce\CartController::class, 'destroy'])->name('cart.items.destroy');
