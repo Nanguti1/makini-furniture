@@ -7,6 +7,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\{HasMany, HasOne};
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -47,4 +48,10 @@ class User extends Authenticatable implements PasskeyUser
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+    public function wishlists(): HasMany { return $this->hasMany(Wishlist::class); }
+    public function addresses(): HasMany { return $this->hasMany(Address::class); }
+    public function carts(): HasMany { return $this->hasMany(Cart::class); }
+    public function orders(): HasMany { return $this->hasMany(Order::class); }
+    public function reviews(): HasMany { return $this->hasMany(Review::class); }
+    public function stockMovements(): HasMany { return $this->hasMany(StockMovement::class, 'created_by'); }
 }
