@@ -17,6 +17,8 @@ class Product extends Model
         return ['specifications'=>'array','status'=>\App\Enums\ProductStatus::class,'is_featured'=>'boolean','is_new'=>'boolean','is_bestseller'=>'boolean','is_customizable'=>'boolean','is_active'=>'boolean'];
     }
 
+    public function getRouteKeyName(): string { return 'slug'; }
+
     public function brand(): BelongsTo { return $this->belongsTo(Brand::class); }
     public function category(): BelongsTo { return $this->belongsTo(Category::class); }
     public function collection(): BelongsTo { return $this->belongsTo(Collection::class); }
