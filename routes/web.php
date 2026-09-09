@@ -13,3 +13,20 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/settings.php';
+
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function (): void {
+    Route::resource('brands', \App\Http\Controllers\Admin\Catalog\BrandController::class)->except('show');
+    Route::post('brands/{id}/restore', [\App\Http\Controllers\Admin\Catalog\BrandController::class, 'restore'])->name('brands.restore');
+    Route::resource('categories', \App\Http\Controllers\Admin\Catalog\CategoryController::class)->except('show');
+    Route::post('categories/{id}/restore', [\App\Http\Controllers\Admin\Catalog\CategoryController::class, 'restore'])->name('categories.restore');
+    Route::resource('collections', \App\Http\Controllers\Admin\Catalog\CollectionController::class)->except('show');
+    Route::post('collections/{id}/restore', [\App\Http\Controllers\Admin\Catalog\CollectionController::class, 'restore'])->name('collections.restore');
+    Route::resource('product-families', \App\Http\Controllers\Admin\Catalog\ProductFamilyController::class)->except('show');
+    Route::post('product-families/{id}/restore', [\App\Http\Controllers\Admin\Catalog\ProductFamilyController::class, 'restore'])->name('product-families.restore');
+});
+
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function (): void {
+    Route::resource('products', \App\Http\Controllers\Admin\Catalog\ProductController::class)->except('show');
+    Route::post('products/{product}/publish', [\App\Http\Controllers\Admin\Catalog\ProductController::class, 'publish'])->name('products.publish');
+    Route::post('products/{product}/unpublish', [\App\Http\Controllers\Admin\Catalog\ProductController::class, 'unpublish'])->name('products.unpublish');
+});
