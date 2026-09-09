@@ -18,6 +18,36 @@ Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show')
 
 Route::get('/faqs', [FAQController::class, 'index'])->name('faqs.index');
 
+Route::middleware(['auth', 'verified'])->prefix('account')->name('account.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Settings\ProfileController::class, 'edit'])->name('profile');
+
+    Route::prefix('addresses')->name('addresses.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Account\AddressController::class, 'index'])->name('index');
+        Route::post('/', [\App\Http\Controllers\Account\AddressController::class, 'store'])->name('store');
+        Route::put('/{address}', [\App\Http\Controllers\Account\AddressController::class, 'update'])->name('update');
+        Route::delete('/{address}', [\App\Http\Controllers\Account\AddressController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('wishlist')->name('wishlist.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Account\WishlistController::class, 'index'])->name('index');
+        Route::post('/add', [\App\Http\Controllers\Account\WishlistController::class, 'add'])->name('add');
+        Route::post('/remove', [\App\Http\Controllers\Account\WishlistController::class, 'remove'])->name('remove');
+        Route::post('/merge/{source}', [\App\Http\Controllers\Account\WishlistController::class, 'merge'])->name('merge');
+    });
+
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Account\OrderController::class, 'index'])->name('index');
+        Route::get('/{order}', [\App\Http\Controllers\Account\OrderController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('reviews')->name('reviews.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Account\ReviewController::class, 'index'])->name('index');
+        Route::post('/products/{product}', [\App\Http\Controllers\Account\ReviewController::class, 'store'])->name('store');
+        Route::put('/{review}', [\App\Http\Controllers\Account\ReviewController::class, 'update'])->name('update');
+        Route::delete('/{review}', [\App\Http\Controllers\Account\ReviewController::class, 'destroy'])->name('destroy');
+    });
+});
+
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
 });

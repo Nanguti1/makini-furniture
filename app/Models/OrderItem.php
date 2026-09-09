@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany, HasOne, MorphTo};
 
 class OrderItem extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['order_id','product_id','product_variant_id','sku','product_name','variant_name','quantity','unit_price','discount_amount','total','metadata'];
 
     protected function casts(): array

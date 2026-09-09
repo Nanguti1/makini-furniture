@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\{BelongsTo, BelongsToMany, HasMany, HasOne, MorphTo};
 
 class Review extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['user_id','product_id','rating','title','body','status','verified_purchase'];
 
     protected function casts(): array
