@@ -108,8 +108,8 @@ const contentNavItems: NavItem[] = [
 
 const settingsNavItems: NavItem[] = [
     {
-        title: 'Settings',
-        href: '/admin/settings',
+        title: 'Store Settings',
+        href: admin.settings.index.url(),
         icon: Settings,
     },
 ];
