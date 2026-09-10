@@ -74,6 +74,7 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
         addresses.find(a => a.is_default)?.id || (addresses.length > 0 ? addresses[0].id : null)
     );
     const [useSameAddress, setUseSameAddress] = useState(true);
+    const [paymentMethod, setPaymentMethod] = useState<string>('manual');
 
     const cartItems = cart.items || [];
     const isEmpty = cartItems.length === 0;
@@ -109,10 +110,17 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
             return;
         }
 
+        if (!paymentMethod) {
+            setErrors({ payment: 'Please select a payment method' });
+            setIsSubmitting(false);
+            return;
+        }
+
         const formData = {
             cart_id: cart.id,
             billing_address_id: billingAddressId,
             shipping_address_id: shippingAddressId,
+            payment_method: paymentMethod,
             currency: defaultCurrency,
         };
 
@@ -202,12 +210,12 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
                     {/* Left Column - Checkout Form */}
                     <div className="lg:col-span-2 space-y-6">
                         {/* Error State */}
-                        {errors.address && (
+                        {(errors.address || errors.payment) && (
                             <Card className="border-red-200 bg-red-50">
                                 <CardContent className="py-4">
                                     <div className="flex items-center gap-2 text-red-800">
                                         <AlertCircle className="h-5 w-5" />
-                                        <p className="text-sm">{errors.address}</p>
+                                        <p className="text-sm">{errors.address || errors.payment}</p>
                                     </div>
                                 </CardContent>
                             </Card>
@@ -301,6 +309,70 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
                                             ))}
                                         </div>
                                     )}
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Payment Method */}
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <CreditCard className="h-5 w-5" />
+                                    Payment Method
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-3">
+                                    <label className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="payment_method"
+                                            value="manual"
+                                            checked={paymentMethod === 'manual'}
+                                            onChange={(e) => setPaymentMethod(e.target.value)}
+                                            className="mt-1"
+                                        />
+                                        <div className="flex-1">
+                                            <div className="font-medium mb-1">Manual Payment</div>
+                                            <p className="text-sm text-muted-foreground">
+                                                Pay via bank transfer or other manual methods. Instructions will be provided after order confirmation.
+                                            </p>
+                                        </div>
+                                    </label>
+                                    <label className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer opacity-50">
+                                        <input
+                                            type="radio"
+                                            name="payment_method"
+                                            value="card"
+                                            checked={paymentMethod === 'card'}
+                                            onChange={(e) => setPaymentMethod(e.target.value)}
+                                            className="mt-1"
+                                            disabled
+                                        />
+                                        <div className="flex-1">
+                                            <div className="font-medium mb-1">Credit/Debit Card</div>
+                                            <p className="text-sm text-muted-foreground">
+                                                Pay securely with your credit or debit card. (Coming soon)
+                                            </p>
+                                        </div>
+                                    </label>
+                                    <label className="flex items-start gap-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors cursor-pointer opacity-50">
+                                        <input
+                                            type="radio"
+                                            name="payment_method"
+                                            value="paypal"
+                                            checked={paymentMethod === 'paypal'}
+                                            onChange={(e) => setPaymentMethod(e.target.value)}
+                                            className="mt-1"
+                                            disabled
+                                        />
+                                        <div className="flex-1">
+                                            <div className="font-medium mb-1">PayPal</div>
+                                            <p className="text-sm text-muted-foreground">
+                                                Pay with your PayPal account. (Coming soon)
+                                            </p>
+                                        </div>
+                                    </label>
                                 </div>
                             </CardContent>
                         </Card>

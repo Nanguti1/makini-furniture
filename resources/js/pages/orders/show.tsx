@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle, Package, MapPin, CreditCard, Truck, Clock, ShoppingBag, Home } from 'lucide-react';
+import { CheckCircle, Package, MapPin, CreditCard, Truck, Clock, ShoppingBag, Home, DollarSign } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
 
 interface OrderItem {
@@ -46,6 +46,9 @@ interface Order {
     shipping_state?: string;
     shipping_postal_code?: string;
     shipping_country?: string;
+    metadata?: {
+        payment_method?: string;
+    };
 }
 
 interface OrderShowProps {
@@ -258,6 +261,33 @@ export default function OrderShowPage({ order }: OrderShowProps) {
                             </div>
                         </CardContent>
                     </Card>
+
+                    {/* Payment Method */}
+                    {order.metadata?.payment_method && (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
+                                    <DollarSign className="h-5 w-5" />
+                                    Payment Method
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-1 text-sm">
+                                    <p className="font-medium capitalize">
+                                        {order.metadata.payment_method === 'manual' ? 'Manual Payment' : 
+                                         order.metadata.payment_method === 'card' ? 'Credit/Debit Card' : 
+                                         order.metadata.payment_method === 'paypal' ? 'PayPal' : 
+                                         order.metadata.payment_method}
+                                    </p>
+                                    {order.metadata.payment_method === 'manual' && (
+                                        <p className="text-muted-foreground">
+                                            Payment instructions will be sent to your email.
+                                        </p>
+                                    )}
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
 
                     {/* Order Timeline */}
                     <Card>
