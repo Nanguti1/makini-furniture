@@ -1,8 +1,8 @@
-import { Inbox, Package, ShoppingCart, Search } from 'lucide-react';
+import { Inbox, Package, ShoppingCart, Search, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface EmptyStateProps {
-    icon?: 'inbox' | 'package' | 'shopping-cart' | 'search' | 'custom';
+    icon?: 'inbox' | 'package' | 'shopping-cart' | 'search' | 'star' | 'custom';
     customIcon?: React.ReactNode;
     title: string;
     description?: string;
@@ -15,6 +15,7 @@ const icons = {
     package: Package,
     'shopping-cart': ShoppingCart,
     search: Search,
+    star: Star,
 };
 
 export default function EmptyState({

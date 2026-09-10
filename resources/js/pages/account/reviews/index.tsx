@@ -23,11 +23,12 @@ interface Review {
     id: number;
     rating: number;
     title: string;
-    body: string;
+    body?: string;
+    comment?: string;
     status: string;
     verified_purchase: boolean;
     created_at: string;
-    product: Product;
+    product?: Product;
 }
 
 interface AccountReviewsIndexProps {
@@ -50,7 +51,7 @@ export default function AccountReviewsIndexPage({ reviews, eligibleProducts }: A
 
     const handleEditReview = (review: Review) => {
         setEditingReview(review);
-        setSelectedProduct(review.product);
+        setSelectedProduct(review.product || null);
         setShowForm(true);
     };
 
@@ -95,7 +96,7 @@ export default function AccountReviewsIndexPage({ reviews, eligibleProducts }: A
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-3xl font-bold mb-2">My Reviews</h1>
+                <h1 className="text-2xl md:text-3xl font-bold mb-2">My Reviews</h1>
                 <p className="text-muted-foreground">
                     {reviews.length} {reviews.length === 1 ? 'review' : 'reviews'}
                 </p>

@@ -152,7 +152,7 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
         setIsAddingToCart(true);
         setAddToCartSuccess(false);
 
-        const formData = {
+        const formData: any = {
             product_id: product.id,
             quantity,
         };
@@ -187,7 +187,7 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
     const handleWishlistToggle = () => {
         setIsTogglingWishlist(true);
 
-        const formData = {
+        const formData: any = {
             product_id: product.id,
         };
 

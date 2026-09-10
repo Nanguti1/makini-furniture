@@ -86,7 +86,7 @@ export default function LookbookShowPage({ lookbook }: LookbookShowProps) {
             {/* Fallback Header when no hero image */}
             {!lookbook.hero_image && (
                 <div className="mb-8">
-                    <h1 className="text-4xl font-bold mb-2">{lookbook.title}</h1>
+                    <h1 className="text-3xl md:text-4xl font-bold mb-2">{lookbook.title}</h1>
                     {lookbook.published_at && (
                         <div className="flex items-center text-muted-foreground">
                             <Calendar className="h-4 w-4 mr-2" />
@@ -150,7 +150,8 @@ export default function LookbookShowPage({ lookbook }: LookbookShowProps) {
                                                 variant="outline"
                                                 size="sm"
                                                 className="w-full"
-                                                onClick={() => router.visit(`/products/${item.product.slug}`)}
+                                                onClick={() => item.product && router.visit(`/products/${item.product.slug}`)}
+                                                disabled={!item.product}
                                             >
                                                 <ShoppingBag className="h-4 w-4 mr-2" />
                                                 View Product

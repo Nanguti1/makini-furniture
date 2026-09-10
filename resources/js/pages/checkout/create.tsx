@@ -27,6 +27,7 @@ interface ProductVariant {
     id: number;
     sku: string;
     name?: string;
+    images?: ProductImage[];
 }
 
 interface CartItem {
@@ -142,11 +143,11 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
 
     const getProductImage = (item: CartItem) => {
         if (item.variant?.images && item.variant.images.length > 0) {
-            const primaryImage = item.variant.images.find(img => img.is_primary) || item.variant.images[0];
+            const primaryImage = item.variant.images.find((img: ProductImage) => img.is_primary) || item.variant.images[0];
             return primaryImage?.url;
         }
         if (item.product.images && item.product.images.length > 0) {
-            const primaryImage = item.product.images.find(img => img.is_primary) || item.product.images[0];
+            const primaryImage = item.product.images.find((img: ProductImage) => img.is_primary) || item.product.images[0];
             return primaryImage?.url;
         }
         return '/placeholder-product.jpg';

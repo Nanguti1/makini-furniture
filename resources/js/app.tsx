@@ -22,8 +22,6 @@ void createInertiaApp({
             'lookbooks.show',
             'pages.show',
             'faqs.index',
-            'orders.index',
-            'orders.show',
             'storefront.lookbooks.index',
             'storefront.lookbooks.show',
             'storefront.pages.show',
@@ -37,6 +35,8 @@ void createInertiaApp({
             'account.orders.show',
             'account.reviews.index',
             'account.profile',
+            'orders.index',
+            'orders.show',
         ];
 
         if (storefrontRoutes.includes(name) || accountRoutes.includes(name) || name.startsWith('account.')) {

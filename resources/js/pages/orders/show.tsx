@@ -57,7 +57,7 @@ interface OrderShowProps {
 
 export default function OrderShowPage({ order }: OrderShowProps) {
     const { props } = usePage();
-    const successMessage = props.flash?.success;
+    const successMessage = (props as any).flash?.success;
 
     const getOrderStatusColor = (status: string) => {
         switch (status.toLowerCase()) {
@@ -118,7 +118,7 @@ export default function OrderShowPage({ order }: OrderShowProps) {
                         <CheckCircle className="h-6 w-6 text-green-600" />
                     </div>
                     <div>
-                        <h1 className="text-3xl font-bold mb-1">Order Confirmed!</h1>
+                        <h1 className="text-2xl md:text-3xl font-bold mb-1">Order Confirmed!</h1>
                         <p className="text-muted-foreground">
                             Thank you for your purchase. Your order has been received.
                         </p>

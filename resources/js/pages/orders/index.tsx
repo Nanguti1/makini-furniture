@@ -69,7 +69,7 @@ export default function OrdersIndexPage({ orders }: OrdersIndexProps) {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="max-w-2xl mx-auto text-center">
                     <ShoppingBag className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-                    <h1 className="text-3xl font-bold mb-2">No orders yet</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold mb-2">No orders yet</h1>
                     <p className="text-muted-foreground mb-6">
                         You haven't placed any orders yet. Start shopping to see your order history here.
                     </p>
@@ -87,7 +87,7 @@ export default function OrdersIndexPage({ orders }: OrdersIndexProps) {
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold mb-2">My Orders</h1>
+                <h1 className="text-2xl md:text-3xl font-bold mb-2">My Orders</h1>
                 <p className="text-muted-foreground">
                     View and track your order history
                 </p>

@@ -28,6 +28,7 @@ interface ProductVariant {
     sku: string;
     price?: number;
     compare_at_price?: number;
+    images?: ProductImage[];
 }
 
 interface CartItem {
@@ -105,11 +106,11 @@ export default function CartShowPage({ cart }: CartShowProps) {
 
     const getProductImage = (item: CartItem) => {
         if (item.variant?.images && item.variant.images.length > 0) {
-            const primaryImage = item.variant.images.find(img => img.is_primary) || item.variant.images[0];
+            const primaryImage = item.variant.images.find((img: ProductImage) => img.is_primary) || item.variant.images[0];
             return primaryImage?.url;
         }
         if (item.product.images && item.product.images.length > 0) {
-            const primaryImage = item.product.images.find(img => img.is_primary) || item.product.images[0];
+            const primaryImage = item.product.images.find((img: ProductImage) => img.is_primary) || item.product.images[0];
             return primaryImage?.url;
         }
         return '/placeholder-product.jpg';

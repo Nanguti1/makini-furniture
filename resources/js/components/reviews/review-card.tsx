@@ -9,7 +9,8 @@ interface Review {
     id: number;
     rating: number;
     title: string;
-    body: string;
+    body?: string;
+    comment?: string;
     status: string;
     verified_purchase: boolean;
     created_at: string;
@@ -32,7 +33,7 @@ interface ReviewCardProps {
     review: Review;
     canEdit?: boolean;
     canDelete?: boolean;
-    onEdit?: (review: Review) => void;
+    onEdit?: (review: any) => void;
     onDelete?: (reviewId: number) => void;
     isDeleting?: boolean;
     isLoading?: boolean;

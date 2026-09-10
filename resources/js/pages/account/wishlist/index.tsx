@@ -84,7 +84,7 @@ export default function AccountWishlistIndexPage({ wishlist }: WishlistIndexProp
         // Get cart ID from page props or use a default
         const cartId = (props as any).cart?.id || 1;
 
-        const formData = {
+        const formData: any = {
             product_id: productId,
             quantity: 1,
         };
