@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Plus, Trash2, Image as ImageIcon, Package, AlertTriangle, Edit, Check, X } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, Image as ImageIcon, Package, AlertTriangle, Edit, Check, X, ChevronUp, ChevronDown } from 'lucide-react';
 import admin from '@/routes/admin';
 import { useState } from 'react';
 
@@ -421,7 +421,22 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                                 <CardHeader>
                                     <div className="flex items-center justify-between">
                                         <CardTitle>Product Variants</CardTitle>
-                                        <Button variant="outline" size="sm">
+                                        <Button 
+                                            variant="outline" 
+                                            size="sm"
+                                            onClick={() => {
+                                                const newVariant = {
+                                                    id: Date.now(),
+                                                    name: '',
+                                                    sku: '',
+                                                    price_override: 0,
+                                                    is_default: false,
+                                                    is_active: true,
+                                                    isNew: true
+                                                };
+                                                setVariants([...variants, newVariant]);
+                                            }}
+                                        >
                                             <Plus className="h-4 w-4 mr-2" />
                                             Add Variant
                                         </Button>
@@ -436,25 +451,92 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                                         </div>
                                     ) : (
                                         <div className="space-y-4">
-                                            {variants.map((variant) => (
-                                                <div key={variant.id} className="flex items-center gap-4 p-4 border rounded-lg">
-                                                    <div className="flex-1">
-                                                        <div className="font-medium">{variant.name}</div>
-                                                        <div className="text-sm text-muted-foreground">SKU: {variant.sku}</div>
-                                                    </div>
-                                                    <div className="text-right">
-                                                        <div className="font-medium">${variant.price_override.toFixed(2)}</div>
-                                                        <div className="flex items-center gap-2 text-sm">
-                                                            {variant.is_default && <Badge variant="default">Default</Badge>}
-                                                            {variant.is_active ? <Check className="h-4 w-4 text-green-500" /> : <X className="h-4 w-4 text-gray-400" />}
+                                            {variants.map((variant, index) => (
+                                                <div key={variant.id} className="p-4 border rounded-lg space-y-4">
+                                                    <div className="grid gap-4 md:grid-cols-3">
+                                                        <div className="space-y-2">
+                                                            <Label htmlFor={`variant-name-${variant.id}`}>Variant Name *</Label>
+                                                            <Input
+                                                                id={`variant-name-${variant.id}`}
+                                                                value={variant.name}
+                                                                onChange={(e) => {
+                                                                    const updated = [...variants];
+                                                                    updated[index].name = e.target.value;
+                                                                    setVariants(updated);
+                                                                }}
+                                                                placeholder="e.g., Red, Large, Oak"
+                                                            />
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            <Label htmlFor={`variant-sku-${variant.id}`}>SKU</Label>
+                                                            <Input
+                                                                id={`variant-sku-${variant.id}`}
+                                                                value={variant.sku}
+                                                                onChange={(e) => {
+                                                                    const updated = [...variants];
+                                                                    updated[index].sku = e.target.value;
+                                                                    setVariants(updated);
+                                                                }}
+                                                                placeholder="Variant SKU"
+                                                            />
+                                                        </div>
+                                                        <div className="space-y-2">
+                                                            <Label htmlFor={`variant-price-${variant.id}`}>Price Override</Label>
+                                                            <Input
+                                                                id={`variant-price-${variant.id}`}
+                                                                type="number"
+                                                                step="0.01"
+                                                                value={variant.price_override}
+                                                                onChange={(e) => {
+                                                                    const updated = [...variants];
+                                                                    updated[index].price_override = parseFloat(e.target.value) || 0;
+                                                                    setVariants(updated);
+                                                                }}
+                                                                placeholder="0.00"
+                                                            />
                                                         </div>
                                                     </div>
-                                                    <Button variant="ghost" size="sm">
-                                                        <Edit className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button variant="ghost" size="sm">
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
+                                                    <div className="flex items-center gap-4">
+                                                        <div className="flex items-center gap-2">
+                                                            <Checkbox
+                                                                id={`variant-default-${variant.id}`}
+                                                                checked={variant.is_default}
+                                                                onCheckedChange={(checked) => {
+                                                                    const updated = [...variants];
+                                                                    updated[index].is_default = checked as boolean;
+                                                                    setVariants(updated);
+                                                                }}
+                                                            />
+                                                            <Label htmlFor={`variant-default-${variant.id}`}>Default Variant</Label>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <Checkbox
+                                                                id={`variant-active-${variant.id}`}
+                                                                checked={variant.is_active}
+                                                                onCheckedChange={(checked) => {
+                                                                    const updated = [...variants];
+                                                                    updated[index].is_active = checked as boolean;
+                                                                    setVariants(updated);
+                                                                }}
+                                                            />
+                                                            <Label htmlFor={`variant-active-${variant.id}`}>Active</Label>
+                                                        </div>
+                                                        <div className="ml-auto flex items-center gap-2">
+                                                            {variant.isNew && (
+                                                                <Badge variant="outline">New</Badge>
+                                                            )}
+                                                            <Button 
+                                                                variant="ghost" 
+                                                                size="sm"
+                                                                onClick={() => {
+                                                                    const updated = variants.filter((_, i) => i !== index);
+                                                                    setVariants(updated);
+                                                                }}
+                                                            >
+                                                                <Trash2 className="h-4 w-4" />
+                                                            </Button>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             ))}
                                         </div>
@@ -476,38 +558,89 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                                         </div>
                                     ) : (
                                         <div className="space-y-4">
-                                            {variants.map((variant) => {
+                                            {variants.map((variant, index) => {
                                                 const inventory = inventoryLevels.find(i => i.variantId === variant.id);
-                                                const isLowStock = inventory && inventory.quantity <= inventory.reorderLevel;
+                                                const quantity = inventory?.quantity ?? 0;
+                                                const reorderLevel = inventory?.reorderLevel ?? 5;
+                                                const isLowStock = quantity <= reorderLevel;
                                                 
                                                 return (
-                                                    <div key={variant.id} className="flex items-center gap-4 p-4 border rounded-lg">
-                                                        <div className="flex-1">
-                                                            <div className="font-medium">{variant.name}</div>
-                                                            <div className="text-sm text-muted-foreground">SKU: {variant.sku}</div>
-                                                        </div>
-                                                        <div className="text-right min-w-[120px]">
-                                                            <div className="font-medium">
-                                                                {inventory?.quantity ?? 0} in stock
+                                                    <div key={variant.id} className="p-4 border rounded-lg space-y-4">
+                                                        <div className="flex items-center justify-between">
+                                                            <div>
+                                                                <div className="font-medium">{variant.name}</div>
+                                                                <div className="text-sm text-muted-foreground">SKU: {variant.sku}</div>
                                                             </div>
-                                                            {isLowStock && (
-                                                                <div className="flex items-center gap-1 text-sm text-destructive">
-                                                                    <AlertTriangle className="h-3 w-3" />
-                                                                    Low stock
+                                                            <div className="text-right">
+                                                                <div className="font-medium">{quantity} in stock</div>
+                                                                {isLowStock && (
+                                                                    <div className="flex items-center gap-1 text-sm text-destructive">
+                                                                        <AlertTriangle className="h-3 w-3" />
+                                                                        Low stock
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        </div>
+                                                        <div className="grid gap-4 md:grid-cols-3">
+                                                            <div className="space-y-2">
+                                                                <Label htmlFor={`inventory-qty-${variant.id}`}>Quantity</Label>
+                                                                <Input
+                                                                    id={`inventory-qty-${variant.id}`}
+                                                                    type="number"
+                                                                    value={quantity}
+                                                                    onChange={(e) => {
+                                                                        const updated = [...inventoryLevels];
+                                                                        const existingIndex = updated.findIndex(i => i.variantId === variant.id);
+                                                                        if (existingIndex >= 0) {
+                                                                            updated[existingIndex].quantity = parseInt(e.target.value) || 0;
+                                                                        } else {
+                                                                            updated.push({
+                                                                                variantId: variant.id,
+                                                                                quantity: parseInt(e.target.value) || 0,
+                                                                                reorderLevel: 5
+                                                                            });
+                                                                        }
+                                                                        setInventoryLevels(updated);
+                                                                    }}
+                                                                    min="0"
+                                                                />
+                                                            </div>
+                                                            <div className="space-y-2">
+                                                                <Label htmlFor={`inventory-reorder-${variant.id}`}>Reorder Level</Label>
+                                                                <Input
+                                                                    id={`inventory-reorder-${variant.id}`}
+                                                                    type="number"
+                                                                    value={reorderLevel}
+                                                                    onChange={(e) => {
+                                                                        const updated = [...inventoryLevels];
+                                                                        const existingIndex = updated.findIndex(i => i.variantId === variant.id);
+                                                                        if (existingIndex >= 0) {
+                                                                            updated[existingIndex].reorderLevel = parseInt(e.target.value) || 5;
+                                                                        } else {
+                                                                            updated.push({
+                                                                                variantId: variant.id,
+                                                                                quantity: 0,
+                                                                                reorderLevel: parseInt(e.target.value) || 5
+                                                                            });
+                                                                        }
+                                                                        setInventoryLevels(updated);
+                                                                    }}
+                                                                    min="0"
+                                                                />
+                                                            </div>
+                                                            <div className="space-y-2">
+                                                                <Label htmlFor={`inventory-status-${variant.id}`}>Status</Label>
+                                                                <div className="flex items-center gap-2">
+                                                                    {isLowStock ? (
+                                                                        <Badge variant="destructive">Low Stock</Badge>
+                                                                    ) : quantity === 0 ? (
+                                                                        <Badge variant="secondary">Out of Stock</Badge>
+                                                                    ) : (
+                                                                        <Badge variant="default">In Stock</Badge>
+                                                                    )}
                                                                 </div>
-                                                            )}
+                                                            </div>
                                                         </div>
-                                                        <div className="min-w-[100px]">
-                                                            <Input
-                                                                type="number"
-                                                                placeholder="Qty"
-                                                                defaultValue={inventory?.quantity ?? 0}
-                                                                className="w-20"
-                                                            />
-                                                        </div>
-                                                        <Button variant="outline" size="sm">
-                                                            Update
-                                                        </Button>
                                                     </div>
                                                 );
                                             })}
@@ -522,10 +655,41 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                                 <CardHeader>
                                     <div className="flex items-center justify-between">
                                         <CardTitle>Media Gallery</CardTitle>
-                                        <Button variant="outline" size="sm">
-                                            <ImageIcon className="h-4 w-4 mr-2" />
-                                            Upload Images
-                                        </Button>
+                                        <div className="flex items-center gap-2">
+                                            <input
+                                                type="file"
+                                                id="image-upload"
+                                                accept="image/*"
+                                                multiple
+                                                className="hidden"
+                                                onChange={(e) => {
+                                                    const files = Array.from(e.target.files || []);
+                                                    files.forEach(file => {
+                                                        const reader = new FileReader();
+                                                        reader.onload = (event) => {
+                                                            const newImage = {
+                                                                id: Date.now() + Math.random(),
+                                                                path: event.target?.result as string,
+                                                                alt_text: file.name.split('.')[0],
+                                                                is_primary: images.length === 0,
+                                                                sort_order: images.length,
+                                                                isNew: true
+                                                            };
+                                                            setImages([...images, newImage]);
+                                                        };
+                                                        reader.readAsDataURL(file);
+                                                    });
+                                                }}
+                                            />
+                                            <Button 
+                                                variant="outline" 
+                                                size="sm"
+                                                onClick={() => document.getElementById('image-upload')?.click()}
+                                            >
+                                                <ImageIcon className="h-4 w-4 mr-2" />
+                                                Upload Images
+                                            </Button>
+                                        </div>
                                     </div>
                                 </CardHeader>
                                 <CardContent>
@@ -537,7 +701,7 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                                         </div>
                                     ) : (
                                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                            {images.map((image) => (
+                                            {images.map((image, index) => (
                                                 <div key={image.id} className="relative group">
                                                     <img
                                                         src={image.path}
@@ -563,6 +727,34 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                                                         >
                                                             Set Featured
                                                         </Button>
+                                                        {!image.is_primary && (
+                                                            <Button 
+                                                                variant="secondary" 
+                                                                size="sm"
+                                                                onClick={() => {
+                                                                    if (index > 0) {
+                                                                        const updated = [...images];
+                                                                        [updated[index], updated[index - 1]] = [updated[index - 1], updated[index]];
+                                                                        setImages(updated);
+                                                                    }
+                                                                }}
+                                                            >
+                                                                <ChevronUp className="h-4 w-4" />
+                                                            </Button>
+                                                        )}
+                                                        {index < images.length - 1 && (
+                                                            <Button 
+                                                                variant="secondary" 
+                                                                size="sm"
+                                                                onClick={() => {
+                                                                    const updated = [...images];
+                                                                    [updated[index], updated[index + 1]] = [updated[index + 1], updated[index]];
+                                                                    setImages(updated);
+                                                                }}
+                                                            >
+                                                                <ChevronDown className="h-4 w-4" />
+                                                            </Button>
+                                                        )}
                                                         <Button 
                                                             variant="destructive" 
                                                             size="sm"
