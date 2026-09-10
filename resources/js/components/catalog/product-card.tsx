@@ -19,10 +19,13 @@ interface Product {
     id: number;
     name: string;
     slug: string;
-    price: number;
+    price?: number;
+    sku?: string;
     brand?: ProductBrand;
     images?: ProductImage[];
     is_new?: boolean;
+    is_featured?: boolean;
+    is_bestseller?: boolean;
 }
 
 interface ProductCardProps {
@@ -72,12 +75,19 @@ export default function ProductCard({
                         <p className="text-sm text-muted-foreground mb-1">{product.brand.name}</p>
                     )}
                     <h3 className="font-semibold mb-2 line-clamp-2">
-                        <a href={`/products/${product.slug}`} className="hover:text-primary transition-colors">
+                        <a 
+                            href={product.slug ? `/products/${product.slug}` : '#'} 
+                            className="hover:text-primary transition-colors"
+                        >
                             {product.name}
                         </a>
                     </h3>
                     <div className="flex items-center justify-between">
-                        <p className="font-bold text-lg">${product.price.toFixed(2)}</p>
+                        {product.price !== undefined ? (
+                            <p className="font-bold text-lg">${product.price.toFixed(2)}</p>
+                        ) : (
+                            <p className="font-bold text-lg">View Details</p>
+                        )}
                         {showAddToCart && (
                             <Button size="sm" variant="outline" aria-label="Add to cart">
                                 <ShoppingCart className="h-4 w-4 mr-2" />
