@@ -133,21 +133,21 @@ export default function ProductCard({
                         <p className="text-sm text-muted-foreground mb-1">{product.brand.name}</p>
                     )}
                     <h3 className="font-semibold mb-2 line-clamp-2">
-                        <a 
-                            href={product.slug ? `/products/${product.slug}` : '#'} 
+                        <a
+                            href={product.slug ? `/products/${product.slug}` : '#'}
                             className="hover:text-primary transition-colors"
                         >
                             {product.name}
                         </a>
                     </h3>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                         {product.price !== undefined ? (
                             <p className="font-bold text-lg">${product.price.toFixed(2)}</p>
                         ) : (
                             <p className="font-bold text-lg">View Details</p>
                         )}
                         {showAddToCart && (
-                            <Button size="sm" variant="outline" aria-label="Add to cart">
+                            <Button size="sm" variant="outline" aria-label="Add to cart" className="flex-shrink-0">
                                 <ShoppingCart className="h-4 w-4 mr-2" />
                                 Add
                             </Button>

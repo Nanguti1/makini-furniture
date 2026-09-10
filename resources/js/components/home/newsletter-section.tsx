@@ -24,7 +24,7 @@ export default function NewsletterSection({
                             <Mail className="h-6 w-6 text-primary" />
                         </div>
                     </div>
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+                    <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4">{title}</h2>
                     <p className="text-muted-foreground mb-8">{description}</p>
                     <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
                         <Input

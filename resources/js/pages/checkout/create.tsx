@@ -157,7 +157,7 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <div className="max-w-2xl mx-auto text-center">
                     <ShoppingBag className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-                    <h1 className="text-3xl font-bold mb-2">Your cart is empty</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold mb-2">Your cart is empty</h1>
                     <p className="text-muted-foreground mb-6">
                         Add some items to your cart before proceeding to checkout.
                     </p>
@@ -179,7 +179,7 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
                     <Card>
                         <CardContent className="py-12 text-center">
                             <MapPin className="h-16 w-16 mx-auto text-muted-foreground mb-4" />
-                            <h1 className="text-2xl font-bold mb-2">No addresses found</h1>
+                            <h1 className="text-xl md:text-2xl font-bold mb-2">No addresses found</h1>
                             <p className="text-muted-foreground mb-6">
                                 You need to add an address before you can complete your purchase.
                             </p>
@@ -199,14 +199,14 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold mb-2">Checkout</h1>
+                <h1 className="text-2xl md:text-3xl font-bold mb-2">Checkout</h1>
                 <p className="text-muted-foreground">
                     Complete your order for {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'}
                 </p>
             </div>
 
             <form onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
                     {/* Left Column - Checkout Form */}
                     <div className="lg:col-span-2 space-y-6">
                         {/* Error State */}
@@ -241,14 +241,14 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
                                                 onChange={(e) => setBillingAddressId(parseInt(e.target.value))}
                                                 className="mt-1"
                                             />
-                                            <div className="flex-1">
+                                            <div className="flex-1 min-w-0">
                                                 <div className="font-medium mb-1">
                                                     {address.first_name} {address.last_name}
                                                     {address.is_default && (
                                                         <Badge variant="secondary" className="ml-2">Default</Badge>
                                                     )}
                                                 </div>
-                                                <p className="text-sm text-muted-foreground">{formatAddress(address)}</p>
+                                                <p className="text-sm text-muted-foreground break-words">{formatAddress(address)}</p>
                                             </div>
                                         </label>
                                     ))}
@@ -296,14 +296,14 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
                                                         onChange={(e) => setShippingAddressId(parseInt(e.target.value))}
                                                         className="mt-1"
                                                     />
-                                                    <div className="flex-1">
+                                                    <div className="flex-1 min-w-0">
                                                         <div className="font-medium mb-1">
                                                             {address.first_name} {address.last_name}
                                                             {address.is_default && (
                                                                 <Badge variant="secondary" className="ml-2">Default</Badge>
                                                             )}
                                                         </div>
-                                                        <p className="text-sm text-muted-foreground">{formatAddress(address)}</p>
+                                                        <p className="text-sm text-muted-foreground break-words">{formatAddress(address)}</p>
                                                     </div>
                                                 </label>
                                             ))}
@@ -393,15 +393,15 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
 
                                         return (
                                             <div key={item.id} className="flex gap-4">
-                                                <div className="w-20 h-20 bg-muted/30 rounded-md overflow-hidden flex-shrink-0">
+                                                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-muted/30 rounded-md overflow-hidden flex-shrink-0">
                                                     <img
                                                         src={productImage}
                                                         alt={item.product.name}
                                                         className="w-full h-full object-cover"
                                                     />
                                                 </div>
-                                                <div className="flex-1">
-                                                    <h3 className="font-semibold mb-1">
+                                                <div className="flex-1 min-w-0">
+                                                    <h3 className="font-semibold mb-1 truncate">
                                                         <a
                                                             href={`/products/${item.product.slug}`}
                                                             className="hover:text-primary transition-colors"
@@ -409,7 +409,7 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
                                                             {item.product.name}
                                                         </a>
                                                     </h3>
-                                                    <p className="text-sm text-muted-foreground mb-2">
+                                                    <p className="text-sm text-muted-foreground mb-2 truncate">
                                                         {item.variant?.name || item.product.sku}
                                                     </p>
                                                     <div className="flex justify-between items-center">

@@ -30,9 +30,9 @@ export default function LookbooksIndexPage({ lookbooks }: LookbooksIndexProps) {
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
             {/* Header */}
-            <div className="mb-12 text-center">
-                <h1 className="text-4xl font-bold mb-4">Lookbooks</h1>
-                <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <div className="mb-8 md:mb-12 text-center">
+                <h1 className="text-3xl md:text-4xl font-bold mb-4">Lookbooks</h1>
+                <p className="text-base md:text-lg text-muted-foreground max-w-2xl mx-auto">
                     Explore our curated furniture collections and find inspiration for your perfect space.
                 </p>
             </div>

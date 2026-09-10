@@ -160,14 +160,14 @@ export default function AccountAddressesIndexPage({ addresses }: AddressesIndexP
 
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="mb-8 flex justify-between items-start">
+            <div className="mb-8 flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold mb-2">My Addresses</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold mb-2">My Addresses</h1>
                     <p className="text-muted-foreground">
                         {addresses.length} {addresses.length === 1 ? 'address' : 'addresses'}
                     </p>
                 </div>
-                <Button onClick={handleAddNew}>
+                <Button onClick={handleAddNew} className="w-full sm:w-auto">
                     <Plus className="h-4 w-4 mr-2" />
                     Add Address
                 </Button>
@@ -329,7 +329,7 @@ export default function AccountAddressesIndexPage({ addresses }: AddressesIndexP
                     </CardContent>
                 </Card>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                     {addresses.map((address) => (
                         <Card key={address.id} className="relative">
                             {address.is_default && (

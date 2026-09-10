@@ -50,7 +50,7 @@ export default function FurnitureCollections({
                     <p className="text-muted-foreground max-w-2xl mx-auto">{subtitle}</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
                     {displayCollections.map((featuredCollection) => (
                         <Card key={featuredCollection.id} className="overflow-hidden group hover:shadow-lg transition-shadow duration-300">
                             <div className="relative aspect-[4/3] bg-muted/30 overflow-hidden">

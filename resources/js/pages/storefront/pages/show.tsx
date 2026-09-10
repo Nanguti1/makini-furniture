@@ -68,15 +68,15 @@ export default function PageShowPage({ page }: PageShowProps) {
                 return (
                     <div key={section.id} className="my-8">
                         {config.image && (
-                            <div className="relative h-64 md:h-96 rounded-lg overflow-hidden">
+                            <div className="relative h-48 sm:h-64 md:h-96 rounded-lg overflow-hidden">
                                 <img
                                     src={config.image}
                                     alt={config.title || 'Hero'}
                                     className="w-full h-full object-cover"
                                 />
                                 {config.title && (
-                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-                                        <h2 className="text-3xl font-bold text-white">{config.title}</h2>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4 md:p-6">
+                                        <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-white">{config.title}</h2>
                                     </div>
                                 )}
                             </div>
@@ -93,7 +93,7 @@ export default function PageShowPage({ page }: PageShowProps) {
             <div className="max-w-4xl mx-auto">
                 {/* Page Header */}
                 <div className="mb-8">
-                    <h1 className="text-4xl font-bold mb-4">{page.title}</h1>
+                    <h1 className="text-3xl md:text-4xl font-bold mb-4">{page.title}</h1>
                     {page.published_at && (
                         <div className="flex items-center text-sm text-muted-foreground">
                             <Calendar className="h-4 w-4 mr-2" />

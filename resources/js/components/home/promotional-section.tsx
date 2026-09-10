@@ -22,8 +22,8 @@ export default function PromotionalSection({
         <section className={`py-16 md:py-24 ${backgroundColor}`}>
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <Card className="border-0 shadow-lg">
-                    <CardContent className="p-8 md:p-12">
-                        <div className="flex flex-col md:flex-row items-center gap-8">
+                    <CardContent className="p-6 md:p-8 lg:p-12">
+                        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
                             <div className={`flex-1 ${imagePosition === 'right' ? 'order-1' : 'order-2'}`}>
                                 <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
                                 <p className="text-lg text-muted-foreground mb-6 max-w-xl">

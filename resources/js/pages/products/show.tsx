@@ -376,7 +376,7 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
                     </div>
 
                     {/* Product Name */}
-                    <h1 className="text-3xl font-bold">{product.name}</h1>
+                    <h1 className="text-2xl md:text-3xl font-bold">{product.name}</h1>
 
                     {/* SKU */}
                     <p className="text-sm text-muted-foreground">SKU: {product.sku}</p>
@@ -392,9 +392,9 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
 
                     {/* Price */}
                     <div className="flex items-baseline gap-3">
-                        <span className="text-3xl font-bold">${currentPrice.toFixed(2)}</span>
+                        <span className="text-2xl md:text-3xl font-bold">${currentPrice.toFixed(2)}</span>
                         {comparePrice && comparePrice > currentPrice && (
-                            <span className="text-lg text-muted-foreground line-through">
+                            <span className="text-base md:text-lg text-muted-foreground line-through">
                                 ${comparePrice.toFixed(2)}
                             </span>
                         )}
@@ -411,14 +411,14 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
                     {product.variants && product.variants.length > 1 && (
                         <div className="space-y-4">
                             <h3 className="font-semibold">Select Variant</h3>
-                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                                 {product.variants.map((variant) => (
                                     <Button
                                         key={variant.id}
                                         variant={selectedVariant?.id === variant.id ? 'default' : 'outline'}
                                         onClick={() => setSelectedVariant(variant)}
                                         disabled={!variant.is_active || variant.stock === 0}
-                                        className="justify-start"
+                                        className="justify-start text-sm"
                                     >
                                         {variant.sku}
                                         {variant.stock === 0 && <span className="ml-auto text-xs">Out of stock</span>}

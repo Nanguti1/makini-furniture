@@ -50,13 +50,13 @@ export default function StoreHeader() {
                     {/* Right Actions */}
                     <div className="flex items-center gap-4">
                         {/* Search */}
-                        <div className="hidden md:flex items-center">
+                        <div className="hidden lg:flex items-center">
                             <div className="relative">
                                 <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                                 <Input
                                     type="search"
                                     placeholder="Search products..."
-                                    className="w-64 pl-9"
+                                    className="w-48 md:w-64 pl-9"
                                 />
                             </div>
                         </div>
