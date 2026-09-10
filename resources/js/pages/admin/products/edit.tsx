@@ -6,9 +6,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { Link, useForm } from '@inertiajs/react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus, Trash2, Image as ImageIcon, Package, AlertTriangle, Edit, Check, X } from 'lucide-react';
 import admin from '@/routes/admin';
+import { useState } from 'react';
 
 interface ProductEditProps {
     product: {
@@ -36,6 +38,21 @@ interface ProductEditProps {
         sort_order: number;
         meta_title: string | null;
         meta_description: string | null;
+        variants?: Array<{
+            id: number;
+            name: string;
+            sku: string;
+            price_override: number;
+            is_default: boolean;
+            is_active: boolean;
+        }>;
+        images?: Array<{
+            id: number;
+            path: string;
+            alt_text: string | null;
+            is_primary: boolean;
+            sort_order: number;
+        }>;
     };
     brands?: Array<{
         id: number;
@@ -56,6 +73,10 @@ interface ProductEditProps {
 }
 
 export default function ProductEdit({ product, brands = [], categories = [], collections = [], productFamilies = [] }: ProductEditProps) {
+    const [variants, setVariants] = useState(product.variants || []);
+    const [images, setImages] = useState(product.images || []);
+    const [inventoryLevels, setInventoryLevels] = useState<{ variantId: number; quantity: number; reorderLevel: number }[]>([]);
+
     const { data, setData, put, processing, errors } = useForm({
         brand_id: product.brand_id || '',
         category_id: product.category_id || '',
@@ -117,6 +138,9 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                             <TabsTrigger value="basic">Basic Info</TabsTrigger>
                             <TabsTrigger value="details">Details</TabsTrigger>
                             <TabsTrigger value="organization">Organization</TabsTrigger>
+                            <TabsTrigger value="variants">Variants</TabsTrigger>
+                            <TabsTrigger value="inventory">Inventory</TabsTrigger>
+                            <TabsTrigger value="media">Media</TabsTrigger>
                             <TabsTrigger value="settings">Settings</TabsTrigger>
                             <TabsTrigger value="seo">SEO</TabsTrigger>
                         </TabsList>
@@ -388,6 +412,171 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                                             <p className="text-sm text-destructive">{errors.sort_order}</p>
                                         )}
                                     </div>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        <TabsContent value="variants">
+                            <Card>
+                                <CardHeader>
+                                    <div className="flex items-center justify-between">
+                                        <CardTitle>Product Variants</CardTitle>
+                                        <Button variant="outline" size="sm">
+                                            <Plus className="h-4 w-4 mr-2" />
+                                            Add Variant
+                                        </Button>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    {variants.length === 0 ? (
+                                        <div className="text-center py-8 text-muted-foreground">
+                                            <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                                            <p>No variants added yet</p>
+                                            <p className="text-sm mt-2">Add variants to manage different sizes, colors, or configurations</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {variants.map((variant) => (
+                                                <div key={variant.id} className="flex items-center gap-4 p-4 border rounded-lg">
+                                                    <div className="flex-1">
+                                                        <div className="font-medium">{variant.name}</div>
+                                                        <div className="text-sm text-muted-foreground">SKU: {variant.sku}</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="font-medium">${variant.price_override.toFixed(2)}</div>
+                                                        <div className="flex items-center gap-2 text-sm">
+                                                            {variant.is_default && <Badge variant="default">Default</Badge>}
+                                                            {variant.is_active ? <Check className="h-4 w-4 text-green-500" /> : <X className="h-4 w-4 text-gray-400" />}
+                                                        </div>
+                                                    </div>
+                                                    <Button variant="ghost" size="sm">
+                                                        <Edit className="h-4 w-4" />
+                                                    </Button>
+                                                    <Button variant="ghost" size="sm">
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        <TabsContent value="inventory">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Inventory Management</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {variants.length === 0 ? (
+                                        <div className="text-center py-8 text-muted-foreground">
+                                            <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                                            <p>Add product variants first to manage inventory</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {variants.map((variant) => {
+                                                const inventory = inventoryLevels.find(i => i.variantId === variant.id);
+                                                const isLowStock = inventory && inventory.quantity <= inventory.reorderLevel;
+                                                
+                                                return (
+                                                    <div key={variant.id} className="flex items-center gap-4 p-4 border rounded-lg">
+                                                        <div className="flex-1">
+                                                            <div className="font-medium">{variant.name}</div>
+                                                            <div className="text-sm text-muted-foreground">SKU: {variant.sku}</div>
+                                                        </div>
+                                                        <div className="text-right min-w-[120px]">
+                                                            <div className="font-medium">
+                                                                {inventory?.quantity ?? 0} in stock
+                                                            </div>
+                                                            {isLowStock && (
+                                                                <div className="flex items-center gap-1 text-sm text-destructive">
+                                                                    <AlertTriangle className="h-3 w-3" />
+                                                                    Low stock
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                        <div className="min-w-[100px]">
+                                                            <Input
+                                                                type="number"
+                                                                placeholder="Qty"
+                                                                defaultValue={inventory?.quantity ?? 0}
+                                                                className="w-20"
+                                                            />
+                                                        </div>
+                                                        <Button variant="outline" size="sm">
+                                                            Update
+                                                        </Button>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        <TabsContent value="media">
+                            <Card>
+                                <CardHeader>
+                                    <div className="flex items-center justify-between">
+                                        <CardTitle>Media Gallery</CardTitle>
+                                        <Button variant="outline" size="sm">
+                                            <ImageIcon className="h-4 w-4 mr-2" />
+                                            Upload Images
+                                        </Button>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    {images.length === 0 ? (
+                                        <div className="text-center py-8 text-muted-foreground">
+                                            <ImageIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                                            <p>No images uploaded yet</p>
+                                            <p className="text-sm mt-2">Upload images to showcase your product</p>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            {images.map((image) => (
+                                                <div key={image.id} className="relative group">
+                                                    <img
+                                                        src={image.path}
+                                                        alt={image.alt_text || product.name}
+                                                        className="w-full h-32 object-cover rounded-md border"
+                                                    />
+                                                    {image.is_primary && (
+                                                        <Badge className="absolute top-2 right-2">
+                                                            Featured
+                                                        </Badge>
+                                                    )}
+                                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-md flex items-center justify-center gap-2">
+                                                        <Button 
+                                                            variant="secondary" 
+                                                            size="sm"
+                                                            onClick={() => {
+                                                                setImages(images.map(img => 
+                                                                    img.id === image.id 
+                                                                        ? { ...img, is_primary: true }
+                                                                        : { ...img, is_primary: false }
+                                                                ));
+                                                            }}
+                                                        >
+                                                            Set Featured
+                                                        </Button>
+                                                        <Button 
+                                                            variant="destructive" 
+                                                            size="sm"
+                                                            onClick={() => {
+                                                                setImages(images.filter(img => img.id !== image.id));
+                                                            }}
+                                                        >
+                                                            <Trash2 className="h-4 w-4" />
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </CardContent>
                             </Card>
                         </TabsContent>

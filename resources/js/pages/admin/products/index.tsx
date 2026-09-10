@@ -45,6 +45,7 @@ interface ProductProps {
                 name: string;
             };
             created_at: string;
+            updated_at: string;
             deleted_at: string | null;
         }>;
         links: Array<{
@@ -57,6 +58,8 @@ interface ProductProps {
         search?: string;
         status?: string;
         featured?: string;
+        sort?: string;
+        direction?: string;
     };
 }
 
@@ -67,6 +70,8 @@ export default function ProductIndex() {
     const [searchTerm, setSearchTerm] = useState(filters?.search || '');
     const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');
     const [featuredFilter, setFeaturedFilter] = useState(filters?.featured || 'all');
+    const [sortColumn, setSortColumn] = useState(filters?.sort || 'created_at');
+    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>(filters?.direction as 'asc' | 'desc' || 'desc');
 
     const breadcrumbs = [
         { title: 'Catalog', href: '#' },
@@ -75,37 +80,58 @@ export default function ProductIndex() {
 
     const handleSearch = (term: string) => {
         setSearchTerm(term);
-        router.get(admin.products.index.url(), { 
-            search: term, 
+        router.get(admin.products.index.url(), {
+            search: term,
             status: statusFilter,
-            featured: featuredFilter
-        }, { 
+            featured: featuredFilter,
+            sort: sortColumn,
+            direction: sortDirection
+        }, {
             preserveState: true,
-            replace: true 
+            replace: true
         });
     };
 
     const handleStatusFilter = (status: string) => {
         setStatusFilter(status);
-        router.get(admin.products.index.url(), { 
-            search: searchTerm, 
+        router.get(admin.products.index.url(), {
+            search: searchTerm,
             status,
-            featured: featuredFilter
-        }, { 
+            featured: featuredFilter,
+            sort: sortColumn,
+            direction: sortDirection
+        }, {
             preserveState: true,
-            replace: true 
+            replace: true
         });
     };
 
     const handleFeaturedFilter = (featured: string) => {
         setFeaturedFilter(featured);
-        router.get(admin.products.index.url(), { 
-            search: searchTerm, 
+        router.get(admin.products.index.url(), {
+            search: searchTerm,
             status: statusFilter,
-            featured
-        }, { 
+            featured,
+            sort: sortColumn,
+            direction: sortDirection
+        }, {
             preserveState: true,
-            replace: true 
+            replace: true
+        });
+    };
+
+    const handleSort = (column: string, direction: 'asc' | 'desc') => {
+        setSortColumn(column);
+        setSortDirection(direction);
+        router.get(admin.products.index.url(), {
+            search: searchTerm,
+            status: statusFilter,
+            featured: featuredFilter,
+            sort: column,
+            direction
+        }, {
+            preserveState: true,
+            replace: true
         });
     };
 
@@ -167,6 +193,7 @@ export default function ProductIndex() {
         {
             key: 'name',
             header: 'Name',
+            sortable: true,
             cell: (row: any) => (
                 <div>
                     <div className="font-medium">{row.name}</div>
@@ -195,6 +222,7 @@ export default function ProductIndex() {
         {
             key: 'status',
             header: 'Status',
+            sortable: true,
             cell: (row: any) => (
                 <Badge variant={row.status === 'published' ? 'default' : 'secondary'}>
                     {row.status}
@@ -235,8 +263,8 @@ export default function ProductIndex() {
                         </Button>
                     </Link>
                     {row.status === 'published' ? (
-                        <Button 
-                            variant="ghost" 
+                        <Button
+                            variant="ghost"
                             size="sm"
                             onClick={() => handleUnpublish(row.slug)}
                             title="Unpublish"
@@ -244,8 +272,8 @@ export default function ProductIndex() {
                             <X className="h-4 w-4" />
                         </Button>
                     ) : (
-                        <Button 
-                            variant="ghost" 
+                        <Button
+                            variant="ghost"
                             size="sm"
                             onClick={() => handlePublish(row.slug)}
                             title="Publish"
@@ -254,8 +282,8 @@ export default function ProductIndex() {
                         </Button>
                     )}
                     {!row.deleted_at && (
-                        <Button 
-                            variant="ghost" 
+                        <Button
+                            variant="ghost"
                             size="sm"
                             onClick={() => handleDelete(row.slug)}
                             title="Delete"
@@ -345,6 +373,9 @@ export default function ProductIndex() {
                 <DataTable
                     data={products.data}
                     columns={columns}
+                    onSort={handleSort}
+                    sortColumn={sortColumn}
+                    sortDirection={sortDirection}
                     pagination={products.links}
                     emptyMessage="No products found"
                 />

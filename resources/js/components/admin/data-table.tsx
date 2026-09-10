@@ -1,4 +1,5 @@
 import { Checkbox } from '@/components/ui/checkbox';
+import { Button } from '@/components/ui/button';
 import {
     Table,
     TableBody,
@@ -7,8 +8,9 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { ChevronUp, ChevronDown, ChevronsUpDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronsUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Link } from '@inertiajs/react';
 
 export interface Column<T> {
     key: keyof T | string;
@@ -28,6 +30,11 @@ interface DataTableProps<T> {
     sortColumn?: string;
     sortDirection?: 'asc' | 'desc';
     emptyMessage?: string;
+    pagination?: Array<{
+        url: string | null;
+        label: string;
+        active: boolean;
+    }>;
 }
 
 export function DataTable<T extends Record<string, any>>({
@@ -40,6 +47,7 @@ export function DataTable<T extends Record<string, any>>({
     sortColumn,
     sortDirection,
     emptyMessage = 'No data available',
+    pagination,
 }: DataTableProps<T>) {
     const handleSelectAll = (checked: boolean) => {
         if (checked) {
@@ -100,63 +108,105 @@ export function DataTable<T extends Record<string, any>>({
     }
 
     return (
-        <div className="rounded-md border">
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        {onSelectChange && (
-                            <TableHead className="w-12">
-                                <Checkbox
-                                    checked={allSelected}
-                                    indeterminate={someSelected}
-                                    onCheckedChange={handleSelectAll}
-                                    aria-label="Select all"
+        <div>
+            <div className="rounded-md border">
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            {onSelectChange && (
+                                <TableHead className="w-12">
+                                    <Checkbox
+                                        checked={allSelected}
+                                        indeterminate={someSelected}
+                                        onCheckedChange={handleSelectAll}
+                                        aria-label="Select all"
+                                    />
+                                </TableHead>
+                            )}
+                            {columns.map((column) => (
+                                <TableHead
+                                    key={column.key as string}
+                                    className={cn(
+                                        column.sortable && 'cursor-pointer hover:bg-muted/50',
+                                        column.className
+                                    )}
+                                    onClick={() => column.sortable && handleSort(column.key as string)}
+                                >
+                                    <div className="flex items-center">
+                                        {column.header}
+                                        {column.sortable && getSortIcon(column.key as string)}
+                                    </div>
+                                </TableHead>
+                            ))}
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {data.map((row) => {
+                            const rowId = row.id?.toString() || JSON.stringify(row);
+                            return (
+                                <TableRow key={rowId}>
+                                    {onSelectChange && (
+                                        <TableCell>
+                                            <Checkbox
+                                                checked={selected.has(rowId)}
+                                                onCheckedChange={(checked) =>
+                                                    handleSelectRow(rowId, checked as boolean)
+                                                }
+                                                aria-label="Select row"
+                                            />
+                                        </TableCell>
+                                    )}
+                                    {columns.map((column) => (
+                                        <TableCell key={column.key as string} className={column.className}>
+                                            {column.cell ? column.cell(row) : row[column.key as keyof T]}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </div>
+
+            {pagination && pagination.length > 0 && (
+                <div className="flex items-center justify-between px-2 py-4">
+                    <div className="text-sm text-muted-foreground">
+                        Showing {data.length} results
+                    </div>
+                    <div className="flex items-center gap-2">
+                        {pagination.map((link, index) => {
+                            if (!link.url) {
+                                return (
+                                    <span
+                                        key={index}
+                                        className={cn(
+                                            'px-3 py-1 text-sm rounded-md',
+                                            link.active
+                                                ? 'bg-primary text-primary-foreground'
+                                                : 'text-muted-foreground'
+                                        )}
+                                        dangerouslySetInnerHTML={{ __html: link.label }}
+                                    />
+                                );
+                            }
+
+                            return (
+                                <Link
+                                    key={index}
+                                    href={link.url}
+                                    className={cn(
+                                        'px-3 py-1 text-sm rounded-md hover:bg-muted',
+                                        link.active
+                                            ? 'bg-primary text-primary-foreground'
+                                            : 'text-muted-foreground'
+                                    )}
+                                    dangerouslySetInnerHTML={{ __html: link.label }}
                                 />
-                            </TableHead>
-                        )}
-                        {columns.map((column) => (
-                            <TableHead
-                                key={column.key as string}
-                                className={cn(
-                                    column.sortable && 'cursor-pointer hover:bg-muted/50',
-                                    column.className
-                                )}
-                                onClick={() => column.sortable && handleSort(column.key as string)}
-                            >
-                                <div className="flex items-center">
-                                    {column.header}
-                                    {column.sortable && getSortIcon(column.key as string)}
-                                </div>
-                            </TableHead>
-                        ))}
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {data.map((row) => {
-                        const rowId = row.id?.toString() || JSON.stringify(row);
-                        return (
-                            <TableRow key={rowId}>
-                                {onSelectChange && (
-                                    <TableCell>
-                                        <Checkbox
-                                            checked={selected.has(rowId)}
-                                            onCheckedChange={(checked) =>
-                                                handleSelectRow(rowId, checked as boolean)
-                                            }
-                                            aria-label="Select row"
-                                        />
-                                    </TableCell>
-                                )}
-                                {columns.map((column) => (
-                                    <TableCell key={column.key as string} className={column.className}>
-                                        {column.cell ? column.cell(row) : row[column.key as keyof T]}
-                                    </TableCell>
-                                ))}
-                            </TableRow>
-                        );
-                    })}
-                </TableBody>
-            </Table>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

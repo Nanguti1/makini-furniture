@@ -6,9 +6,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Badge } from '@/components/ui/badge';
 import { Link, useForm } from '@inertiajs/react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Plus, Image as ImageIcon, Package, Trash2 } from 'lucide-react';
 import admin from '@/routes/admin';
+import { useState } from 'react';
 
 interface ProductCreateProps {
     brands?: Array<{
@@ -30,6 +32,9 @@ interface ProductCreateProps {
 }
 
 export default function ProductCreate({ brands = [], categories = [], collections = [], productFamilies = [] }: ProductCreateProps) {
+    const [variants, setVariants] = useState<any[]>([]);
+    const [images, setImages] = useState<any[]>([]);
+
     const { data, setData, post, processing, errors } = useForm({
         brand_id: '',
         category_id: '',
@@ -91,6 +96,9 @@ export default function ProductCreate({ brands = [], categories = [], collection
                             <TabsTrigger value="basic">Basic Info</TabsTrigger>
                             <TabsTrigger value="details">Details</TabsTrigger>
                             <TabsTrigger value="organization">Organization</TabsTrigger>
+                            <TabsTrigger value="variants">Variants</TabsTrigger>
+                            <TabsTrigger value="inventory">Inventory</TabsTrigger>
+                            <TabsTrigger value="media">Media</TabsTrigger>
                             <TabsTrigger value="settings">Settings</TabsTrigger>
                             <TabsTrigger value="seo">SEO</TabsTrigger>
                         </TabsList>
@@ -362,6 +370,137 @@ export default function ProductCreate({ brands = [], categories = [], collection
                                             <p className="text-sm text-destructive">{errors.sort_order}</p>
                                         )}
                                     </div>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        <TabsContent value="variants">
+                            <Card>
+                                <CardHeader>
+                                    <div className="flex items-center justify-between">
+                                        <CardTitle>Product Variants</CardTitle>
+                                        <Button variant="outline" size="sm">
+                                            <Plus className="h-4 w-4 mr-2" />
+                                            Add Variant
+                                        </Button>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    {variants.length === 0 ? (
+                                        <div className="text-center py-8 text-muted-foreground">
+                                            <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                                            <p>No variants added yet</p>
+                                            <p className="text-sm mt-2">Add variants to manage different sizes, colors, or configurations</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {variants.map((variant, index) => (
+                                                <div key={index} className="flex items-center gap-4 p-4 border rounded-lg">
+                                                    <div className="flex-1">
+                                                        <div className="font-medium">{variant.name}</div>
+                                                        <div className="text-sm text-muted-foreground">SKU: {variant.sku}</div>
+                                                    </div>
+                                                    <div className="text-right">
+                                                        <div className="font-medium">${variant.price_override?.toFixed(2) || '0.00'}</div>
+                                                    </div>
+                                                    <Button variant="ghost" size="sm">
+                                                        Edit
+                                                    </Button>
+                                                    <Button variant="ghost" size="sm">
+                                                        <Trash2 className="h-4 w-4" />
+                                                    </Button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        <TabsContent value="inventory">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Inventory Management</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    {variants.length === 0 ? (
+                                        <div className="text-center py-8 text-muted-foreground">
+                                            <Package className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                                            <p>Add product variants first to manage inventory</p>
+                                        </div>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {variants.map((variant, index) => (
+                                                <div key={index} className="flex items-center gap-4 p-4 border rounded-lg">
+                                                    <div className="flex-1">
+                                                        <div className="font-medium">{variant.name}</div>
+                                                        <div className="text-sm text-muted-foreground">SKU: {variant.sku}</div>
+                                                    </div>
+                                                    <div className="text-right min-w-[120px]">
+                                                        <div className="font-medium">0 in stock</div>
+                                                    </div>
+                                                    <div className="min-w-[100px]">
+                                                        <Input
+                                                            type="number"
+                                                            placeholder="Qty"
+                                                            className="w-20"
+                                                        />
+                                                    </div>
+                                                    <Button variant="outline" size="sm">
+                                                        Update
+                                                    </Button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+
+                        <TabsContent value="media">
+                            <Card>
+                                <CardHeader>
+                                    <div className="flex items-center justify-between">
+                                        <CardTitle>Media Gallery</CardTitle>
+                                        <Button variant="outline" size="sm">
+                                            <ImageIcon className="h-4 w-4 mr-2" />
+                                            Upload Images
+                                        </Button>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    {images.length === 0 ? (
+                                        <div className="text-center py-8 text-muted-foreground">
+                                            <ImageIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                                            <p>No images uploaded yet</p>
+                                            <p className="text-sm mt-2">Upload images to showcase your product</p>
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                            {images.map((image, index) => (
+                                                <div key={index} className="relative group">
+                                                    <img
+                                                        src={image.path}
+                                                        alt={image.alt_text || 'Product image'}
+                                                        className="w-full h-32 object-cover rounded-md border"
+                                                    />
+                                                    {image.is_primary && (
+                                                        <Badge className="absolute top-2 right-2">
+                                                            Featured
+                                                        </Badge>
+                                                    )}
+                                                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-md flex items-center justify-center gap-2">
+                                                        <Button variant="secondary" size="sm">
+                                                            Set Featured
+                                                        </Button>
+                                                        <Button variant="destructive" size="sm">
+                                                            Remove
+                                                        </Button>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
                                 </CardContent>
                             </Card>
                         </TabsContent>
