@@ -1,7 +1,9 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Heart, ShoppingCart } from 'lucide-react';
+import { Heart, ShoppingCart, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { router } from '@inertiajs/react';
 
 interface ProductImage {
     id: number;
@@ -39,8 +41,58 @@ export default function ProductCard({
     showWishlist = true,
     showAddToCart = true,
 }: ProductCardProps) {
+    const [isWishlisted, setIsWishlisted] = useState(false);
+    const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
+
     const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0];
     const imageUrl = primaryImage?.url || '/placeholder-product.jpg';
+
+    const handleWishlistToggle = (e: React.MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        setIsTogglingWishlist(true);
+
+        const formData = {
+            product_id: product.id,
+        };
+
+        if (isWishlisted) {
+            router.post(
+                '/account/wishlist/remove',
+                formData,
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        setIsWishlisted(false);
+                        setIsTogglingWishlist(false);
+                    },
+                    onError: (errors) => {
+                        setIsTogglingWishlist(false);
+                        console.error('Remove from wishlist error:', errors);
+                    },
+                }
+            );
+        } else {
+            router.post(
+                '/account/wishlist/add',
+                formData,
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        setIsWishlisted(true);
+                        setIsTogglingWishlist(false);
+                    },
+                    onError: (errors) => {
+                        setIsTogglingWishlist(false);
+                        console.error('Add to wishlist error:', errors);
+                    },
+                }
+            );
+        }
+    };
 
     return (
         <Card className="overflow-hidden group hover:shadow-lg transition-shadow duration-300">
@@ -62,10 +114,16 @@ export default function ProductCard({
                             <Button
                                 size="icon"
                                 variant="secondary"
-                                className="h-8 w-8 rounded-full bg-background/80 backdrop-blur"
+                                className={`h-8 w-8 rounded-full bg-background/80 backdrop-blur ${isWishlisted ? 'text-red-500' : ''}`}
+                                onClick={handleWishlistToggle}
+                                disabled={isTogglingWishlist}
                                 aria-label="Add to wishlist"
                             >
-                                <Heart className="h-4 w-4" />
+                                {isTogglingWishlist ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : (
+                                    <Heart className={`h-4 w-4 ${isWishlisted ? 'fill-current' : ''}`} />
+                                )}
                             </Button>
                         )}
                     </div>

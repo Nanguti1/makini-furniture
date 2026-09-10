@@ -116,6 +116,7 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
     const [isWishlisted, setIsWishlisted] = useState(false);
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const [addToCartSuccess, setAddToCartSuccess] = useState(false);
+    const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
 
     const images = product.images || [];
     const selectedImage = images[selectedImageIndex];
@@ -175,10 +176,53 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
     };
 
     const handleWishlistToggle = () => {
-        // TODO: Implement wishlist functionality when wishlist is ready
-        setIsWishlisted(!isWishlisted);
-        console.log('Toggle wishlist:', { product_id: product.id, isWishlisted: !isWishlisted });
-        alert('Wishlist functionality will be implemented in prompt 8');
+        setIsTogglingWishlist(true);
+
+        const formData = {
+            product_id: product.id,
+        };
+
+        if (selectedVariant) {
+            formData.variant_id = selectedVariant.id;
+        }
+
+        if (isWishlisted) {
+            // Remove from wishlist
+            router.post(
+                '/account/wishlist/remove',
+                formData,
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        setIsWishlisted(false);
+                        setIsTogglingWishlist(false);
+                    },
+                    onError: (errors) => {
+                        setIsTogglingWishlist(false);
+                        console.error('Remove from wishlist error:', errors);
+                    },
+                }
+            );
+        } else {
+            // Add to wishlist
+            router.post(
+                '/account/wishlist/add',
+                formData,
+                {
+                    preserveState: true,
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        setIsWishlisted(true);
+                        setIsTogglingWishlist(false);
+                    },
+                    onError: (errors) => {
+                        setIsTogglingWishlist(false);
+                        console.error('Add to wishlist error:', errors);
+                    },
+                }
+            );
+        }
     };
 
     const handleShare = () => {
@@ -496,10 +540,15 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
                             <Button
                                 variant="outline"
                                 onClick={handleWishlistToggle}
+                                disabled={isTogglingWishlist}
                                 className={isWishlisted ? 'text-red-500 border-red-500' : ''}
                             >
-                                <Heart className={`h-4 w-4 mr-2 ${isWishlisted ? 'fill-current' : ''}`} />
-                                {isWishlisted ? 'Wishlisted' : 'Wishlist'}
+                                {isTogglingWishlist ? (
+                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                ) : (
+                                    <Heart className={`h-4 w-4 mr-2 ${isWishlisted ? 'fill-current' : ''}`} />
+                                )}
+                                {isTogglingWishlist ? 'Loading...' : isWishlisted ? 'Wishlisted' : 'Wishlist'}
                             </Button>
                             <Button variant="outline" onClick={handleShare}>
                                 <Share2 className="h-4 w-4 mr-2" />
