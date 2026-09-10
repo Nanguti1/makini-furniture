@@ -55,9 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 require __DIR__.'/settings.php';
 
 Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function (): void {
-    Route::get('/dashboard', function () {
-        return inertia('admin/dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', \App\Http\Controllers\Admin\DashboardController::class)->name('dashboard');
     
     Route::resource('brands', \App\Http\Controllers\Admin\Catalog\BrandController::class)->except('show');
     Route::post('brands/{id}/restore', [\App\Http\Controllers\Admin\Catalog\BrandController::class, 'restore'])->name('brands.restore');
