@@ -17,12 +17,17 @@ void createInertiaApp({
             'catalog.index',
             'products.show',
             'cart.show',
+            'checkout.create',
             'lookbooks.index',
             'lookbooks.show',
             'pages.show',
             'faqs.index',
             'orders.index',
             'orders.show',
+            'storefront.lookbooks.index',
+            'storefront.lookbooks.show',
+            'storefront.pages.show',
+            'storefront.faqs.index',
         ];
 
         const accountRoutes = [

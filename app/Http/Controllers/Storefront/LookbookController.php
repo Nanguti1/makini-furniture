@@ -24,7 +24,7 @@ class LookbookController extends Controller
         abort_unless($lookbook, 404);
 
         return Inertia::render('Storefront/Lookbooks/Show', [
-            'lookbook' => $lookbook,
+            'lookbook' => $lookbook->load('items.product'),
         ]);
     }
 }
