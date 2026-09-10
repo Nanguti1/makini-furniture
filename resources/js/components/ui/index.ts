@@ -12,6 +12,8 @@ export { Label } from './label';
 export { Checkbox } from './checkbox';
 export { Alert } from './alert';
 export { Spinner } from './spinner';
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './tabs';
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './table';
 
 // Store-specific Components
 export { default as EmptyState } from './empty-state';
