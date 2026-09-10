@@ -16,6 +16,7 @@ class ReviewQuery
         return Review::query()
             ->where('user_id', $user->id)
             ->with(['product:id,name,slug', 'product.images' => fn($q) => $q->where('is_primary', true)->select('id', 'product_id', 'url')])
+            ->select('id', 'user_id', 'product_id', 'rating', 'title', 'body', 'comment', 'status', 'verified_purchase', 'created_at')
             ->latest('created_at')
             ->get();
     }
@@ -26,6 +27,7 @@ class ReviewQuery
             ->where('user_id', $user->id)
             ->where('id', $reviewId)
             ->with('product')
+            ->select('id', 'user_id', 'product_id', 'rating', 'title', 'body', 'comment', 'status', 'verified_purchase', 'created_at')
             ->first();
     }
 

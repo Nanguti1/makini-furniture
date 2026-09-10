@@ -2,11 +2,14 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Heart, ShoppingCart, Minus, Plus, Share2, Truck, Shield, RotateCcw, Star, ChevronLeft, ChevronRight, Loader2, Check } from 'lucide-react';
 import { router, usePage } from '@inertiajs/react';
 import ProductCard from '@/components/catalog/product-card';
+import { RatingDisplay } from '@/components/ui/rating';
+import ReviewCard from '@/components/reviews/review-card';
+import ReviewForm from '@/components/reviews/review-form';
 
 interface ProductImage {
     id: number;
@@ -66,7 +69,10 @@ interface ProductReview {
     id: number;
     rating: number;
     title: string;
-    comment: string;
+    body?: string;
+    comment?: string;
+    status: string;
+    verified_purchase: boolean;
     user: {
         id: number;
         name: string;
@@ -104,9 +110,11 @@ interface ProductShowProps {
     product: Product;
     effectivePrices: Record<number, number>;
     productPrice: number;
+    userReview?: ProductReview;
+    canReview?: boolean;
 }
 
-export default function ProductShowPage({ product, effectivePrices, productPrice }: ProductShowProps) {
+export default function ProductShowPage({ product, effectivePrices, productPrice, userReview, canReview }: ProductShowProps) {
     const { props } = usePage();
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [quantity, setQuantity] = useState(1);
@@ -117,6 +125,7 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
     const [isAddingToCart, setIsAddingToCart] = useState(false);
     const [addToCartSuccess, setAddToCartSuccess] = useState(false);
     const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
+    const [showReviewForm, setShowReviewForm] = useState(false);
 
     const images = product.images || [];
     const selectedImage = images[selectedImageIndex];
@@ -374,23 +383,11 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
 
                     {/* Rating */}
                     {product.reviews && product.reviews.length > 0 && (
-                        <div className="flex items-center gap-2">
-                            <div className="flex items-center">
-                                {[...Array(5)].map((_, i) => (
-                                    <Star
-                                        key={i}
-                                        className={`h-4 w-4 ${
-                                            i < Math.floor(averageRating)
-                                                ? 'fill-primary text-primary'
-                                                : 'fill-muted text-muted'
-                                        }`}
-                                    />
-                                ))}
-                            </div>
-                            <span className="text-sm text-muted-foreground">
-                                {averageRating.toFixed(1)} ({product.reviews.length} reviews)
-                            </span>
-                        </div>
+                        <RatingDisplay 
+                            rating={averageRating} 
+                            showValue={true} 
+                            count={product.reviews.length} 
+                        />
                     )}
 
                     {/* Price */}
@@ -596,6 +593,86 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
                         </div>
                     )}
                 </div>
+            </div>
+
+            {/* Reviews Section */}
+            <div className="mb-12">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+                    <h2 className="text-2xl font-bold">Customer Reviews</h2>
+                    {canReview && !userReview && (
+                        <Button onClick={() => setShowReviewForm(!showReviewForm)} className="w-full sm:w-auto">
+                            <Star className="h-4 w-4 mr-2" />
+                            Write a Review
+                        </Button>
+                    )}
+                </div>
+
+                {/* Review Form */}
+                {showReviewForm && canReview && (
+                    <div className="mb-8">
+                        <ReviewForm
+                            productId={product.id}
+                            productSlug={product.slug}
+                            productName={product.name}
+                            productImage={product.images?.[0]?.url}
+                            existingReview={userReview}
+                            onSuccess={() => setShowReviewForm(false)}
+                            onCancel={() => setShowReviewForm(false)}
+                        />
+                    </div>
+                )}
+
+                {/* User's Review */}
+                {userReview && userReview.status === 'approved' && (
+                    <div className="mb-8">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+                            <h3 className="font-semibold">Your Review</h3>
+                            <Button variant="outline" size="sm" onClick={() => setShowReviewForm(!showReviewForm)} className="w-full sm:w-auto">
+                                Edit Review
+                            </Button>
+                        </div>
+                        {showReviewForm ? (
+                            <ReviewForm
+                                productId={product.id}
+                                productSlug={product.slug}
+                                productName={product.name}
+                                productImage={product.images?.[0]?.url}
+                                existingReview={userReview}
+                                onSuccess={() => setShowReviewForm(false)}
+                                onCancel={() => setShowReviewForm(false)}
+                            />
+                        ) : (
+                            <ReviewCard review={userReview} />
+                        )}
+                    </div>
+                )}
+
+                {/* Reviews List */}
+                {product.reviews && product.reviews.length > 0 ? (
+                    <div className="space-y-4">
+                        {product.reviews
+                            .filter(review => review.status === 'approved' && (!userReview || review.id !== userReview.id))
+                            .map((review) => (
+                                <ReviewCard key={review.id} review={review} />
+                            ))}
+                    </div>
+                ) : (
+                    <Card>
+                        <CardContent className="py-12 text-center">
+                            <Star className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                            <h3 className="text-lg font-semibold mb-2">No reviews yet</h3>
+                            <p className="text-muted-foreground mb-4">
+                                Be the first to review this product!
+                            </p>
+                            {canReview && (
+                                <Button onClick={() => setShowReviewForm(true)}>
+                                    <Star className="h-4 w-4 mr-2" />
+                                    Write a Review
+                                </Button>
+                            )}
+                        </CardContent>
+                    </Card>
+                )}
             </div>
 
             {/* Related Products */}
