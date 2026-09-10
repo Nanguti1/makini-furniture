@@ -27,11 +27,22 @@ class PageController extends Controller
     {
         $this->authorize('viewAny', Page::class);
 
+        $query = Page::query()->withCount('sections');
+
+        // Search
+        if (request()->has('search')) {
+            $query->where('title', 'like', '%' . request('search') . '%')
+                ->orWhere('slug', 'like', '%' . request('search') . '%');
+        }
+
+        // Status filter
+        if (request()->has('status') && request('status') !== 'all') {
+            $query->where('status', request('status'));
+        }
+
         return Inertia::render('Admin/Pages/Index', [
-            'pages' => Page::query()
-                ->withCount('sections')
-                ->latest()
-                ->paginate(),
+            'pages' => $query->latest()->paginate(),
+            'filters' => request()->only(['search', 'status']),
         ]);
     }
 

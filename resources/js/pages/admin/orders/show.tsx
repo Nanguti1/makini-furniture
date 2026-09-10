@@ -97,7 +97,7 @@ export default function OrderShow({ order }: OrderShowProps) {
     });
 
     const updateStatus = (newStatus: string) => {
-        put(admin.orders.update.url({ order: order.id }), {
+        put(admin.orders.status.url({ order: order.id }), {
             data: { status: newStatus },
         });
     };

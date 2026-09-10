@@ -22,11 +22,27 @@ class FAQController extends Controller
     {
         $this->authorize('viewAny', FAQ::class);
 
+        $query = FAQ::query()->orderBy('sort_order')->orderBy('created_at');
+
+        // Search
+        if (request()->has('search')) {
+            $query->where('question', 'like', '%' . request('search') . '%')
+                ->orWhere('answer', 'like', '%' . request('search') . '%')
+                ->orWhere('category', 'like', '%' . request('search') . '%');
+        }
+
+        // Status filter
+        if (request()->has('status') && request('status') !== 'all') {
+            if (request('status') === 'active') {
+                $query->where('is_active', true);
+            } elseif (request('status') === 'inactive') {
+                $query->where('is_active', false);
+            }
+        }
+
         return Inertia::render('Admin/FAQs/Index', [
-            'faqs' => FAQ::query()
-                ->orderBy('sort_order')
-                ->orderBy('created_at')
-                ->paginate(),
+            'faqs' => $query->paginate(),
+            'filters' => request()->only(['search', 'status']),
         ]);
     }
 

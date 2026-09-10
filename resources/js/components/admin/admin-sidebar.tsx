@@ -30,7 +30,7 @@ interface NavItem {
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: admin.dashboard.index.url(),
+        href: admin.dashboard.url(),
         icon: LayoutDashboard,
     },
     {
