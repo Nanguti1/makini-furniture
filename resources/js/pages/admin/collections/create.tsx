@@ -31,7 +31,6 @@ export default function CollectionCreate({ brands = [] }: CollectionCreateProps)
     });
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Collections', href: admin.collections.index.url() },
         { title: 'Create', href: admin.collections.create.url() },
     ];

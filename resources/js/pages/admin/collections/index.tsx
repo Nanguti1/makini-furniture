@@ -58,7 +58,6 @@ export default function CollectionIndex() {
     const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Collections', href: admin.collections.index.url() },
     ];
 
@@ -206,13 +205,13 @@ export default function CollectionIndex() {
     const bulkActions = [
         {
             label: 'Delete Selected',
-            onClick: handleBulkDelete,
-            variant: 'destructive' as const,
+            value: 'delete',
+            destructive: true,
         },
         {
             label: 'Restore Selected',
-            onClick: handleBulkRestore,
-            variant: 'default' as const,
+            value: 'restore',
+            destructive: false,
         },
     ];
 
@@ -256,7 +255,14 @@ export default function CollectionIndex() {
                     <BulkActionBar 
                         selectedCount={selectedIds.length}
                         actions={bulkActions}
-                        onClear={() => setSelectedIds([])}
+                        onAction={(action: string) => {
+                            if (action === 'delete') {
+                                handleBulkDelete();
+                            } else if (action === 'restore') {
+                                handleBulkRestore();
+                            }
+                        }}
+                        onClearSelection={() => setSelectedIds([])}
                     />
                 )}
 

@@ -63,7 +63,6 @@ export default function ProductCreate({ brands = [], categories = [], collection
     });
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Products', href: admin.products.index.url() },
         { title: 'Create', href: admin.products.create.url() },
     ];

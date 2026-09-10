@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Link, useForm, router } from '@inertiajs/react';
-import { ArrowLeft, Save, Check, X, Plus, Trash2 } from 'lucide-react';
+import { ArrowLeft, Save, Check, X, Plus, Trash2, Loader2 } from 'lucide-react';
 import admin from '@/routes/admin';
 
 interface PageEditProps {
@@ -255,8 +255,17 @@ export default function PageEdit({ page }: PageEditProps) {
                             </Button>
                         </Link>
                         <Button type="submit" disabled={processing}>
-                            <Save className="h-4 w-4 mr-2" />
-                            Update Page
+                            {processing ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    Updating...
+                                </>
+                            ) : (
+                                <>
+                                    <Save className="h-4 w-4 mr-2" />
+                                    Update Page
+                                </>
+                            )}
                         </Button>
                     </div>
                 </form>

@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import admin from '@/routes/admin';
 
 export default function FAQCreate() {
@@ -116,8 +116,17 @@ export default function FAQCreate() {
                             </Button>
                         </Link>
                         <Button type="submit" disabled={processing}>
-                            <Save className="h-4 w-4 mr-2" />
-                            Create FAQ
+                            {processing ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    Creating...
+                                </>
+                            ) : (
+                                <>
+                                    <Save className="h-4 w-4 mr-2" />
+                                    Create FAQ
+                                </>
+                            )}
                         </Button>
                     </div>
                 </form>

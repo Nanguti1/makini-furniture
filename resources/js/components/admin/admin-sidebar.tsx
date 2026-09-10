@@ -138,13 +138,14 @@ export function AdminSidebar() {
                                 ? 'bg-primary text-primary-foreground'
                                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
                         }`}
+                        aria-current={isActive(item.href) ? 'page' : undefined}
                     >
-                        <Icon className="h-4 w-4 flex-shrink-0" />
+                        <Icon className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
                         {!collapsed && (
                             <>
                                 <span className="flex-1">{item.title}</span>
                                 {item.badge && (
-                                    <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full">
+                                    <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full" aria-label={`${item.badge} items`}>
                                         {item.badge}
                                     </span>
                                 )}

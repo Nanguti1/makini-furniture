@@ -1,3 +1,4 @@
+import { IndeterminateCheckbox } from '@/components/admin/indeterminate-checkbox';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,7 +9,7 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { ChevronUp, ChevronDown, ChevronsUpDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronsUpDown, ChevronLeft, ChevronRight, Loader2, Inbox, Search } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 
@@ -93,15 +94,17 @@ export function DataTable<T extends Record<string, any>>({
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center h-64">
-                <div className="text-muted-foreground">Loading...</div>
+            <div className="flex flex-col items-center justify-center h-64 space-y-2">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                <div className="text-muted-foreground">Loading data...</div>
             </div>
         );
     }
 
     if (data.length === 0) {
         return (
-            <div className="flex items-center justify-center h-64">
+            <div className="flex flex-col items-center justify-center h-64 space-y-3">
+                <Inbox className="h-12 w-12 text-muted-foreground" />
                 <div className="text-muted-foreground">{emptyMessage}</div>
             </div>
         );
@@ -115,7 +118,7 @@ export function DataTable<T extends Record<string, any>>({
                         <TableRow>
                             {onSelectChange && (
                                 <TableHead className="w-12">
-                                    <Checkbox
+                                    <IndeterminateCheckbox
                                         checked={allSelected}
                                         indeterminate={someSelected}
                                         onCheckedChange={handleSelectAll}
@@ -152,7 +155,7 @@ export function DataTable<T extends Record<string, any>>({
                                                 onCheckedChange={(checked) =>
                                                     handleSelectRow(rowId, checked as boolean)
                                                 }
-                                                aria-label="Select row"
+                                                aria-label={`Select row ${rowId}`}
                                             />
                                         </TableCell>
                                     )}

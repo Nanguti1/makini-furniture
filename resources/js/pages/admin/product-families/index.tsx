@@ -59,7 +59,6 @@ export default function ProductFamilyIndex() {
     const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Product Families', href: admin.productFamilies.index.url() },
     ];
 

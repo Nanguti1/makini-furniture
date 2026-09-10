@@ -74,7 +74,6 @@ export default function ProductIndex() {
     const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>(filters?.direction as 'asc' | 'desc' || 'desc');
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Products', href: admin.products.index.url() },
     ];
 

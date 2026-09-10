@@ -38,7 +38,6 @@ export default function BrandEdit({ brand }: BrandEditProps) {
     });
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Brands', href: admin.brands.index.url() },
         { title: 'Edit', href: admin.brands.edit.url({ brand: brand.id }) },
     ];

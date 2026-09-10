@@ -33,7 +33,6 @@ export default function ProductFamilyCreate({ brands = [], collections = [] }: P
     });
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Product Families', href: admin.productFamilies.index.url() },
         { title: 'Create', href: admin.productFamilies.create.url() },
     ];

@@ -49,7 +49,6 @@ export default function CategoryIndex() {
     const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Categories', href: admin.categories.index.url() },
     ];
 
@@ -192,13 +191,13 @@ export default function CategoryIndex() {
     const bulkActions = [
         {
             label: 'Delete Selected',
-            onClick: handleBulkDelete,
-            variant: 'destructive' as const,
+            value: 'delete',
+            destructive: true,
         },
         {
             label: 'Restore Selected',
-            onClick: handleBulkRestore,
-            variant: 'default' as const,
+            value: 'restore',
+            destructive: false,
         },
     ];
 
@@ -242,7 +241,14 @@ export default function CategoryIndex() {
                     <BulkActionBar 
                         selectedCount={selectedIds.length}
                         actions={bulkActions}
-                        onClear={() => setSelectedIds([])}
+                        onAction={(action: string) => {
+                            if (action === 'delete') {
+                                handleBulkDelete();
+                            } else if (action === 'restore') {
+                                handleBulkRestore();
+                            }
+                        }}
+                        onClearSelection={() => setSelectedIds([])}
                     />
                 )}
 

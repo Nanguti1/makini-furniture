@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
-import { Settings as SettingsIcon, Store, Mail, Palette, Globe, Save } from 'lucide-react';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Settings as SettingsIcon, Store, Mail, Palette, Globe, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import { router, usePage, useForm } from '@inertiajs/react';
 import admin from '@/routes/admin';
@@ -24,7 +25,8 @@ interface SettingsProps {
 }
 
 export default function SettingsIndex() {
-    const { props } = usePage() as unknown as { props: SettingsProps };
+    const { props } = usePage() as unknown as { props: SettingsProps & { success?: string } };
+    const [showSuccess, setShowSuccess] = useState(!!props.success);
     const { data, setData, post, processing, errors } = useForm({
         app_name: props.settings?.app_name || '',
         app_url: props.settings?.app_url || '',
@@ -44,6 +46,10 @@ export default function SettingsIndex() {
         e.preventDefault();
         post(admin.settings.update.url(), {
             preserveScroll: true,
+            onSuccess: () => {
+                setShowSuccess(true);
+                setTimeout(() => setShowSuccess(false), 3000);
+            },
         });
     };
 
@@ -55,6 +61,16 @@ export default function SettingsIndex() {
         <AdminLayout breadcrumbs={breadcrumbs}>
             <form onSubmit={handleSubmit}>
                 <div className="space-y-6">
+                    {showSuccess && (
+                        <Alert>
+                            <CheckCircle2 className="h-4 w-4" />
+                            <AlertTitle>Success</AlertTitle>
+                            <AlertDescription>
+                                Settings updated successfully.
+                            </AlertDescription>
+                        </Alert>
+                    )}
+
                     <div className="flex items-center justify-between">
                         <div>
                             <h1 className="text-3xl font-bold tracking-tight">Store Settings</h1>
@@ -90,7 +106,7 @@ export default function SettingsIndex() {
                                         placeholder="Makini Queens Furniture"
                                     />
                                     {errors.app_name && (
-                                        <p className="text-sm text-red-600">{errors.app_name}</p>
+                                        <p className="text-sm text-destructive">{errors.app_name}</p>
                                     )}
                                 </div>
                                 <div className="grid gap-2">
@@ -102,7 +118,7 @@ export default function SettingsIndex() {
                                         placeholder="https://yourstore.com"
                                     />
                                     {errors.app_url && (
-                                        <p className="text-sm text-red-600">{errors.app_url}</p>
+                                        <p className="text-sm text-destructive">{errors.app_url}</p>
                                     )}
                                 </div>
                             </CardContent>
@@ -130,7 +146,7 @@ export default function SettingsIndex() {
                                         placeholder="noreply@yourstore.com"
                                     />
                                     {errors.mail_from_address && (
-                                        <p className="text-sm text-red-600">{errors.mail_from_address}</p>
+                                        <p className="text-sm text-destructive">{errors.mail_from_address}</p>
                                     )}
                                 </div>
                                 <div className="grid gap-2">
@@ -142,7 +158,7 @@ export default function SettingsIndex() {
                                         placeholder="Makini Queens Furniture"
                                     />
                                     {errors.mail_from_name && (
-                                        <p className="text-sm text-red-600">{errors.mail_from_name}</p>
+                                        <p className="text-sm text-destructive">{errors.mail_from_name}</p>
                                     )}
                                 </div>
                             </CardContent>

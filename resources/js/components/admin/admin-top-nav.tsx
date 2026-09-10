@@ -38,6 +38,7 @@ export function AdminTopNav({ user, onMobileMenuClick }: AdminTopNavProps) {
                     size="icon" 
                     className="lg:hidden"
                     onClick={onMobileMenuClick}
+                    aria-label="Toggle menu"
                 >
                     <Menu className="h-5 w-5" />
                 </Button>
@@ -45,11 +46,12 @@ export function AdminTopNav({ user, onMobileMenuClick }: AdminTopNavProps) {
                 {/* Search */}
                 <div className="flex-1 max-w-md mx-4">
                     <div className="relative">
-                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" aria-hidden="true" />
                         <Input
                             type="search"
                             placeholder="Search..."
                             className="pl-10 bg-gray-50 dark:bg-gray-700 border-gray-200 dark:border-gray-600"
+                            aria-label="Search"
                         />
                     </div>
                 </div>
@@ -57,9 +59,9 @@ export function AdminTopNav({ user, onMobileMenuClick }: AdminTopNavProps) {
                 {/* Right side */}
                 <div className="flex items-center gap-4">
                     {/* Notifications */}
-                    <Button variant="ghost" size="icon" className="relative">
+                    <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
                         <Bell className="h-5 w-5" />
-                        <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0">
+                        <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0" aria-label="3 notifications">
                             3
                         </Badge>
                     </Button>
@@ -67,7 +69,7 @@ export function AdminTopNav({ user, onMobileMenuClick }: AdminTopNavProps) {
                     {/* User menu */}
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                            <Button variant="ghost" className="relative h-8 w-8 rounded-full" aria-label="User menu">
                                 <Avatar className="h-8 w-8">
                                     <AvatarFallback>{getInitials(user.name)}</AvatarFallback>
                                 </Avatar>
@@ -85,13 +87,13 @@ export function AdminTopNav({ user, onMobileMenuClick }: AdminTopNavProps) {
                             <DropdownMenuSeparator />
                             <DropdownMenuItem asChild>
                                 <Link href="/settings/profile">
-                                    <User className="mr-2 h-4 w-4" />
+                                    <User className="mr-2 h-4 w-4" aria-hidden="true" />
                                     Profile
                                 </Link>
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem onClick={handleLogout}>
-                                <LogOut className="mr-2 h-4 w-4" />
+                                <LogOut className="mr-2 h-4 w-4" aria-hidden="true" />
                                 Log out
                             </DropdownMenuItem>
                         </DropdownMenuContent>

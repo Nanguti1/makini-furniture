@@ -23,7 +23,6 @@ export default function BrandCreate() {
     });
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Brands', href: admin.brands.index.url() },
         { title: 'Create', href: admin.brands.create.url() },
     ];

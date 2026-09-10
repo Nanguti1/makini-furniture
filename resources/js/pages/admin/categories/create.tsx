@@ -28,7 +28,6 @@ export default function CategoryCreate({ categories = [] }: CategoryCreateProps)
     });
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Categories', href: admin.categories.index.url() },
         { title: 'Create', href: admin.categories.create.url() },
     ];

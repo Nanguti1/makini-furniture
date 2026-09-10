@@ -38,7 +38,6 @@ export default function CategoryEdit({ category, categories = [] }: CategoryEdit
     });
 
     const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
         { title: 'Categories', href: admin.categories.index.url() },
         { title: 'Edit', href: admin.categories.edit.url({ category: category.id }) },
     ];

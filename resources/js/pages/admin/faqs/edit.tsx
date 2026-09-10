@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Link, useForm, router } from '@inertiajs/react';
-import { ArrowLeft, Save, Check, X } from 'lucide-react';
+import { ArrowLeft, Save, Check, X, Loader2 } from 'lucide-react';
 import admin from '@/routes/admin';
 
 interface FAQEditProps {
@@ -163,8 +163,17 @@ export default function FAQEdit({ faq }: FAQEditProps) {
                             </Button>
                         </Link>
                         <Button type="submit" disabled={processing}>
-                            <Save className="h-4 w-4 mr-2" />
-                            Update FAQ
+                            {processing ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    Updating...
+                                </>
+                            ) : (
+                                <>
+                                    <Save className="h-4 w-4 mr-2" />
+                                    Update FAQ
+                                </>
+                            )}
                         </Button>
                     </div>
                 </form>

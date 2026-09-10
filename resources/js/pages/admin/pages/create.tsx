@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Link, useForm } from '@inertiajs/react';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import admin from '@/routes/admin';
 
 export default function PageCreate() {
@@ -143,8 +143,17 @@ export default function PageCreate() {
                             </Button>
                         </Link>
                         <Button type="submit" disabled={processing}>
-                            <Save className="h-4 w-4 mr-2" />
-                            Create Page
+                            {processing ? (
+                                <>
+                                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                    Creating...
+                                </>
+                            ) : (
+                                <>
+                                    <Save className="h-4 w-4 mr-2" />
+                                    Create Page
+                                </>
+                            )}
                         </Button>
                     </div>
                 </form>
