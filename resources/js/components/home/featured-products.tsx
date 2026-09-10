@@ -1,4 +1,4 @@
-import ProductCard from './product-card';
+import ProductCard from '../catalog/product-card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 

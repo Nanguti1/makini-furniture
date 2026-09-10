@@ -21,23 +21,40 @@ export default function HomePage({
     newProducts = [],
     promotionalProducts = [],
 }: HomePageProps) {
+    // Transform featured products to match the shared ProductCard interface
+    const transformProducts = (products: any[]) => {
+        return products.map((fp) => ({
+            id: fp.product?.id || fp.id,
+            name: fp.product?.name || fp.name,
+            slug: fp.product?.slug || fp.slug,
+            price: fp.product?.price || fp.price,
+            brand: fp.product?.brand || fp.brand,
+            images: fp.product?.images || fp.images,
+            is_new: fp.product?.is_new || fp.is_new,
+        }));
+    };
+
+    const transformedFeaturedProducts = transformProducts(featuredProducts);
+    const transformedNewProducts = transformProducts(newProducts);
+    const transformedPromotionalProducts = transformProducts(promotionalProducts);
+
     return (
         <div className="flex flex-col">
             <HeroSection />
             
             <FeaturedCategories />
             
-            {featuredProducts.length > 0 && (
+            {transformedFeaturedProducts.length > 0 && (
                 <FeaturedProducts 
-                    products={featuredProducts}
+                    products={transformedFeaturedProducts}
                     title="Featured Products"
                     subtitle="Handpicked selections from our premium collection"
                 />
             )}
             
-            {newProducts.length > 0 && (
+            {transformedNewProducts.length > 0 && (
                 <FeaturedProducts 
-                    products={newProducts}
+                    products={transformedNewProducts}
                     title="New Arrivals"
                     subtitle="Discover the latest additions to our collection"
                     viewAllLink="/catalog?sort=newest"
@@ -50,9 +67,9 @@ export default function HomePage({
                 <FurnitureCollections collections={featuredCollections} />
             )}
             
-            {promotionalProducts.length > 0 && (
+            {transformedPromotionalProducts.length > 0 && (
                 <FeaturedProducts 
-                    products={promotionalProducts}
+                    products={transformedPromotionalProducts}
                     title="Special Offers"
                     subtitle="Limited time deals on premium furniture"
                     viewAllLink="/catalog?sort=sale"
