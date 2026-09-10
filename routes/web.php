@@ -65,7 +65,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::post('collections/{id}/restore', [\App\Http\Controllers\Admin\Catalog\CollectionController::class, 'restore'])->name('collections.restore');
     Route::resource('product-families', \App\Http\Controllers\Admin\Catalog\ProductFamilyController::class)->except('show');
     Route::post('product-families/{id}/restore', [\App\Http\Controllers\Admin\Catalog\ProductFamilyController::class, 'restore'])->name('product-families.restore');
-    Route::resource('products', \App\Http\Controllers\Admin\Catalog\ProductController::class)->except('show');
+    Route::resource('products', \App\Http\Controllers\Admin\Catalog\ProductController::class);
     Route::post('products/{product}/publish', [\App\Http\Controllers\Admin\Catalog\ProductController::class, 'publish'])->name('products.publish');
     Route::post('products/{product}/unpublish', [\App\Http\Controllers\Admin\Catalog\ProductController::class, 'unpublish'])->name('products.unpublish');
 
