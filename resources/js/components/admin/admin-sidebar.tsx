@@ -91,7 +91,7 @@ const contentNavItems: NavItem[] = [
     },
     {
         title: 'Customers',
-        href: '/admin/users',
+        href: admin.customers.index.url(),
         icon: Users,
     },
     {
