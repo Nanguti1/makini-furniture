@@ -58,6 +58,9 @@ class LookbookController extends Controller
 
         return Inertia::render('Admin/Lookbooks/Edit', [
             'lookbook' => $lookbook,
+            'products' => \App\Models\Product::where('status', 'published')
+                ->select(['id', 'name', 'slug'])
+                ->get(),
         ]);
     }
 

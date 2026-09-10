@@ -33,7 +33,9 @@ class FeaturedCollectionController extends Controller
     {
         $this->authorize('create', FeaturedCollection::class);
 
-        return Inertia::render('Admin/FeaturedCollections/Create');
+        return Inertia::render('Admin/FeaturedCollections/Create', [
+            'collections' => \App\Models\Collection::select(['id', 'name', 'slug'])->get(),
+        ]);
     }
 
     public function store(StoreFeaturedCollectionRequest $request, FeatureCollection $action): RedirectResponse
@@ -52,6 +54,7 @@ class FeaturedCollectionController extends Controller
 
         return Inertia::render('Admin/FeaturedCollections/Edit', [
             'featuredCollection' => $featuredCollection,
+            'collections' => \App\Models\Collection::select(['id', 'name', 'slug'])->get(),
         ]);
     }
 
