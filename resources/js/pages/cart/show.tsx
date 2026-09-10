@@ -306,13 +306,12 @@ export default function CartShowPage({ cart }: CartShowProps) {
                             </div>
 
                             <div className="space-y-2 pt-2">
-                                <Button className="w-full" size="lg" disabled>
-                                    <ArrowRight className="h-4 w-4 mr-2" />
-                                    Proceed to Checkout
+                                <Button className="w-full" size="lg" asChild>
+                                    <a href="/checkout">
+                                        <ArrowRight className="h-4 w-4 mr-2" />
+                                        Proceed to Checkout
+                                    </a>
                                 </Button>
-                                <p className="text-xs text-center text-muted-foreground">
-                                    Checkout functionality will be implemented in prompt 12
-                                </p>
                             </div>
 
                             <Separator />

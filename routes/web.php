@@ -101,6 +101,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 });
 
 Route::middleware(['auth', 'verified'])->group(function (): void {
+    Route::get('/checkout', [\App\Http\Controllers\Storefront\Commerce\OrderController::class, 'create'])->name('checkout.create');
     Route::get('/orders', [\App\Http\Controllers\Storefront\Commerce\OrderController::class, 'index'])->name('orders.index');
     Route::post('/orders', [\App\Http\Controllers\Storefront\Commerce\OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/{order}', [\App\Http\Controllers\Storefront\Commerce\OrderController::class, 'show'])->name('orders.show');
