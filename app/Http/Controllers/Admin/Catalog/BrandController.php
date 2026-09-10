@@ -7,7 +7,7 @@ use App\Models\Brand;
 use Inertia\{Inertia, Response};
 use Illuminate\Http\RedirectResponse;
 class BrandController extends Controller {
- public function index(): Response { $this->authorize('viewAny', Brand::class); return Inertia::render('Admin/Brands/Index',['brands'=>Brand::query()->latest()->paginate()]); }
+ public function index(): Response { $this->authorize('viewAny', Brand::class); $query=Brand::query()->latest(); if(request()->has('search')){ $query->where('name','like','%'.request('search').'%')->orWhere('slug','like','%'.request('search').'%'); } if(request()->has('status')){ if(request('status')==='active'){ $query->where('is_active',true); }elseif(request('status')==='inactive'){ $query->where('is_active',false); }elseif(request('status')==='trashed'){ $query->onlyTrashed(); } } return Inertia::render('Admin/Brands/Index',['brands'=>$query->paginate(),'filters'=>request()->only(['search','status'])]); }
  public function create(): Response { $this->authorize('create', Brand::class); return Inertia::render('Admin/Brands/Create'); }
  public function store(StoreBrandRequest $request, CreateBrand $action): RedirectResponse { $brand=$action->handle($request->validated()); return to_route('admin.brands.edit', $brand)->with('success','Brand created.'); }
  public function edit(Brand $brand): Response { $this->authorize('update', $brand); return Inertia::render('Admin/Brands/Edit',['brand'=>$brand]); }
