@@ -16,11 +16,11 @@ void createInertiaApp({
             'home',
             'catalog.index',
             'products.show',
+            'cart.show',
             'lookbooks.index',
             'lookbooks.show',
             'pages.show',
             'faqs.index',
-            'cart.show',
             'orders.index',
             'orders.show',
         ];

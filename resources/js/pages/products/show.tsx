@@ -4,8 +4,8 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { Heart, ShoppingCart, Minus, Plus, Share2, Truck, Shield, RotateCcw, Star, ChevronLeft, ChevronRight } from 'lucide-react';
-import { router } from '@inertiajs/react';
+import { Heart, ShoppingCart, Minus, Plus, Share2, Truck, Shield, RotateCcw, Star, ChevronLeft, ChevronRight, Loader2, Check } from 'lucide-react';
+import { router, usePage } from '@inertiajs/react';
 import ProductCard from '@/components/catalog/product-card';
 
 interface ProductImage {
@@ -107,12 +107,15 @@ interface ProductShowProps {
 }
 
 export default function ProductShowPage({ product, effectivePrices, productPrice }: ProductShowProps) {
+    const { props } = usePage();
     const [selectedImageIndex, setSelectedImageIndex] = useState(0);
     const [quantity, setQuantity] = useState(1);
     const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(
         product.variants && product.variants.length > 0 ? product.variants[0] : null
     );
     const [isWishlisted, setIsWishlisted] = useState(false);
+    const [isAddingToCart, setIsAddingToCart] = useState(false);
+    const [addToCartSuccess, setAddToCartSuccess] = useState(false);
 
     const images = product.images || [];
     const selectedImage = images[selectedImageIndex];
@@ -134,13 +137,41 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
     };
 
     const handleAddToCart = () => {
-        // TODO: Implement cart functionality when cart is ready
-        console.log('Add to cart:', {
+        if (!stockStatus.available) return;
+
+        setIsAddingToCart(true);
+        setAddToCartSuccess(false);
+
+        const formData = {
             product_id: product.id,
-            variant_id: selectedVariant?.id,
             quantity,
-        });
-        alert('Add to cart functionality will be implemented in prompt 7');
+        };
+
+        if (selectedVariant) {
+            formData.product_variant_id = selectedVariant.id;
+        }
+
+        // Get cart ID from page props or use a default
+        // In production, this should come from the current user's cart or session
+        const cartId = (props as any).cart?.id || 1;
+
+        router.post(
+            `/carts/${cartId}/items`,
+            formData,
+            {
+                preserveState: true,
+                preserveScroll: true,
+                onSuccess: () => {
+                    setIsAddingToCart(false);
+                    setAddToCartSuccess(true);
+                    setTimeout(() => setAddToCartSuccess(false), 3000);
+                },
+                onError: (errors) => {
+                    setIsAddingToCart(false);
+                    console.error('Add to cart error:', errors);
+                },
+            }
+        );
     };
 
     const handleWishlistToggle = () => {
@@ -431,12 +462,26 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
                             <div className="flex-1">
                                 <Button
                                     onClick={handleAddToCart}
-                                    disabled={!stockStatus.available}
+                                    disabled={!stockStatus.available || isAddingToCart}
                                     className="w-full"
                                     size="lg"
                                 >
-                                    <ShoppingCart className="h-4 w-4 mr-2" />
-                                    Add to Cart
+                                    {isAddingToCart ? (
+                                        <>
+                                            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                            Adding...
+                                        </>
+                                    ) : addToCartSuccess ? (
+                                        <>
+                                            <Check className="h-4 w-4 mr-2" />
+                                            Added to Cart
+                                        </>
+                                    ) : (
+                                        <>
+                                            <ShoppingCart className="h-4 w-4 mr-2" />
+                                            Add to Cart
+                                        </>
+                                    )}
                                 </Button>
                             </div>
                         </div>
