@@ -42,7 +42,7 @@ interface OrderProps {
 }
 
 export default function OrderIndex() {
-    const { props } = usePage() as { props: OrderProps };
+    const { props } = usePage() as unknown as { props: OrderProps };
     const { orders, filters } = props;
     const [searchTerm, setSearchTerm] = useState(filters?.search || '');
     const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');

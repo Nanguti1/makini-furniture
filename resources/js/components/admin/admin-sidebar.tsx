@@ -114,7 +114,12 @@ const settingsNavItems: NavItem[] = [
     },
 ];
 
-export function AdminSidebar() {
+interface AdminSidebarProps {
+    mobile?: boolean;
+    onClose?: () => void;
+}
+
+export function AdminSidebar({ mobile = false, onClose }: AdminSidebarProps = {}) {
     const [collapsed, setCollapsed] = useState(false);
     const url = usePage().url;
 
@@ -122,10 +127,16 @@ export function AdminSidebar() {
         return url === href || url.startsWith(href + '/');
     };
 
+    const handleNavClick = (href: string) => {
+        if (mobile && onClose) {
+            onClose();
+        }
+    };
+
     const NavSection = ({ title, items }: { title: string; items: NavItem[] }) => (
         <div className="space-y-1">
-            <p className={`px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 ${collapsed ? 'text-center' : ''}`}>
-                {collapsed ? title[0] : title}
+            <p className={`px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 ${collapsed && !mobile ? 'text-center' : ''}`}>
+                {collapsed && !mobile ? title[0] : title}
             </p>
             {items.map((item) => {
                 const Icon = item.icon;
@@ -133,6 +144,7 @@ export function AdminSidebar() {
                     <Link
                         key={item.href}
                         href={item.href}
+                        onClick={() => handleNavClick(item.href)}
                         className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                             isActive(item.href)
                                 ? 'bg-primary text-primary-foreground'
@@ -141,7 +153,7 @@ export function AdminSidebar() {
                         aria-current={isActive(item.href) ? 'page' : undefined}
                     >
                         <Icon className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
-                        {!collapsed && (
+                        {(!collapsed || mobile) && (
                             <>
                                 <span className="flex-1">{item.title}</span>
                                 {item.badge && (
@@ -156,6 +168,29 @@ export function AdminSidebar() {
             })}
         </div>
     );
+
+    if (mobile) {
+        return (
+            <div className="space-y-6">
+                <NavSection title="Overview" items={mainNavItems} />
+                <Separator />
+                <NavSection title="Merchandising" items={merchandisingNavItems} />
+                <Separator />
+                <NavSection title="Content" items={contentNavItems} />
+                <Separator />
+                <NavSection title="Settings" items={settingsNavItems} />
+                <Separator />
+                <Link
+                    href="/"
+                    onClick={() => onClose?.()}
+                    className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                    <LayoutDashboard className="h-4 w-4" />
+                    <span>View Store</span>
+                </Link>
+            </div>
+        );
+    }
 
     return (
         <div className={`fixed left-0 top-0 z-50 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ${

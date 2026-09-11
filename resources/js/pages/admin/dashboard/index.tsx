@@ -56,11 +56,11 @@ interface DashboardProps {
 }
 
 export default function AdminDashboard() {
-    const { props } = usePage() as { props: DashboardProps };
+    const { props } = usePage() as unknown as { props: DashboardProps };
     const { stats, recentOrders, recentCustomers, lowStockProducts } = props;
 
     const breadcrumbs = [
-        { title: 'Dashboard', href: admin.dashboard.index.url() },
+        { title: 'Dashboard', href: admin.dashboard.url() },
     ];
 
     const statCards = [

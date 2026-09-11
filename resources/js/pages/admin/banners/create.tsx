@@ -25,7 +25,6 @@ export default function BannerCreate() {
     });
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Banners', href: admin.banners.index.url() },
         { title: 'Create', href: admin.banners.create.url() },
     ];

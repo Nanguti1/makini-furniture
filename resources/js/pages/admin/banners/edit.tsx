@@ -42,7 +42,6 @@ export default function BannerEdit({ banner }: BannerEditProps) {
     });
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Banners', href: admin.banners.index.url() },
         { title: 'Edit', href: admin.banners.edit.url({ id: banner.id }) },
     ];

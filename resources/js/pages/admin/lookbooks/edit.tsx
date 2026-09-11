@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, router } from '@inertiajs/react';
 import { ArrowLeft, Plus, Trash2, BookOpen } from 'lucide-react';
 import admin from '@/routes/admin';
 import { useState } from 'react';
@@ -50,7 +50,6 @@ export default function LookbookEdit({ lookbook, products = [] }: LookbookEditPr
     const [newItemProductId, setNewItemProductId] = useState('');
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Lookbooks', href: admin.lookbooks.index.url() },
         { title: 'Edit', href: admin.lookbooks.edit.url({ id: lookbook.id }) },
     ];

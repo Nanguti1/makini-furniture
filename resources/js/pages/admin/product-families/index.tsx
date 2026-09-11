@@ -52,7 +52,7 @@ interface ProductFamilyProps {
 }
 
 export default function ProductFamilyIndex() {
-    const { props } = usePage() as { props: ProductFamilyProps };
+    const { props } = usePage() as unknown as { props: ProductFamilyProps };
     const { productFamilies, filters } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [searchTerm, setSearchTerm] = useState(filters?.search || '');

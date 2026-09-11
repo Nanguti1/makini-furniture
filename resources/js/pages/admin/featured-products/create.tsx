@@ -27,14 +27,16 @@ export default function FeaturedProductCreate({ products = [] }: FeaturedProduct
     });
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Featured Products', href: admin.featuredProducts.index.url() },
         { title: 'Create', href: admin.featuredProducts.create.url() },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(admin.featuredProducts.store.url());
+        post(admin.featuredProducts.store.url(), ({
+            ...data,
+            product_id: parseInt(data.product_id) || 0,
+        } as any));
     };
 
     return (

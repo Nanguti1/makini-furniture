@@ -35,12 +35,11 @@ interface FeaturedProductProps {
 }
 
 export default function FeaturedProductIndex() {
-    const { props } = usePage() as { props: FeaturedProductProps };
+    const { props } = usePage() as unknown as { props: FeaturedProductProps };
     const { featuredProducts } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Featured Products', href: admin.featuredProducts.index.url() },
     ];
 

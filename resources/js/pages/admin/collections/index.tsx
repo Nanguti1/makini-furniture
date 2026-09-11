@@ -51,7 +51,7 @@ interface CollectionProps {
 }
 
 export default function CollectionIndex() {
-    const { props } = usePage() as { props: CollectionProps };
+    const { props } = usePage() as unknown as { props: CollectionProps };
     const { collections, filters } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [searchTerm, setSearchTerm] = useState(filters?.search || '');

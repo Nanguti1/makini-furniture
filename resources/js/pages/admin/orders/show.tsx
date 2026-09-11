@@ -92,14 +92,13 @@ export default function OrderShow({ order }: OrderShowProps) {
         { title: order.order_number, href: admin.orders.show.url({ order: order.id }) },
     ];
 
-    const { put, processing } = useForm({
+    const { data, setData, put, processing } = useForm({
         status: order.status,
     });
 
     const updateStatus = (newStatus: string) => {
-        put(admin.orders.status.url({ order: order.id }), {
-            data: { status: newStatus },
-        });
+        setData('status', newStatus);
+        put(admin.orders.status.url({ order: order.id }));
     };
 
     const cancelOrder = () => {

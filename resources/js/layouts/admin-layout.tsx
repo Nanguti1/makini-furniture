@@ -44,9 +44,7 @@ export default function AdminLayout({ children, breadcrumbs = [] }: AdminLayoutP
                             </div>
                         </div>
                         <div className="p-4">
-                            <p className="text-sm text-gray-500 dark:text-gray-400">
-                                Mobile navigation will be implemented in future prompts
-                            </p>
+                            <AdminSidebar mobile={true} onClose={() => setMobileMenuOpen(false)} />
                         </div>
                     </div>
                 </div>

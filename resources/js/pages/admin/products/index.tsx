@@ -64,7 +64,7 @@ interface ProductProps {
 }
 
 export default function ProductIndex() {
-    const { props } = usePage() as { props: ProductProps };
+    const { props } = usePage() as unknown as { props: ProductProps };
     const { products, filters } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [searchTerm, setSearchTerm] = useState(filters?.search || '');

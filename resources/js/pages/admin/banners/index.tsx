@@ -35,12 +35,11 @@ interface BannerProps {
 }
 
 export default function BannerIndex() {
-    const { props } = usePage() as { props: BannerProps };
+    const { props } = usePage() as unknown as { props: BannerProps };
     const { banners } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Banners', href: admin.banners.index.url() },
     ];
 

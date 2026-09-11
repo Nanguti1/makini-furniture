@@ -522,9 +522,6 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                                                             <Label htmlFor={`variant-active-${variant.id}`}>Active</Label>
                                                         </div>
                                                         <div className="ml-auto flex items-center gap-2">
-                                                            {variant.isNew && (
-                                                                <Badge variant="outline">New</Badge>
-                                                            )}
                                                             <Button 
                                                                 variant="ghost" 
                                                                 size="sm"

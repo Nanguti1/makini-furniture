@@ -45,7 +45,7 @@ interface BrandProps {
 }
 
 export default function BrandIndex() {
-    const { props } = usePage() as { props: BrandProps };
+    const { props } = usePage() as unknown as { props: BrandProps };
     const { brands, filters } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [searchTerm, setSearchTerm] = useState(filters?.search || '');

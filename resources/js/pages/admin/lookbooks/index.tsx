@@ -31,12 +31,11 @@ interface LookbookProps {
 }
 
 export default function LookbookIndex() {
-    const { props } = usePage() as { props: LookbookProps };
+    const { props } = usePage() as unknown as { props: LookbookProps };
     const { lookbooks } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Lookbooks', href: admin.lookbooks.index.url() },
     ];
 

@@ -32,7 +32,7 @@ interface FeaturedProductEditProps {
 
 export default function FeaturedProductEdit({ featuredProduct, products = [] }: FeaturedProductEditProps) {
     const { data, setData, put, processing, errors } = useForm({
-        product_id: featuredProduct.product_id,
+        product_id: featuredProduct.product_id.toString(),
         placement: featuredProduct.placement,
         sort_order: featuredProduct.sort_order,
         starts_at: featuredProduct.starts_at ? featuredProduct.starts_at.slice(0, 16) : '',
@@ -41,14 +41,16 @@ export default function FeaturedProductEdit({ featuredProduct, products = [] }: 
     });
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Featured Products', href: admin.featuredProducts.index.url() },
         { title: 'Edit', href: admin.featuredProducts.edit.url({ id: featuredProduct.id }) },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(admin.featuredProducts.update.url({ id: featuredProduct.id }));
+        put(admin.featuredProducts.update.url({ id: featuredProduct.id }), ({
+            ...data,
+            product_id: parseInt(data.product_id) || featuredProduct.product_id,
+        } as any));
     };
 
     return (

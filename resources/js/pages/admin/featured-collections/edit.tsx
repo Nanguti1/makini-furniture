@@ -32,7 +32,7 @@ interface FeaturedCollectionEditProps {
 
 export default function FeaturedCollectionEdit({ featuredCollection, collections = [] }: FeaturedCollectionEditProps) {
     const { data, setData, put, processing, errors } = useForm({
-        collection_id: featuredCollection.collection_id,
+        collection_id: featuredCollection.collection_id.toString(),
         placement: featuredCollection.placement,
         sort_order: featuredCollection.sort_order,
         starts_at: featuredCollection.starts_at ? featuredCollection.starts_at.slice(0, 16) : '',
@@ -41,14 +41,16 @@ export default function FeaturedCollectionEdit({ featuredCollection, collections
     });
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Featured Collections', href: admin.featuredCollections.index.url() },
         { title: 'Edit', href: admin.featuredCollections.edit.url({ id: featuredCollection.id }) },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        put(admin.featuredCollections.update.url({ id: featuredCollection.id }));
+        put(admin.featuredCollections.update.url({ id: featuredCollection.id }), ({
+            ...data,
+            collection_id: parseInt(data.collection_id) || featuredCollection.collection_id,
+        } as any));
     };
 
     return (

@@ -18,7 +18,6 @@ export default function LookbookCreate() {
     });
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Lookbooks', href: admin.lookbooks.index.url() },
         { title: 'Create', href: admin.lookbooks.create.url() },
     ];

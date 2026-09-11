@@ -42,7 +42,7 @@ interface CategoryProps {
 }
 
 export default function CategoryIndex() {
-    const { props } = usePage() as { props: CategoryProps };
+    const { props } = usePage() as unknown as { props: CategoryProps };
     const { categories, filters } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
     const [searchTerm, setSearchTerm] = useState(filters?.search || '');

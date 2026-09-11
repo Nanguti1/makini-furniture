@@ -35,12 +35,11 @@ interface FeaturedCollectionProps {
 }
 
 export default function FeaturedCollectionIndex() {
-    const { props } = usePage() as { props: FeaturedCollectionProps };
+    const { props } = usePage() as unknown as { props: FeaturedCollectionProps };
     const { featuredCollections } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Featured Collections', href: admin.featuredCollections.index.url() },
     ];
 

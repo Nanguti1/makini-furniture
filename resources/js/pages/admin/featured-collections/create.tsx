@@ -27,14 +27,16 @@ export default function FeaturedCollectionCreate({ collections = [] }: FeaturedC
     });
 
     const breadcrumbs = [
-        { title: 'Merchandising', href: '#' },
         { title: 'Featured Collections', href: admin.featuredCollections.index.url() },
         { title: 'Create', href: admin.featuredCollections.create.url() },
     ];
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        post(admin.featuredCollections.store.url());
+        post(admin.featuredCollections.store.url(), ({
+            ...data,
+            collection_id: parseInt(data.collection_id) || 0,
+        } as any));
     };
 
     return (

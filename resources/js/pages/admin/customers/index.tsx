@@ -33,7 +33,7 @@ interface CustomerProps {
 }
 
 export default function CustomerIndex() {
-    const { props } = usePage() as { props: CustomerProps };
+    const { props } = usePage() as unknown as { props: CustomerProps };
     const { customers, filters } = props;
     const [searchTerm, setSearchTerm] = useState(filters?.search || '');
 
