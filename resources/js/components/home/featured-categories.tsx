@@ -17,14 +17,11 @@ export default function FeaturedCategories({
     categories = [],
     title = 'Shop by Category',
 }: FeaturedCategoriesProps) {
-    const defaultCategories: Category[] = [
-        { id: 1, name: 'Living Room', slug: 'living-room' },
-        { id: 2, name: 'Bedroom', slug: 'bedroom' },
-        { id: 3, name: 'Dining', slug: 'dining' },
-        { id: 4, name: 'Office', slug: 'office' },
-    ];
+    const displayCategories = categories;
 
-    const displayCategories = categories.length > 0 ? categories : defaultCategories;
+    if (displayCategories.length === 0) {
+        return null;
+    }
 
     return (
         <section className="py-16 md:py-24">

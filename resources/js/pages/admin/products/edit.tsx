@@ -785,7 +785,7 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                                             className="w-full rounded-md border border-input bg-background px-3 py-2"
                                         >
                                             <option value="draft">Draft</option>
-                                            <option value="published">Published</option>
+                                            <option value="active">Active</option>
                                             <option value="archived">Archived</option>
                                         </select>
                                         {errors.status && (

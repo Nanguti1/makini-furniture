@@ -20,6 +20,7 @@ class ProductController extends Controller
             'productFamily',
             'variants.optionValues.option',
             'variants.images',
+            'variants.inventories',
             'images',
             'videos',
             'documents',
@@ -43,12 +44,18 @@ class ProductController extends Controller
             $canReview = $reviewQuery->canUserReviewProduct($user, $product->id);
         }
 
+        $cart = app(\App\Actions\Cart\GetCurrentCart::class)->handle(
+            auth()->user(),
+            request()->session()->getId()
+        );
+
         return Inertia::render('Products/Show', [
             'product' => $product,
             'effectivePrices' => $product->variants->mapWithKeys(fn($variant) => [$variant->id => $pricing->effectivePrice($product, $variant)]),
             'productPrice' => $pricing->effectivePrice($product),
             'userReview' => $userReview,
             'canReview' => $canReview,
+            'cart' => $cart,
         ]);
     }
 }

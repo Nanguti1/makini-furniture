@@ -13,9 +13,19 @@ class ProductVariant extends Model
 
     protected $fillable = ['product_id','sku','name','barcode','price_override','cost_price','weight','weight_unit','status','is_default','is_active'];
 
+    protected $appends = ['stock'];
+
     protected function casts(): array
     {
         return ['price_override'=>'decimal:2','cost_price'=>'decimal:2','weight'=>'decimal:3','status'=>\App\Enums\ProductStatus::class,'is_default'=>'boolean','is_active'=>'boolean'];
+    }
+
+    public function getStockAttribute(): int
+    {
+        if (!$this->relationLoaded('inventories')) {
+            $this->load('inventories');
+        }
+        return $this->inventories->sum(fn($inv) => $inv->quantity_on_hand - $inv->quantity_reserved);
     }
 
     public function product(): BelongsTo { return $this->belongsTo(Product::class); }

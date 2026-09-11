@@ -34,7 +34,7 @@ class FeaturedProductController extends Controller
         $this->authorize('create', FeaturedProduct::class);
 
         return Inertia::render('Admin/FeaturedProducts/Create', [
-            'products' => \App\Models\Product::where('status', 'published')
+            'products' => \App\Models\Product::where('status', 'active')
                 ->select(['id', 'name', 'slug'])
                 ->get(),
         ]);
@@ -56,7 +56,7 @@ class FeaturedProductController extends Controller
 
         return Inertia::render('Admin/FeaturedProducts/Edit', [
             'featuredProduct' => $featuredProduct,
-            'products' => \App\Models\Product::where('status', 'published')
+            'products' => \App\Models\Product::where('status', 'active')
                 ->select(['id', 'name', 'slug'])
                 ->get(),
         ]);

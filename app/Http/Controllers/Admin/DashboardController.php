@@ -37,13 +37,11 @@ class DashboardController extends Controller
             ->take(5)
             ->get(['id', 'name', 'email', 'created_at']);
 
-        // Get low stock products (using variants with stock)
-        $lowStockProducts = Product::whereHas('variants', function ($query) {
-            $query->where('stock_quantity', '<=', 10);
+        // Get low stock products (using variants with inventory)
+        $lowStockProducts = Product::whereHas('variants.inventories', function ($query) {
+            $query->whereRaw('quantity_on_hand - quantity_reserved <= 10');
         })
-        ->with(['variants' => function ($query) {
-            $query->where('stock_quantity', '<=', 10);
-        }])
+        ->with(['variants.inventories'])
         ->take(5)
         ->get(['id', 'name', 'slug']);
 

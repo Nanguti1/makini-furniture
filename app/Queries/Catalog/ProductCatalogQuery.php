@@ -2,7 +2,7 @@
 namespace App\Queries\Catalog;
 use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-class ProductCatalogQuery { /** @param array<string,mixed> $filters */ public function paginate(array $filters): LengthAwarePaginator { $query=Product::query()->select('products.*')->where('status','active')->where('is_active',true)->with(['brand:id,name,slug','category:id,name,slug','images'=>fn($q)=>$q->where('is_primary',true)]);
+class ProductCatalogQuery { /** @param array<string,mixed> $filters */ public function paginate(array $filters): LengthAwarePaginator { $query=Product::query()->select('products.*')->where('status','active')->where('is_active',true)->with(['brand:id,name,slug','category:id,name,slug','images'=>fn($q)=>$q->where('is_primary',true),'variants.inventories']);
  foreach(['category','collection','brand','room','material','finish','color'] as $relation) if(!empty($filters[$relation])) $query->whereHas($relation==='category'?'category':$relation,fn($q)=>$q->where('slug',$filters[$relation]));
  if($search=$filters['search']??null) $query->where(fn($q)=>$q->where('name','like',"%{$search}%")->orWhere('sku','like',"%{$search}%")->orWhere('short_description','like',"%{$search}%")->orWhere('description','like',"%{$search}%")->orWhereHas('brand',fn($q)=>$q->where('name','like',"%{$search}%"))->orWhereHas('collection',fn($q)=>$q->where('name','like',"%{$search}%"))->orWhereHas('productFamily',fn($q)=>$q->where('name','like',"%{$search}%")));
  if(isset($filters['min_price'])) $query->whereHas('prices',fn($q)=>$q->where('is_active',true)->where('amount','>=',$filters['min_price'])); if(isset($filters['max_price'])) $query->whereHas('prices',fn($q)=>$q->where('is_active',true)->where('amount','<=',$filters['max_price']));

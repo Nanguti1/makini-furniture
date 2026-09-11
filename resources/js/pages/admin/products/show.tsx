@@ -150,7 +150,7 @@ export default function ProductShow({ product }: ProductShowProps) {
                 </div>
 
                 <div className="flex items-center gap-2">
-                    <Badge variant={product.status === 'published' ? 'default' : 'secondary'}>
+                    <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
                         {product.status}
                     </Badge>
                     {product.is_featured && <Star className="h-4 w-4 text-yellow-500" />}
@@ -209,7 +209,7 @@ export default function ProductShow({ product }: ProductShowProps) {
                                 <CardContent className="space-y-4">
                                     <div>
                                         <p className="text-sm font-medium text-muted-foreground">Status</p>
-                                        <Badge variant={product.status === 'published' ? 'default' : 'secondary'}>
+                                        <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
                                             {product.status}
                                         </Badge>
                                     </div>

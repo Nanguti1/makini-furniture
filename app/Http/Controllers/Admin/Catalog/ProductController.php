@@ -24,8 +24,8 @@ class ProductController extends Controller
 
         // Status filter
         if (request()->has('status')) {
-            if (request('status') === 'published') {
-                $query->where('status', 'published');
+            if (request('status') === 'active') {
+                $query->where('status', 'active');
             } elseif (request('status') === 'draft') {
                 $query->where('status', 'draft');
             } elseif (request('status') === 'archived') {

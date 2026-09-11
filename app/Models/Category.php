@@ -12,9 +12,16 @@ class Category extends Model
 
     protected $fillable = ['parent_id','name','slug','description','image','meta_title','meta_description','is_active','sort_order'];
 
+    protected $appends = ['hero_image'];
+
     protected function casts(): array
     {
         return ['is_active' => 'boolean'];
+    }
+
+    public function getHeroImageAttribute(): ?string
+    {
+        return $this->image;
     }
 
     public function parent(): BelongsTo { return $this->belongsTo(self::class, 'parent_id'); }

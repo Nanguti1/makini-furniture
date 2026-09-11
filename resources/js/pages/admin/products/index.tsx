@@ -223,7 +223,7 @@ export default function ProductIndex() {
             header: 'Status',
             sortable: true,
             cell: (row: any) => (
-                <Badge variant={row.status === 'published' ? 'default' : 'secondary'}>
+                <Badge variant={row.status === 'active' ? 'default' : 'secondary'}>
                     {row.status}
                 </Badge>
             ),
@@ -261,7 +261,7 @@ export default function ProductIndex() {
                             <Edit className="h-4 w-4" />
                         </Button>
                     </Link>
-                    {row.status === 'published' ? (
+                    {row.status === 'active' ? (
                         <Button
                             variant="ghost"
                             size="sm"
@@ -338,7 +338,7 @@ export default function ProductIndex() {
                         className="rounded-md border border-input bg-background px-3 py-2 text-sm"
                     >
                         <option value="all">All Status</option>
-                        <option value="published">Published</option>
+                        <option value="active">Active</option>
                         <option value="draft">Draft</option>
                         <option value="archived">Archived</option>
                     </select>

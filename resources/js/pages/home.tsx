@@ -5,6 +5,13 @@ import PromotionalSection from '@/components/home/promotional-section';
 import FurnitureCollections from '@/components/home/furniture-collections';
 import NewsletterSection from '@/components/home/newsletter-section';
 
+interface Category {
+    id: number;
+    name: string;
+    slug: string;
+    hero_image?: string;
+}
+
 interface HomePageProps {
     banners?: any[];
     featuredCollections?: any[];
@@ -12,6 +19,7 @@ interface HomePageProps {
     lookbooks?: any[];
     newProducts?: any[];
     promotionalProducts?: any[];
+    categories?: Category[];
 }
 
 export default function HomePage({
@@ -20,6 +28,7 @@ export default function HomePage({
     featuredProducts = [],
     newProducts = [],
     promotionalProducts = [],
+    categories = [],
 }: HomePageProps) {
     // Transform featured products to match the shared ProductCard interface
     const transformProducts = (products: any[]) => {
@@ -42,7 +51,7 @@ export default function HomePage({
         <div className="flex flex-col">
             <HeroSection />
             
-            <FeaturedCategories />
+            <FeaturedCategories categories={categories} />
             
             {transformedFeaturedProducts.length > 0 && (
                 <FeaturedProducts 

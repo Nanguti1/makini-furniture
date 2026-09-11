@@ -40,12 +40,20 @@ interface PaginatedProducts {
     total: number;
 }
 
+interface Category {
+    id: number;
+    name: string;
+    slug: string;
+    image?: string;
+}
+
 interface CatalogPageProps {
     products?: PaginatedProducts;
     filters?: Record<string, any>;
+    categories?: Category[];
 }
 
-export default function CatalogPage({ products, filters = {} }: CatalogPageProps) {
+export default function CatalogPage({ products, filters = {}, categories = [] }: CatalogPageProps) {
     const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
     const [localFilters, setLocalFilters] = useState<Record<string, any>>(filters);
     const [searchQuery, setSearchQuery] = useState(filters.search || '');
@@ -216,6 +224,16 @@ export default function CatalogPage({ products, filters = {} }: CatalogPageProps
                             </Button>
                         )}
                     </div>
+
+                    <FilterDrawer
+                        open={filterDrawerOpen}
+                        onOpenChange={setFilterDrawerOpen}
+                        filters={localFilters}
+                        onFiltersChange={setLocalFilters}
+                        onApplyFilters={applyFilters}
+                        onClearFilters={clearFilters}
+                        categories={categories}
+                    />
 
                     {/* Sort Dropdown */}
                     <div className="flex items-center gap-2 w-full sm:w-auto">
@@ -391,62 +409,23 @@ export default function CatalogPage({ products, filters = {} }: CatalogPageProps
                     >
                         All Products
                     </Button>
-                    <Button
-                        variant={localFilters.category === 'sofas' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => {
-                            const newFilters = { ...localFilters, category: 'sofas' };
-                            setLocalFilters(newFilters);
-                            router.get('/catalog', newFilters, {
-                                preserveState: true,
-                                preserveScroll: true,
-                            });
-                        }}
-                    >
-                        Sofas
-                    </Button>
-                    <Button
-                        variant={localFilters.category === 'tables' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => {
-                            const newFilters = { ...localFilters, category: 'tables' };
-                            setLocalFilters(newFilters);
-                            router.get('/catalog', newFilters, {
-                                preserveState: true,
-                                preserveScroll: true,
-                            });
-                        }}
-                    >
-                        Tables
-                    </Button>
-                    <Button
-                        variant={localFilters.category === 'chairs' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => {
-                            const newFilters = { ...localFilters, category: 'chairs' };
-                            setLocalFilters(newFilters);
-                            router.get('/catalog', newFilters, {
-                                preserveState: true,
-                                preserveScroll: true,
-                            });
-                        }}
-                    >
-                        Chairs
-                    </Button>
-                    <Button
-                        variant={localFilters.category === 'bedroom' ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => {
-                            const newFilters = { ...localFilters, category: 'bedroom' };
-                            setLocalFilters(newFilters);
-                            router.get('/catalog', newFilters, {
-                                preserveState: true,
-                                preserveScroll: true,
-                            });
-                        }}
-                    >
-                        Bedroom
-                    </Button>
+                    {categories.map((category) => (
+                        <Button
+                            key={category.id}
+                            variant={localFilters.category === category.slug ? 'default' : 'outline'}
+                            size="sm"
+                            onClick={() => {
+                                const newFilters = { ...localFilters, category: category.slug };
+                                setLocalFilters(newFilters);
+                                router.get('/catalog', newFilters, {
+                                    preserveState: true,
+                                    preserveScroll: true,
+                                });
+                            }}
+                        >
+                            {category.name}
+                        </Button>
+                    ))}
                 </div>
             </div>
 
@@ -474,16 +453,6 @@ export default function CatalogPage({ products, filters = {} }: CatalogPageProps
                     />
                 </div>
             )}
-
-            {/* Filter Drawer */}
-            <FilterDrawer
-                open={filterDrawerOpen}
-                onOpenChange={setFilterDrawerOpen}
-                filters={localFilters}
-                onFiltersChange={setLocalFilters}
-                onApplyFilters={applyFilters}
-                onClearFilters={clearFilters}
-            />
         </div>
     );
 }

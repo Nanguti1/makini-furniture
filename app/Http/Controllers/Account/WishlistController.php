@@ -26,8 +26,14 @@ class WishlistController extends Controller
             $wishlist = auth()->user()->wishlists()->create(['name' => 'My Wishlist']);
         }
 
+        $cart = app(\App\Actions\Cart\GetCurrentCart::class)->handle(
+            auth()->user(),
+            request()->session()->getId()
+        );
+
         return Inertia::render('Account/Wishlist/Index', [
             'wishlist' => $wishlist,
+            'cart' => $cart,
         ]);
     }
 

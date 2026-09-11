@@ -161,9 +161,8 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
             formData.product_variant_id = selectedVariant.id;
         }
 
-        // Get cart ID from page props or use a default
-        // In production, this should come from the current user's cart or session
-        const cartId = (props as any).cart?.id || 1;
+        // Get cart ID from page props
+        const cartId = (props as any).cart?.id;
 
         router.post(
             `/carts/${cartId}/items`,

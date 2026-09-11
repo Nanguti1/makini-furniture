@@ -6,6 +6,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Filter, X } from 'lucide-react';
 
+interface Category {
+    id: number;
+    name: string;
+    slug: string;
+    image?: string;
+}
+
 interface FilterDrawerProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
@@ -13,6 +20,7 @@ interface FilterDrawerProps {
     onFiltersChange: (filters: Record<string, any>) => void;
     onApplyFilters: () => void;
     onClearFilters: () => void;
+    categories?: Category[];
 }
 
 export default function FilterDrawer({
@@ -22,6 +30,7 @@ export default function FilterDrawer({
     onFiltersChange,
     onApplyFilters,
     onClearFilters,
+    categories = [],
 }: FilterDrawerProps) {
     const updateFilter = (key: string, value: any) => {
         onFiltersChange({ ...filters, [key]: value });
@@ -85,14 +94,11 @@ export default function FilterDrawer({
                         </SelectTrigger>
                         <SelectContent>
                             <SelectItem value="">All categories</SelectItem>
-                            <SelectItem value="sofas">Sofas</SelectItem>
-                            <SelectItem value="tables">Tables</SelectItem>
-                            <SelectItem value="chairs">Chairs</SelectItem>
-                            <SelectItem value="bedroom">Bedroom</SelectItem>
-                            <SelectItem value="living">Living Room</SelectItem>
-                            <SelectItem value="dining">Dining Room</SelectItem>
-                            <SelectItem value="office">Office</SelectItem>
-                            <SelectItem value="outdoor">Outdoor</SelectItem>
+                            {categories.map((category) => (
+                                <SelectItem key={category.id} value={category.slug}>
+                                    {category.name}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                 </div>

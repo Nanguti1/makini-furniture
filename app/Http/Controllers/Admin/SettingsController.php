@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -12,10 +13,10 @@ class SettingsController extends Controller
     {
         return Inertia::render('Admin/settings/index', [
             'settings' => [
-                'app_name' => config('app.name'),
-                'app_url' => config('app.url'),
-                'mail_from_address' => config('mail.from.address'),
-                'mail_from_name' => config('mail.from.name'),
+                'app_name' => Setting::get('app_name', config('app.name')),
+                'app_url' => Setting::get('app_url', config('app.url')),
+                'mail_from_address' => Setting::get('mail_from_address', config('mail.from.address')),
+                'mail_from_name' => Setting::get('mail_from_name', config('mail.from.name')),
             ],
         ]);
     }
@@ -29,8 +30,10 @@ class SettingsController extends Controller
             'mail_from_name' => 'required|string|max:255',
         ]);
 
-        // Note: In a real application, you would persist these settings
-        // to a settings table or environment file. For now, this is a placeholder.
+        Setting::set('app_name', $validated['app_name'], 'string', 'general');
+        Setting::set('app_url', $validated['app_url'], 'string', 'general');
+        Setting::set('mail_from_address', $validated['mail_from_address'], 'string', 'mail');
+        Setting::set('mail_from_name', $validated['mail_from_name'], 'string', 'mail');
 
         return back()->with('success', 'Settings updated successfully.');
     }

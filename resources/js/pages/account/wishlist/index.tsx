@@ -43,9 +43,12 @@ interface Wishlist {
 
 interface WishlistIndexProps {
     wishlist: Wishlist;
+    cart: {
+        id: number;
+    };
 }
 
-export default function AccountWishlistIndexPage({ wishlist }: WishlistIndexProps) {
+export default function AccountWishlistIndexPage({ wishlist, cart }: WishlistIndexProps) {
     const { props } = usePage();
     const [removingItems, setRemovingItems] = useState<Record<number, boolean>>({});
     const [addingToCart, setAddingToCart] = useState<Record<number, boolean>>({});
@@ -81,8 +84,8 @@ export default function AccountWishlistIndexPage({ wishlist }: WishlistIndexProp
     const handleAddToCart = (itemId: number, productId: number, variantId?: number) => {
         setAddingToCart(prev => ({ ...prev, [itemId]: true }));
 
-        // Get cart ID from page props or use a default
-        const cartId = (props as any).cart?.id || 1;
+        // Get cart ID from page props
+        const cartId = cart?.id;
 
         const formData: any = {
             product_id: productId,
