@@ -121,6 +121,15 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
 
     Route::get('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [\App\Http\Controllers\Admin\SettingsController::class, 'update'])->name('settings.update');
+
+    // User Management
+    Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+
+    // Role Management
+    Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
+
+    // Permission Management
+    Route::resource('permissions', \App\Http\Controllers\Admin\PermissionController::class);
 });
 
 Route::get('/cart', [\App\Http\Controllers\Storefront\Commerce\CartController::class, 'show'])->name('cart.show');

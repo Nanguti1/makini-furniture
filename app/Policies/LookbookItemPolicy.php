@@ -7,35 +7,35 @@ use App\Models\User;
 
 class LookbookItemPolicy
 {
-    use RequiresAdministrator;
+    use HasSuperAdminAccess;
 
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->can('manage lookbook items');
     }
 
     public function view(User $user, LookbookItem $model): bool
     {
-        return true;
+        return $user->can('manage lookbook items');
     }
 
     public function create(User $user): bool
     {
-        return true;
+        return $user->can('manage lookbook items');
     }
 
     public function update(User $user, LookbookItem $model): bool
     {
-        return true;
+        return $user->can('manage lookbook items');
     }
 
     public function delete(User $user, LookbookItem $model): bool
     {
-        return true;
+        return $user->can('manage lookbook items');
     }
 
     public function restore(User $user, LookbookItem $model): bool
     {
-        return true;
+        return $user->can('manage lookbook items');
     }
 }

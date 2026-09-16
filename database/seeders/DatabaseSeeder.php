@@ -23,8 +23,19 @@ class DatabaseSeeder extends Seeder
             FinishSeeder::class,
             ColorSeeder::class,
             WarehouseSeeder::class,
-            UserSeeder::class,
             SettingsSeeder::class,
+        ]);
+
+        // Permission system (must be before UserSeeder)
+        $this->call([
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            RolePermissionSeeder::class,
+        ]);
+
+        // Users (depends on roles and permissions)
+        $this->call([
+            UserSeeder::class,
         ]);
 
         // Content data (can run after core data)

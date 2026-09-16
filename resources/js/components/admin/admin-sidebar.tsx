@@ -12,11 +12,12 @@ import {
     FileText, 
     HelpCircle, 
     Settings,
+    Shield,
+    Key,
     ChevronLeft,
     ChevronRight
 } from 'lucide-react';
 import { useState } from 'react';
-import admin from '@/routes/admin';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 
@@ -25,92 +26,126 @@ interface NavItem {
     href: string;
     icon: any;
     badge?: number;
+    permission?: string;
 }
 
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
-        href: admin.dashboard.url(),
+        href: '/admin/dashboard',
         icon: LayoutDashboard,
+        permission: 'view dashboard',
     },
     {
         title: 'Products',
-        href: admin.products.index.url(),
+        href: '/admin/products',
         icon: Package,
+        permission: 'view products',
     },
     {
         title: 'Categories',
-        href: admin.categories.index.url(),
+        href: '/admin/categories',
         icon: Tags,
+        permission: 'view categories',
     },
     {
         title: 'Brands',
-        href: admin.brands.index.url(),
+        href: '/admin/brands',
         icon: FolderTree,
+        permission: 'view brands',
     },
     {
         title: 'Collections',
-        href: admin.collections.index.url(),
+        href: '/admin/collections',
         icon: Layers,
+        permission: 'view collections',
     },
     {
         title: 'Product Families',
-        href: admin.productFamilies.index.url(),
+        href: '/admin/product-families',
         icon: Image,
+        permission: 'view product families',
     },
 ];
 
 const merchandisingNavItems: NavItem[] = [
     {
         title: 'Banners',
-        href: admin.banners.index.url(),
+        href: '/admin/banners',
         icon: Image,
+        permission: 'view banners',
     },
     {
         title: 'Featured Products',
-        href: admin.featuredProducts.index.url(),
+        href: '/admin/featured-products',
         icon: Star,
+        permission: 'view featured products',
     },
     {
         title: 'Featured Collections',
-        href: admin.featuredCollections.index.url(),
+        href: '/admin/featured-collections',
         icon: Layers,
+        permission: 'view featured collections',
     },
     {
         title: 'Lookbooks',
-        href: admin.lookbooks.index.url(),
+        href: '/admin/lookbooks',
         icon: Image,
+        permission: 'view lookbooks',
     },
 ];
 
 const contentNavItems: NavItem[] = [
     {
         title: 'Orders',
-        href: admin.orders.index.url(),
+        href: '/admin/orders',
         icon: ShoppingCart,
+        permission: 'view orders',
     },
     {
         title: 'Customers',
-        href: admin.customers.index.url(),
+        href: '/admin/customers',
         icon: Users,
+        permission: 'view customers',
     },
     {
         title: 'Pages',
-        href: admin.pages.index.url(),
+        href: '/admin/pages',
         icon: FileText,
+        permission: 'view pages',
     },
     {
         title: 'FAQs',
-        href: admin.faqs.index.url(),
+        href: '/admin/faqs',
         icon: HelpCircle,
+        permission: 'view faqs',
     },
 ];
 
 const settingsNavItems: NavItem[] = [
     {
         title: 'Store Settings',
-        href: admin.settings.index.url(),
+        href: '/admin/settings',
         icon: Settings,
+        permission: 'view settings',
+    },
+    {
+        title: 'Users',
+        href: '/admin/users',
+        icon: Users,
+        permission: 'view users',
+    },
+    {
+        title: 'Roles',
+        href: '/admin/roles',
+        icon: Shield,
+        permission: 'view roles',
+    },
+    {
+        title: 'Permissions',
+        href: '/admin/permissions',
+        icon: Key,
+        permission: 'view permissions',
     },
 ];
 
@@ -123,6 +158,12 @@ interface AdminSidebarProps {
 export function AdminSidebar({ mobile = false, onClose, onCollapsedChange }: AdminSidebarProps = {}) {
     const [collapsed, setCollapsed] = useState(false);
     const url = usePage().url;
+    const { auth } = usePage().props;
+    const permissions = auth?.permissions || [];
+    const roles = auth?.roles || [];
+    
+    const hasPermission = (permission: string) => permissions.includes(permission);
+    const hasRole = (role: string) => roles.includes(role);
 
     const handleCollapseToggle = () => {
         const newCollapsed = !collapsed;
@@ -140,41 +181,47 @@ export function AdminSidebar({ mobile = false, onClose, onCollapsedChange }: Adm
         }
     };
 
-    const NavSection = ({ title, items }: { title: string; items: NavItem[] }) => (
-        <div className="space-y-1">
-            <p className={`px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 ${collapsed && !mobile ? 'text-center' : ''}`}>
-                {collapsed && !mobile ? title[0] : title}
-            </p>
-            {items.map((item) => {
-                const Icon = item.icon;
-                return (
-                    <Link
-                        key={item.href}
-                        href={item.href}
-                        onClick={() => handleNavClick(item.href)}
-                        className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
-                            isActive(item.href)
-                                ? 'bg-primary text-primary-foreground'
-                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
-                        }`}
-                        aria-current={isActive(item.href) ? 'page' : undefined}
-                    >
-                        <Icon className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
-                        {(!collapsed || mobile) && (
-                            <>
-                                <span className="flex-1">{item.title}</span>
-                                {item.badge && (
-                                    <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full" aria-label={`${item.badge} items`}>
-                                        {item.badge}
-                                    </span>
-                                )}
-                            </>
-                        )}
-                    </Link>
-                );
-            })}
-        </div>
-    );
+    const NavSection = ({ title, items }: { title: string; items: NavItem[] }) => {
+        const filteredItems = items.filter(item => !item.permission || hasPermission(item.permission));
+        
+        if (filteredItems.length === 0) return null;
+        
+        return (
+            <div className="space-y-1">
+                <p className={`px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 ${collapsed && !mobile ? 'text-center' : ''}`}>
+                    {collapsed && !mobile ? title[0] : title}
+                </p>
+                {filteredItems.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                        <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => handleNavClick(item.href)}
+                            className={`flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-md transition-colors ${
+                                isActive(item.href)
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+                            }`}
+                            aria-current={isActive(item.href) ? 'page' : undefined}
+                        >
+                            <Icon className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
+                            {(!collapsed || mobile) && (
+                                <>
+                                    <span className="flex-1">{item.title}</span>
+                                    {item.badge && (
+                                        <span className="ml-auto bg-primary text-primary-foreground text-xs px-2 py-0.5 rounded-full" aria-label={`${item.badge} items`}>
+                                            {item.badge}
+                                        </span>
+                                    )}
+                                </>
+                            )}
+                        </Link>
+                    );
+                })}
+            </div>
+        );
+    };
 
     if (mobile) {
         return (

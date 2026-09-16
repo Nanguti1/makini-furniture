@@ -5,26 +5,35 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        // Super Admin user
+        $superAdmin = User::create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@makiniqueens.co.ke',
+            'password' => Hash::make('password'),
+        ]);
+        $superAdmin->assignRole('Super Admin');
+
         // Admin user
-        User::create([
+        $admin = User::create([
             'name' => 'Admin User',
             'email' => 'admin@makiniqueens.co.ke',
             'password' => Hash::make('password'),
-            'is_admin' => true,
         ]);
+        $admin->assignRole('Admin');
 
         // Manager user
-        User::create([
+        $manager = User::create([
             'name' => 'Warehouse Manager',
             'email' => 'manager@makiniqueens.co.ke',
             'password' => Hash::make('password'),
-            'is_admin' => true,
         ]);
+        $manager->assignRole('Manager');
 
         // Sample customers
         $customers = [
@@ -32,36 +41,34 @@ class UserSeeder extends Seeder
                 'name' => 'John Kamau',
                 'email' => 'john.kamau@gmail.com',
                 'password' => Hash::make('password123'),
-                'is_admin' => false,
             ],
             [
                 'name' => 'Mary Wanjiku',
                 'email' => 'mary.wanjiku@yahoo.com',
                 'password' => Hash::make('password123'),
-                'is_admin' => false,
             ],
             [
                 'name' => 'Peter Ochieng',
                 'email' => 'peter.ochieng@outlook.com',
                 'password' => Hash::make('password123'),
-                'is_admin' => false,
             ],
             [
                 'name' => 'Grace Njeri',
                 'email' => 'grace.njeri@gmail.com',
                 'password' => Hash::make('password123'),
-                'is_admin' => false,
             ],
             [
                 'name' => 'David Mutua',
                 'email' => 'david.mutua@yahoo.com',
                 'password' => Hash::make('password123'),
-                'is_admin' => false,
             ],
         ];
 
+        $customerRole = Role::where('name', 'Customer')->first();
+
         foreach ($customers as $customer) {
-            User::create($customer);
+            $user = User::create($customer);
+            $user->assignRole('Customer');
         }
     }
 }

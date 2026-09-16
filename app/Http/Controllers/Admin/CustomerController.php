@@ -4,14 +4,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Inertia\{Inertia, Response};
+use Spatie\Permission\Models\Role;
 
 class CustomerController extends Controller
 {
     public function index(): Response
     {
-        $this->authorize('viewAny', User::class);
+        $this->authorize('view customers');
 
-        $query = User::query()->where('is_admin', false);
+        $customerRole = Role::where('name', 'Customer')->first();
+        $query = $customerRole ? User::role($customerRole) : User::query();
 
         // Search
         if (request()->has('search')) {
@@ -28,7 +30,7 @@ class CustomerController extends Controller
 
     public function show(User $customer): Response
     {
-        $this->authorize('view', $customer);
+        $this->authorize('view customer details');
 
         return Inertia::render('admin/customers/show', [
             'customer' => $customer->load([

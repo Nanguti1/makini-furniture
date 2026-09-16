@@ -8,19 +8,23 @@ use App\Models\Product;
 use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Permission\Models\Role;
 
 class DashboardController extends Controller
 {
     public function __invoke(): Response
     {
-        $this->authorize('viewAny', Order::class);
+        $this->authorize('view dashboard');
+
+        // Get customer role
+        $customerRole = Role::where('name', 'Customer')->first();
 
         // Get dashboard statistics from existing data
         $stats = [
             'total_revenue' => Order::where('status', '!=', 'cancelled')->sum('grand_total'),
             'total_orders' => Order::count(),
             'total_products' => Product::count(),
-            'total_customers' => User::where('is_admin', false)->count(),
+            'total_customers' => $customerRole ? User::role($customerRole)->count() : 0,
             'pending_orders' => Order::where('status', 'pending')->count(),
             'active_products' => Product::where('is_active', true)->count(),
         ];
@@ -32,10 +36,12 @@ class DashboardController extends Controller
             ->get(['id', 'order_number', 'status', 'grand_total', 'created_at', 'user_id']);
 
         // Get recent customers
-        $recentCustomers = User::where('is_admin', false)
-            ->latest()
-            ->take(5)
-            ->get(['id', 'name', 'email', 'created_at']);
+        $recentCustomers = $customerRole
+            ? User::role($customerRole)
+                ->latest()
+                ->take(5)
+                ->get(['id', 'name', 'email', 'created_at'])
+            : collect();
 
         // Get low stock products (using variants with inventory)
         $lowStockProducts = Product::whereHas('variants.inventories', function ($query) {
