@@ -56,9 +56,10 @@ class ProductController extends Controller
             $query->orderBy('created_at', 'desc');
         }
 
-        return Inertia::render('Admin/Products/Index', [
+        return Inertia::render('admin/products/index', [
             'products' => $query->paginate(),
             'filters' => request()->only(['search', 'status', 'featured', 'sort', 'direction']),
+            'breadcrumbs' => [['title' => 'Products', 'href' => route('admin.products.index')]],
         ]);
     }
 
@@ -66,11 +67,12 @@ class ProductController extends Controller
     {
         $this->authorize('create', Product::class);
 
-        return Inertia::render('Admin/Products/Create', [
+        return Inertia::render('admin/products/create', [
             'brands' => \App\Models\Brand::all(['id', 'name']),
             'categories' => \App\Models\Category::all(['id', 'name']),
             'collections' => \App\Models\Collection::all(['id', 'name']),
             'productFamilies' => \App\Models\ProductFamily::all(['id', 'name']),
+            'breadcrumbs' => [['title' => 'Products', 'href' => route('admin.products.index')], ['title' => 'Create', 'href' => route('admin.products.create')]],
         ]);
     }
 
@@ -84,7 +86,7 @@ class ProductController extends Controller
     {
         $this->authorize('update', $product);
 
-        return Inertia::render('Admin/Products/Edit', [
+        return Inertia::render('admin/products/edit', [
             'product' => $product->load([
                 'brand',
                 'category',
@@ -105,6 +107,7 @@ class ProductController extends Controller
             'categories' => \App\Models\Category::all(['id', 'name']),
             'collections' => \App\Models\Collection::all(['id', 'name']),
             'productFamilies' => \App\Models\ProductFamily::all(['id', 'name']),
+            'breadcrumbs' => [['title' => 'Products', 'href' => route('admin.products.index')], ['title' => 'Edit', 'href' => route('admin.products.edit', $product)]],
         ]);
     }
 
@@ -112,7 +115,7 @@ class ProductController extends Controller
     {
         $this->authorize('view', $product);
 
-        return Inertia::render('Admin/Products/Show', [
+        return Inertia::render('admin/products/show', [
             'product' => $product->load([
                 'brand',
                 'category',
@@ -129,6 +132,7 @@ class ProductController extends Controller
                 'variants',
                 'images'
             ]),
+            'breadcrumbs' => [['title' => 'Products', 'href' => route('admin.products.index')], ['title' => 'Show', 'href' => route('admin.products.show', $product)]],
         ]);
     }
 

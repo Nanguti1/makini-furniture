@@ -1,8 +1,6 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SearchBar } from '@/components/admin';
 import { Link } from '@inertiajs/react';
 import { Plus, Eye, Edit, Trash2, FileText, Calendar, Check, X } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
@@ -37,32 +35,15 @@ interface PagesProps {
 export default function PagesIndex() {
     const { props } = usePage() as unknown as { props: PagesProps };
     const { pages, filters } = props;
-    const [searchTerm, setSearchTerm] = useState(filters?.search || '');
     const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');
-
-    const breadcrumbs = [
-        { title: 'Pages', href: admin.pages.index.url() },
-    ];
-
-    const handleSearch = (term: string) => {
-        setSearchTerm(term);
-        router.get(admin.pages.index.url(), { 
-            search: term, 
-            status: statusFilter
-        }, { 
-            preserveState: true,
-            replace: true 
-        });
-    };
 
     const handleStatusFilter = (status: string) => {
         setStatusFilter(status);
-        router.get(admin.pages.index.url(), { 
-            search: searchTerm, 
+        router.get(admin.pages.index.url(), {
             status
-        }, { 
+        }, {
             preserveState: true,
-            replace: true 
+            replace: true
         });
     };
 
@@ -172,47 +153,40 @@ export default function PagesIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Pages</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage content pages and sections
-                        </p>
-                    </div>
-                    <Link href={admin.pages.create.url()}>
-                        <Button>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Create Page
-                        </Button>
-                    </Link>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Pages</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage content pages and sections
+                    </p>
                 </div>
-
-                <div className="flex items-center gap-4">
-                    <SearchBar 
-                        placeholder="Search pages..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                    />
-                    <select
-                        value={statusFilter}
-                        onChange={(e) => handleStatusFilter(e.target.value)}
-                        className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                        <option value="all">All Status</option>
-                        <option value="published">Published</option>
-                        <option value="draft">Draft</option>
-                    </select>
-                </div>
-
-                <DataTable
-                    data={pages.data}
-                    columns={columns}
-                    pagination={pages.links}
-                    emptyMessage="No pages found"
-                />
+                <Link href={admin.pages.create.url()}>
+                    <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create Page
+                    </Button>
+                </Link>
             </div>
-        </AdminLayout>
+
+            <div className="flex items-center gap-4">
+                <select
+                    value={statusFilter}
+                    onChange={(e) => handleStatusFilter(e.target.value)}
+                    className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                    <option value="all">All Status</option>
+                    <option value="published">Published</option>
+                    <option value="draft">Draft</option>
+                </select>
+            </div>
+
+            <DataTable
+                data={pages.data}
+                columns={columns}
+                pagination={pages.links}
+                emptyMessage="No pages found"
+            />
+        </div>
     );
 }

@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -26,11 +25,6 @@ export default function FeaturedCollectionCreate({ collections = [] }: FeaturedC
         is_active: true,
     });
 
-    const breadcrumbs = [
-        { title: 'Featured Collections', href: admin.featuredCollections.index.url() },
-        { title: 'Create', href: admin.featuredCollections.create.url() },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(admin.featuredCollections.store.url(), ({
@@ -40,8 +34,7 @@ export default function FeaturedCollectionCreate({ collections = [] }: FeaturedC
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Feature Collection</h1>
@@ -168,6 +161,5 @@ export default function FeaturedCollectionCreate({ collections = [] }: FeaturedC
                     </Card>
                 </form>
             </div>
-        </AdminLayout>
     );
 }

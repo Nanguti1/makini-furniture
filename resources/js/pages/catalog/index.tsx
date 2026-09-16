@@ -12,7 +12,8 @@ import { router } from '@inertiajs/react';
 
 interface ProductImage {
     id: number;
-    url: string;
+    path: string;
+    url?: string;
     is_primary: boolean;
 }
 
@@ -22,11 +23,18 @@ interface ProductBrand {
     slug: string;
 }
 
+interface ProductPrice {
+    id: number;
+    amount: number;
+    currency: string;
+}
+
 interface Product {
     id: number;
     name: string;
     slug: string;
-    price: number;
+    price?: number;
+    prices?: ProductPrice[];
     brand?: ProductBrand;
     images?: ProductImage[];
     is_new?: boolean;
@@ -431,9 +439,13 @@ export default function CatalogPage({ products, filters = {}, categories = [] }:
 
             {/* Product Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-                {products.data.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                ))}
+                {products.data.map((product) => {
+                    const transformedProduct = {
+                        ...product,
+                        price: Number(product.price) || (product.prices && product.prices.length > 0 ? Number(product.prices[0].amount) : 0),
+                    };
+                    return <ProductCard key={product.id} product={transformedProduct} />;
+                })}
             </div>
 
             {/* Pagination */}

@@ -14,5 +14,5 @@ class Feature extends Model
         return ['is_active'=>'boolean'];
     }
 
-    public function products(): BelongsToMany { return $this->belongsToMany(Product::class)->withTimestamps(); }
+    public function products(): BelongsToMany { return $this->belongsToMany(Product::class, 'feature_product')->withTimestamps(); }
 }

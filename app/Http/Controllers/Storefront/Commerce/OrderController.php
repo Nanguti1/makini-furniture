@@ -24,7 +24,7 @@ class OrderController extends Controller
 
         $addresses = request()->user()->addresses()->get();
 
-        return Inertia::render('Checkout/Create', [
+        return Inertia::render('checkout/create', [
             'cart' => $currentCart->load('items.product', 'items.variant'),
             'addresses' => $addresses,
             'defaultCurrency' => 'USD',
@@ -33,7 +33,7 @@ class OrderController extends Controller
 
     public function index(): Response
     {
-        return Inertia::render('Orders/Index', [
+        return Inertia::render('orders/index', [
             'orders' => request()->user()->orders()->latest()->paginate()
         ]);
     }
@@ -42,7 +42,7 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
 
-        return Inertia::render('Orders/Show', [
+        return Inertia::render('orders/show', [
             'order' => $order->load('items')
         ]);
     }

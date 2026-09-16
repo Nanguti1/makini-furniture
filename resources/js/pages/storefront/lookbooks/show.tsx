@@ -141,9 +141,9 @@ export default function LookbookShowPage({ lookbook }: LookbookShowProps) {
                                             <p className="text-sm font-medium mb-2">
                                                 {item.product.name}
                                             </p>
-                                            {item.product.price && (
+                                            {(item.product.price || (item.product.prices && item.product.prices.length > 0)) && (
                                                 <p className="text-lg font-bold mb-3">
-                                                    ${item.product.price.toFixed(2)}
+                                                    ${(item.product.prices && item.product.prices.length > 0 ? Number(item.product.prices[0].amount) : Number(item.product.price) || 0).toFixed(2)}
                                                 </p>
                                             )}
                                             <Button

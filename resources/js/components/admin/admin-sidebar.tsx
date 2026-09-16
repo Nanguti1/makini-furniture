@@ -117,11 +117,18 @@ const settingsNavItems: NavItem[] = [
 interface AdminSidebarProps {
     mobile?: boolean;
     onClose?: () => void;
+    onCollapsedChange?: (collapsed: boolean) => void;
 }
 
-export function AdminSidebar({ mobile = false, onClose }: AdminSidebarProps = {}) {
+export function AdminSidebar({ mobile = false, onClose, onCollapsedChange }: AdminSidebarProps = {}) {
     const [collapsed, setCollapsed] = useState(false);
     const url = usePage().url;
+
+    const handleCollapseToggle = () => {
+        const newCollapsed = !collapsed;
+        setCollapsed(newCollapsed);
+        onCollapsedChange?.(newCollapsed);
+    };
 
     const isActive = (href: string) => {
         return url === href || url.startsWith(href + '/');
@@ -193,7 +200,7 @@ export function AdminSidebar({ mobile = false, onClose }: AdminSidebarProps = {}
     }
 
     return (
-        <div className={`fixed left-0 top-0 z-50 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ${
+        <div className={`fixed left-0 top-0 z-40 h-screen bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ${
             collapsed ? 'w-16' : 'w-64'
         }`}>
             <div className="flex flex-col h-full">
@@ -207,7 +214,7 @@ export function AdminSidebar({ mobile = false, onClose }: AdminSidebarProps = {}
                     <Button
                         variant="ghost"
                         size="icon"
-                        onClick={() => setCollapsed(!collapsed)}
+                        onClick={handleCollapseToggle}
                         className="ml-auto"
                     >
                         {collapsed ? (

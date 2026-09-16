@@ -20,12 +20,13 @@ class FeaturedProductController extends Controller
     {
         $this->authorize('viewAny', FeaturedProduct::class);
 
-        return Inertia::render('Admin/FeaturedProducts/Index', [
+        return Inertia::render('admin/featured-products/index', [
             'featuredProducts' => FeaturedProduct::query()
                 ->with('product:id,name,slug')
                 ->orderBy('sort_order')
                 ->orderBy('created_at')
                 ->paginate(),
+            'breadcrumbs' => [['title' => 'Featured Products', 'href' => route('admin.featured-products.index')]],
         ]);
     }
 
@@ -33,10 +34,11 @@ class FeaturedProductController extends Controller
     {
         $this->authorize('create', FeaturedProduct::class);
 
-        return Inertia::render('Admin/FeaturedProducts/Create', [
+        return Inertia::render('admin/featured-products/create', [
             'products' => \App\Models\Product::where('status', 'active')
                 ->select(['id', 'name', 'slug'])
                 ->get(),
+            'breadcrumbs' => [['title' => 'Featured Products', 'href' => route('admin.featured-products.index')], ['title' => 'Create', 'href' => route('admin.featured-products.create')]],
         ]);
     }
 
@@ -54,11 +56,12 @@ class FeaturedProductController extends Controller
 
         $featuredProduct->load('product:id,name,slug');
 
-        return Inertia::render('Admin/FeaturedProducts/Edit', [
+        return Inertia::render('admin/featured-products/edit', [
             'featuredProduct' => $featuredProduct,
             'products' => \App\Models\Product::where('status', 'active')
                 ->select(['id', 'name', 'slug'])
                 ->get(),
+            'breadcrumbs' => [['title' => 'Featured Products', 'href' => route('admin.featured-products.index')], ['title' => 'Edit', 'href' => route('admin.featured-products.edit', $featuredProduct)]],
         ]);
     }
 

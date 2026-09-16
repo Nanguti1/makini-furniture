@@ -14,7 +14,7 @@ class FAQController extends Controller
     {
         $category = $request->query('category');
 
-        return Inertia::render('Storefront/FAQs/Index', [
+        return Inertia::render('storefront/faqs/index', [
             'faqs' => $query->getActive($category),
             'categories' => $query->getCategories(),
             'selectedCategory' => $category,

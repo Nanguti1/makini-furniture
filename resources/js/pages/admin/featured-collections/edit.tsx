@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -40,11 +39,6 @@ export default function FeaturedCollectionEdit({ featuredCollection, collections
         is_active: featuredCollection.is_active,
     });
 
-    const breadcrumbs = [
-        { title: 'Featured Collections', href: admin.featuredCollections.index.url() },
-        { title: 'Edit', href: admin.featuredCollections.edit.url({ id: featuredCollection.id }) },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         put(admin.featuredCollections.update.url({ id: featuredCollection.id }), ({
@@ -54,8 +48,7 @@ export default function FeaturedCollectionEdit({ featuredCollection, collections
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Edit Featured Collection</h1>
@@ -182,6 +175,5 @@ export default function FeaturedCollectionEdit({ featuredCollection, collections
                     </Card>
                 </form>
             </div>
-        </AdminLayout>
     );
 }

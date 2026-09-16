@@ -12,7 +12,7 @@ class LookbookController extends Controller
 {
     public function index(LookbookQuery $query): Response
     {
-        return Inertia::render('Storefront/Lookbooks/Index', [
+        return Inertia::render('storefront/lookbooks/index', [
             'lookbooks' => $query->getPublished(),
         ]);
     }
@@ -23,7 +23,7 @@ class LookbookController extends Controller
 
         abort_unless($lookbook, 404);
 
-        return Inertia::render('Storefront/Lookbooks/Show', [
+        return Inertia::render('storefront/lookbooks/show', [
             'lookbook' => $lookbook->load('items.product'),
         ]);
     }

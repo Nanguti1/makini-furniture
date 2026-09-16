@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -106,12 +105,6 @@ interface ProductShowProps {
 }
 
 export default function ProductShow({ product }: ProductShowProps) {
-    const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
-        { title: 'Products', href: admin.products.index.url() },
-        { title: product.name, href: admin.products.show.url({ product: product.slug }) },
-    ];
-
     const parseJson = (jsonString: string | null) => {
         if (!jsonString) return null;
         try {
@@ -124,57 +117,56 @@ export default function ProductShow({ product }: ProductShowProps) {
     const specifications = parseJson(product.specifications);
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">{product.name}</h1>
-                        <p className="text-muted-foreground mt-2">
-                            {product.sku && `SKU: ${product.sku}`}
-                        </p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <Link href={admin.products.index.url()}>
-                            <Button variant="outline">
-                                <ArrowLeft className="h-4 w-4 mr-2" />
-                                Back to Products
-                            </Button>
-                        </Link>
-                        <Link href={admin.products.edit.url({ product: product.slug })}>
-                            <Button>
-                                <Edit className="h-4 w-4 mr-2" />
-                                Edit Product
-                            </Button>
-                        </Link>
-                    </div>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">{product.name}</h1>
+                    <p className="text-muted-foreground mt-2">
+                        {product.sku && `SKU: ${product.sku}`}
+                    </p>
                 </div>
-
                 <div className="flex items-center gap-2">
-                    <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
-                        {product.status}
-                    </Badge>
-                    {product.is_featured && <Star className="h-4 w-4 text-yellow-500" />}
-                    {product.is_new && <Badge variant="outline">New</Badge>}
-                    {product.is_bestseller && <Badge variant="outline">Bestseller</Badge>}
-                    {product.is_customizable && <Badge variant="outline">Customizable</Badge>}
-                    {product.is_active ? <Check className="h-4 w-4 text-green-500" /> : <X className="h-4 w-4 text-gray-400" />}
+                    <Link href={admin.products.index.url()}>
+                        <Button variant="outline">
+                            <ArrowLeft className="h-4 w-4 mr-2" />
+                            Back to Products
+                        </Button>
+                    </Link>
+                    <Link href={admin.products.edit.url({ product: product.slug })}>
+                        <Button>
+                            <Edit className="h-4 w-4 mr-2" />
+                            Edit Product
+                        </Button>
+                    </Link>
                 </div>
+            </div>
 
-                <Tabs defaultValue="overview" className="space-y-6">
-                    <TabsList>
-                        <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="details">Details</TabsTrigger>
-                        <TabsTrigger value="organization">Organization</TabsTrigger>
-                        <TabsTrigger value="attributes">Attributes</TabsTrigger>
-                        <TabsTrigger value="variants">Variants</TabsTrigger>
-                        <TabsTrigger value="media">Media</TabsTrigger>
-                    </TabsList>
+            <div className="flex items-center gap-2">
+                <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
+                    {product.status}
+                </Badge>
+                {product.is_featured && <Star className="h-4 w-4 text-yellow-500" />}
+                {product.is_new && <Badge variant="outline">New</Badge>}
+                {product.is_bestseller && <Badge variant="outline">Bestseller</Badge>}
+                {product.is_customizable && <Badge variant="outline">Customizable</Badge>}
+                {product.is_active ? <Check className="h-4 w-4 text-green-500" /> : <X className="h-4 w-4 text-gray-400" />}
+            </div>
 
-                    <TabsContent value="overview">
-                        <div className="grid gap-6 md:grid-cols-2">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Basic Information</CardTitle>
+            <Tabs defaultValue="overview" className="space-y-6">
+                <TabsList>
+                    <TabsTrigger value="overview">Overview</TabsTrigger>
+                    <TabsTrigger value="details">Details</TabsTrigger>
+                    <TabsTrigger value="organization">Organization</TabsTrigger>
+                    <TabsTrigger value="attributes">Attributes</TabsTrigger>
+                    <TabsTrigger value="variants">Variants</TabsTrigger>
+                    <TabsTrigger value="media">Media</TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="overview">
+                    <div className="grid gap-6 md:grid-cols-2">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Basic Information</CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div>
@@ -203,8 +195,8 @@ export default function ProductShow({ product }: ProductShowProps) {
                             </Card>
 
                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Status & Settings</CardTitle>
+                            <CardHeader>
+                                <CardTitle>Status & Settings</CardTitle>
                                 </CardHeader>
                                 <CardContent className="space-y-4">
                                     <div>
@@ -231,8 +223,8 @@ export default function ProductShow({ product }: ProductShowProps) {
 
                         {product.description && (
                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Description</CardTitle>
+                            <CardHeader>
+                                <CardTitle>Description</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <p className="whitespace-pre-wrap">{product.description}</p>
@@ -293,9 +285,9 @@ export default function ProductShow({ product }: ProductShowProps) {
 
                     <TabsContent value="organization">
                         <div className="grid gap-6 md:grid-cols-2">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
                                         <Building2 className="h-4 w-4" />
                                         Brand
                                     </CardTitle>
@@ -310,8 +302,8 @@ export default function ProductShow({ product }: ProductShowProps) {
                             </Card>
 
                             <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
                                         <FolderTree className="h-4 w-4" />
                                         Category
                                     </CardTitle>
@@ -326,8 +318,8 @@ export default function ProductShow({ product }: ProductShowProps) {
                             </Card>
 
                             <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
                                         <Layers className="h-4 w-4" />
                                         Collection
                                     </CardTitle>
@@ -342,8 +334,8 @@ export default function ProductShow({ product }: ProductShowProps) {
                             </Card>
 
                             <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-2">
                                         <Package className="h-4 w-4" />
                                         Product Family
                                     </CardTitle>
@@ -360,8 +352,8 @@ export default function ProductShow({ product }: ProductShowProps) {
 
                         {(product.categories && product.categories.length > 0) && (
                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Additional Categories</CardTitle>
+                            <CardHeader>
+                                <CardTitle>Additional Categories</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex flex-wrap gap-2">
@@ -377,8 +369,8 @@ export default function ProductShow({ product }: ProductShowProps) {
 
                         {(product.collections && product.collections.length > 0) && (
                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Additional Collections</CardTitle>
+                            <CardHeader>
+                                <CardTitle>Additional Collections</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="flex flex-wrap gap-2">
@@ -503,8 +495,8 @@ export default function ProductShow({ product }: ProductShowProps) {
                     <TabsContent value="variants">
                         {product.variants && product.variants.length > 0 ? (
                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Product Variants</CardTitle>
+                            <CardHeader>
+                                <CardTitle>Product Variants</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="space-y-4">
@@ -532,8 +524,8 @@ export default function ProductShow({ product }: ProductShowProps) {
                     <TabsContent value="media">
                         {product.images && product.images.length > 0 ? (
                             <Card>
-                                <CardHeader>
-                                    <CardTitle>Product Images</CardTitle>
+                            <CardHeader>
+                                <CardTitle>Product Images</CardTitle>
                                 </CardHeader>
                                 <CardContent>
                                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -596,6 +588,5 @@ export default function ProductShow({ product }: ProductShowProps) {
                     </CardContent>
                 </Card>
             </div>
-        </AdminLayout>
     );
 }

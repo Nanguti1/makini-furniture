@@ -15,7 +15,7 @@ class PageController extends Controller
 
         abort_unless($page, 404);
 
-        return Inertia::render('Storefront/Pages/Show', [
+        return Inertia::render('storefront/pages/show', [
             'page' => $page->load('sections'),
         ]);
     }

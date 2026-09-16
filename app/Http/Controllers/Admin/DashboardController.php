@@ -45,11 +45,12 @@ class DashboardController extends Controller
         ->take(5)
         ->get(['id', 'name', 'slug']);
 
-        return Inertia::render('Admin/Dashboard/Index', [
+        return Inertia::render('admin/dashboard/index', [
             'stats' => $stats,
             'recentOrders' => $recentOrders,
             'recentCustomers' => $recentCustomers,
             'lowStockProducts' => $lowStockProducts,
+            'breadcrumbs' => [['title' => 'Dashboard', 'href' => route('admin.dashboard')]],
         ]);
     }
 }

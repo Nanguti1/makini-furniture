@@ -35,5 +35,5 @@ class ProductVariant extends Model
     public function dimensions(): HasMany { return $this->hasMany(VariantDimension::class); }
     public function inventories(): HasMany { return $this->hasMany(Inventory::class); }
     public function prices(): HasMany { return $this->hasMany(Price::class); }
-    public function colors(): BelongsToMany { return $this->belongsToMany(Color::class)->withTimestamps(); }
+    public function colors(): BelongsToMany { return $this->belongsToMany(Color::class, 'color_product_variant')->withTimestamps(); }
 }

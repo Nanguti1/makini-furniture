@@ -19,7 +19,7 @@ class AddressController extends Controller
     {
         $this->authorize('viewAny', Address::class);
 
-        return Inertia::render('Account/Addresses/Index', [
+        return Inertia::render('account/addresses/index', [
             'addresses' => auth()->user()->addresses()->orderBy('is_default', 'desc')->latest()->get(),
         ]);
     }

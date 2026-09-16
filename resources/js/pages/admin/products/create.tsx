@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -62,20 +61,14 @@ export default function ProductCreate({ brands = [], categories = [], collection
         meta_description: '',
     });
 
-    const breadcrumbs = [
-        { title: 'Products', href: admin.products.index.url() },
-        { title: 'Create', href: admin.products.create.url() },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(admin.products.store.url());
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Create Product</h1>
                         <p className="text-muted-foreground mt-2">
@@ -853,6 +846,5 @@ export default function ProductCreate({ brands = [], categories = [], collection
                     </div>
                 </form>
             </div>
-        </AdminLayout>
     );
 }

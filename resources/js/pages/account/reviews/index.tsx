@@ -24,7 +24,6 @@ interface Review {
     rating: number;
     title: string;
     body?: string;
-    comment?: string;
     status: string;
     verified_purchase: boolean;
     created_at: string;

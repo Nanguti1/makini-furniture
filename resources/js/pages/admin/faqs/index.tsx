@@ -1,8 +1,6 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SearchBar } from '@/components/admin';
 import { Link } from '@inertiajs/react';
 import { Plus, Edit, Trash2, HelpCircle, Check, X, ArrowUp, ArrowDown } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
@@ -37,32 +35,15 @@ interface FAQsProps {
 export default function FAQsIndex() {
     const { props } = usePage() as unknown as { props: FAQsProps };
     const { faqs, filters } = props;
-    const [searchTerm, setSearchTerm] = useState(filters?.search || '');
     const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');
-
-    const breadcrumbs = [
-        { title: 'FAQs', href: admin.faqs.index.url() },
-    ];
-
-    const handleSearch = (term: string) => {
-        setSearchTerm(term);
-        router.get(admin.faqs.index.url(), { 
-            search: term, 
-            status: statusFilter
-        }, { 
-            preserveState: true,
-            replace: true 
-        });
-    };
 
     const handleStatusFilter = (status: string) => {
         setStatusFilter(status);
-        router.get(admin.faqs.index.url(), { 
-            search: searchTerm, 
+        router.get(admin.faqs.index.url(), {
             status
-        }, { 
+        }, {
             preserveState: true,
-            replace: true 
+            replace: true
         });
     };
 
@@ -167,47 +148,40 @@ export default function FAQsIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">FAQs</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage frequently asked questions
-                        </p>
-                    </div>
-                    <Link href={admin.faqs.create.url()}>
-                        <Button>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Create FAQ
-                        </Button>
-                    </Link>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">FAQs</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage frequently asked questions
+                    </p>
                 </div>
-
-                <div className="flex items-center gap-4">
-                    <SearchBar 
-                        placeholder="Search FAQs..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                    />
-                    <select
-                        value={statusFilter}
-                        onChange={(e) => handleStatusFilter(e.target.value)}
-                        className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                        <option value="all">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                    </select>
-                </div>
-
-                <DataTable
-                    data={faqs.data}
-                    columns={columns}
-                    pagination={faqs.links}
-                    emptyMessage="No FAQs found"
-                />
+                <Link href={admin.faqs.create.url()}>
+                    <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create FAQ
+                    </Button>
+                </Link>
             </div>
-        </AdminLayout>
+
+            <div className="flex items-center gap-4">
+                <select
+                    value={statusFilter}
+                    onChange={(e) => handleStatusFilter(e.target.value)}
+                    className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                </select>
+            </div>
+
+            <DataTable
+                data={faqs.data}
+                columns={columns}
+                pagination={faqs.links}
+                emptyMessage="No FAQs found"
+            />
+        </div>
     );
 }

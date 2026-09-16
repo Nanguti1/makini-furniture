@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -30,19 +29,13 @@ export default function CollectionCreate({ brands = [] }: CollectionCreateProps)
         sort_order: 0,
     });
 
-    const breadcrumbs = [
-        { title: 'Collections', href: admin.collections.index.url() },
-        { title: 'Create', href: admin.collections.create.url() },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(admin.collections.store.url());
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Create Collection</h1>
@@ -217,6 +210,5 @@ export default function CollectionCreate({ brands = [] }: CollectionCreateProps)
                     </CardContent>
                 </Card>
             </div>
-        </AdminLayout>
     );
 }

@@ -27,11 +27,12 @@ class LookbookController extends Controller
     {
         $this->authorize('viewAny', Lookbook::class);
 
-        return Inertia::render('Admin/Lookbooks/Index', [
+        return Inertia::render('admin/lookbooks/index', [
             'lookbooks' => Lookbook::query()
                 ->withCount('items')
                 ->latest()
                 ->paginate(),
+            'breadcrumbs' => [['title' => 'Lookbooks', 'href' => route('admin.lookbooks.index')]],
         ]);
     }
 
@@ -39,7 +40,9 @@ class LookbookController extends Controller
     {
         $this->authorize('create', Lookbook::class);
 
-        return Inertia::render('Admin/Lookbooks/Create');
+        return Inertia::render('admin/lookbooks/create', [
+            'breadcrumbs' => [['title' => 'Lookbooks', 'href' => route('admin.lookbooks.index')], ['title' => 'Create', 'href' => route('admin.lookbooks.create')]],
+        ]);
     }
 
     public function store(StoreLookbookRequest $request, CreateLookbook $action): RedirectResponse
@@ -56,11 +59,12 @@ class LookbookController extends Controller
 
         $lookbook->load(['items.product:id,name,slug']);
 
-        return Inertia::render('Admin/Lookbooks/Edit', [
+        return Inertia::render('admin/lookbooks/edit', [
             'lookbook' => $lookbook,
             'products' => \App\Models\Product::where('status', 'active')
                 ->select(['id', 'name', 'slug'])
                 ->get(),
+            'breadcrumbs' => [['title' => 'Lookbooks', 'href' => route('admin.lookbooks.index')], ['title' => 'Edit', 'href' => route('admin.lookbooks.edit', $lookbook)]],
         ]);
     }
 

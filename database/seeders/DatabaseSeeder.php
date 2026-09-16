@@ -15,11 +15,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Core data (no dependencies)
+        $this->call([
+            BrandSeeder::class,
+            CategorySeeder::class,
+            MaterialSeeder::class,
+            FinishSeeder::class,
+            ColorSeeder::class,
+            WarehouseSeeder::class,
+            UserSeeder::class,
+            SettingsSeeder::class,
+        ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Content data (can run after core data)
+        $this->call([
+            BannerSeeder::class,
+            PageSeeder::class,
+            FAQSeeder::class,
+        ]);
+
+        // Product data (depends on core data)
+        $this->call([
+            ProductSeeder::class,
         ]);
     }
 }

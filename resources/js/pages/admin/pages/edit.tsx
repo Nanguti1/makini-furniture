@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -31,11 +30,6 @@ interface PageEditProps {
 }
 
 export default function PageEdit({ page }: PageEditProps) {
-    const breadcrumbs = [
-        { title: 'Pages', href: admin.pages.index.url() },
-        { title: page.title, href: admin.pages.edit.url({ page: page.id }) },
-    ];
-
     const { data, setData, put, processing, errors } = useForm({
         title: page.title,
         slug: page.slug,
@@ -74,8 +68,7 @@ export default function PageEdit({ page }: PageEditProps) {
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Edit Page</h1>
@@ -270,6 +263,5 @@ export default function PageEdit({ page }: PageEditProps) {
                     </div>
                 </form>
             </div>
-        </AdminLayout>
     );
 }

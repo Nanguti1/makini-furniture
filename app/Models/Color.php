@@ -14,6 +14,6 @@ class Color extends Model
         return ['is_active'=>'boolean'];
     }
 
-    public function products(): BelongsToMany { return $this->belongsToMany(Product::class)->withTimestamps(); }
-    public function variants(): BelongsToMany { return $this->belongsToMany(ProductVariant::class)->withTimestamps(); }
+    public function products(): BelongsToMany { return $this->belongsToMany(Product::class, 'color_product')->withTimestamps(); }
+    public function variants(): BelongsToMany { return $this->belongsToMany(ProductVariant::class, 'color_product_variant')->withTimestamps(); }
 }

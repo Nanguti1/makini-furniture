@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class FAQ extends Model
 {
+    protected $table = 'faqs';
+
     protected $fillable = ['question','answer','category','is_active','sort_order'];
 
     protected function casts(): array

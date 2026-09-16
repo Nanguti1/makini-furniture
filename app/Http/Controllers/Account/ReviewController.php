@@ -21,7 +21,7 @@ class ReviewController extends Controller
     {
         $this->authorize('viewAny', Review::class);
 
-        return Inertia::render('Account/Reviews/Index', [
+        return Inertia::render('account/reviews/index', [
             'reviews' => $query->forUser(auth()->user()),
             'eligibleProducts' => $query->getEligibleProducts(auth()->user()),
         ]);

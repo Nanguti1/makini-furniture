@@ -15,7 +15,7 @@ class OrderController extends Controller
     {
         $this->authorize('viewAny', Order::class);
 
-        return Inertia::render('Account/Orders/Index', [
+        return Inertia::render('account/orders/index', [
             'orders' => $query->paginate(auth()->user(), $request->input('per_page', 15)),
         ]);
     }
@@ -28,7 +28,7 @@ class OrderController extends Controller
 
         abort_unless($order, 404);
 
-        return Inertia::render('Account/Orders/Show', [
+        return Inertia::render('account/orders/show', [
             'order' => $order,
         ]);
     }

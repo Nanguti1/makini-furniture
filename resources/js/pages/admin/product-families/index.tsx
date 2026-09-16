@@ -1,13 +1,11 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SearchBar } from '@/components/admin';
 import { BulkActionBar } from '@/components/admin/bulk-action-bar';
 import { Link } from '@inertiajs/react';
-import { 
-    Plus, 
-    Edit, 
+import {
+    Plus,
+    Edit,
     Trash2,
     ArchiveRestore
 } from 'lucide-react';
@@ -55,32 +53,15 @@ export default function ProductFamilyIndex() {
     const { props } = usePage() as unknown as { props: ProductFamilyProps };
     const { productFamilies, filters } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-    const [searchTerm, setSearchTerm] = useState(filters?.search || '');
     const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');
-
-    const breadcrumbs = [
-        { title: 'Product Families', href: admin.productFamilies.index.url() },
-    ];
-
-    const handleSearch = (term: string) => {
-        setSearchTerm(term);
-        router.get(admin.productFamilies.index.url(), { 
-            search: term, 
-            status: statusFilter 
-        }, { 
-            preserveState: true,
-            replace: true 
-        });
-    };
 
     const handleStatusFilter = (status: string) => {
         setStatusFilter(status);
-        router.get(admin.productFamilies.index.url(), { 
-            search: searchTerm, 
-            status 
-        }, { 
+        router.get(admin.productFamilies.index.url(), {
+            status
+        }, {
             preserveState: true,
-            replace: true 
+            replace: true
         });
     };
 
@@ -221,63 +202,56 @@ export default function ProductFamilyIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Product Families</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage your product families
-                        </p>
-                    </div>
-                    <Link href={admin.productFamilies.create.url()}>
-                        <Button>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Add Product Family
-                        </Button>
-                    </Link>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Product Families</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage your product families
+                    </p>
                 </div>
-
-                <div className="flex items-center gap-4">
-                    <SearchBar 
-                        placeholder="Search product families..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                    />
-                    <select
-                        value={statusFilter}
-                        onChange={(e) => handleStatusFilter(e.target.value)}
-                        className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                        <option value="all">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                        <option value="trashed">Trashed</option>
-                    </select>
-                </div>
-
-                {selectedIds.length > 0 && (
-                    <BulkActionBar 
-                        selectedCount={selectedIds.length}
-                        actions={bulkActions}
-                        onAction={(action: string) => {
-                            if (action === 'delete') {
-                                handleBulkDelete();
-                            } else if (action === 'restore') {
-                                handleBulkRestore();
-                            }
-                        }}
-                        onClearSelection={() => setSelectedIds([])}
-                    />
-                )}
-
-                <DataTable
-                    data={productFamilies.data}
-                    columns={columns}
-                    pagination={productFamilies.links}
-                    emptyMessage="No product families found"
-                />
+                <Link href={admin.productFamilies.create.url()}>
+                    <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Product Family
+                    </Button>
+                </Link>
             </div>
-        </AdminLayout>
+
+            <div className="flex items-center gap-4">
+                <select
+                    value={statusFilter}
+                    onChange={(e) => handleStatusFilter(e.target.value)}
+                    className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="trashed">Trashed</option>
+                </select>
+            </div>
+
+            {selectedIds.length > 0 && (
+                <BulkActionBar
+                    selectedCount={selectedIds.length}
+                    actions={bulkActions}
+                    onAction={(action: string) => {
+                        if (action === 'delete') {
+                            handleBulkDelete();
+                        } else if (action === 'restore') {
+                            handleBulkRestore();
+                        }
+                    }}
+                    onClearSelection={() => setSelectedIds([])}
+                />
+            )}
+
+            <DataTable
+                data={productFamilies.data}
+                columns={columns}
+                pagination={productFamilies.links}
+                emptyMessage="No product families found"
+            />
+        </div>
     );
 }

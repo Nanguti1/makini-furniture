@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -37,19 +36,13 @@ export default function CategoryEdit({ category, categories = [] }: CategoryEdit
         sort_order: category.sort_order,
     });
 
-    const breadcrumbs = [
-        { title: 'Categories', href: admin.categories.index.url() },
-        { title: 'Edit', href: admin.categories.edit.url({ category: category.id }) },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         put(admin.categories.update.url({ category: category.id }));
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Edit Category</h1>
@@ -188,6 +181,5 @@ export default function CategoryEdit({ category, categories = [] }: CategoryEdit
                     </CardContent>
                 </Card>
             </div>
-        </AdminLayout>
     );
 }

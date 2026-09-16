@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -24,11 +23,6 @@ interface FAQEditProps {
 }
 
 export default function FAQEdit({ faq }: FAQEditProps) {
-    const breadcrumbs = [
-        { title: 'FAQs', href: admin.faqs.index.url() },
-        { title: faq.question.substring(0, 30) + '...', href: admin.faqs.edit.url({ faq: faq.id }) },
-    ];
-
     const { data, setData, put, processing, errors } = useForm({
         question: faq.question,
         answer: faq.answer,
@@ -51,8 +45,7 @@ export default function FAQEdit({ faq }: FAQEditProps) {
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Edit FAQ</h1>
@@ -178,6 +171,5 @@ export default function FAQEdit({ faq }: FAQEditProps) {
                     </div>
                 </form>
             </div>
-        </AdminLayout>
     );
 }

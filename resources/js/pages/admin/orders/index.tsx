@@ -1,8 +1,6 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SearchBar } from '@/components/admin';
 import { Link } from '@inertiajs/react';
 import { Eye, Package, DollarSign, User, Check, X, AlertCircle } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
@@ -44,32 +42,15 @@ interface OrderProps {
 export default function OrderIndex() {
     const { props } = usePage() as unknown as { props: OrderProps };
     const { orders, filters } = props;
-    const [searchTerm, setSearchTerm] = useState(filters?.search || '');
     const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');
-
-    const breadcrumbs = [
-        { title: 'Orders', href: admin.orders.index.url() },
-    ];
-
-    const handleSearch = (term: string) => {
-        setSearchTerm(term);
-        router.get(admin.orders.index.url(), { 
-            search: term, 
-            status: statusFilter
-        }, { 
-            preserveState: true,
-            replace: true 
-        });
-    };
 
     const handleStatusFilter = (status: string) => {
         setStatusFilter(status);
-        router.get(admin.orders.index.url(), { 
-            search: searchTerm, 
+        router.get(admin.orders.index.url(), {
             status
-        }, { 
+        }, {
             preserveState: true,
-            replace: true 
+            replace: true
         });
     };
 
@@ -163,45 +144,38 @@ export default function OrderIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage customer orders and fulfillments
-                        </p>
-                    </div>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage customer orders and fulfillments
+                    </p>
                 </div>
-
-                <div className="flex items-center gap-4">
-                    <SearchBar 
-                        placeholder="Search orders..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                    />
-                    <select
-                        value={statusFilter}
-                        onChange={(e) => handleStatusFilter(e.target.value)}
-                        className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                        <option value="all">All Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="confirmed">Confirmed</option>
-                        <option value="processing">Processing</option>
-                        <option value="shipped">Shipped</option>
-                        <option value="completed">Completed</option>
-                        <option value="cancelled">Cancelled</option>
-                    </select>
-                </div>
-
-                <DataTable
-                    data={orders.data}
-                    columns={columns}
-                    pagination={orders.links}
-                    emptyMessage="No orders found"
-                />
             </div>
-        </AdminLayout>
+
+            <div className="flex items-center gap-4">
+                <select
+                    value={statusFilter}
+                    onChange={(e) => handleStatusFilter(e.target.value)}
+                    className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="processing">Processing</option>
+                    <option value="shipped">Shipped</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                </select>
+            </div>
+
+            <DataTable
+                data={orders.data}
+                columns={columns}
+                pagination={orders.links}
+                emptyMessage="No orders found"
+            />
+        </div>
     );
 }

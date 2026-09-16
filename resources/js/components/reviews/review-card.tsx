@@ -10,7 +10,6 @@ interface Review {
     rating: number;
     title: string;
     body?: string;
-    comment?: string;
     status: string;
     verified_purchase: boolean;
     created_at: string;
@@ -84,7 +83,7 @@ export default function ReviewCard({
         });
     };
 
-    const reviewBody = review.body || review.comment || '';
+    const reviewBody = review.body || '';
 
     if (isLoading) {
         return (

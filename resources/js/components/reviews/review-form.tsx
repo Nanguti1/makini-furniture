@@ -18,7 +18,6 @@ interface ReviewFormProps {
         rating: number;
         title: string;
         body?: string;
-        comment?: string;
     };
     onSuccess?: () => void;
     onCancel?: () => void;
@@ -35,7 +34,7 @@ export default function ReviewForm({
 }: ReviewFormProps) {
     const [rating, setRating] = useState(existingReview?.rating || 0);
     const [title, setTitle] = useState(existingReview?.title || '');
-    const [body, setBody] = useState(existingReview?.body || existingReview?.comment || '');
+    const [body, setBody] = useState(existingReview?.body || '');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
 

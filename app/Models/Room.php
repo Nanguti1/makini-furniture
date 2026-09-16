@@ -14,5 +14,5 @@ class Room extends Model
         return ['is_active'=>'boolean'];
     }
 
-    public function products(): BelongsToMany { return $this->belongsToMany(Product::class)->withPivot('sort_order')->withTimestamps(); }
+    public function products(): BelongsToMany { return $this->belongsToMany(Product::class, 'room_product')->withPivot('sort_order')->withTimestamps(); }
 }

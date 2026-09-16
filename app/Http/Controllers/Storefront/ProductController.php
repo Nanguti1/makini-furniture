@@ -32,7 +32,7 @@ class ProductController extends Controller
             'features',
             'rooms',
             'relatedProducts.images',
-            'reviews' => fn($q) => $q->where('status', 'approved')->with('user:id,name')->select('id', 'product_id', 'user_id', 'rating', 'title', 'body', 'comment', 'status', 'verified_purchase', 'created_at')
+            'reviews' => fn($q) => $q->where('status', 'approved')->with('user:id,name')->select('id', 'product_id', 'user_id', 'rating', 'title', 'body', 'status', 'verified_purchase', 'created_at')
         ]);
 
         $userReview = null;
@@ -49,7 +49,7 @@ class ProductController extends Controller
             request()->session()->getId()
         );
 
-        return Inertia::render('Products/Show', [
+        return Inertia::render('products/show', [
             'product' => $product,
             'effectivePrices' => $product->variants->mapWithKeys(fn($variant) => [$variant->id => $pricing->effectivePrice($product, $variant)]),
             'productPrice' => $pricing->effectivePrice($product),

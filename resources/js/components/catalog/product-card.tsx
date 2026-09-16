@@ -7,7 +7,8 @@ import { router } from '@inertiajs/react';
 
 interface ProductImage {
     id: number;
-    url: string;
+    path: string;
+    url?: string;
     is_primary: boolean;
 }
 
@@ -17,11 +18,18 @@ interface ProductBrand {
     slug: string;
 }
 
+interface ProductPrice {
+    id: number;
+    amount: number;
+    currency: string;
+}
+
 interface Product {
     id: number;
     name: string;
     slug: string;
     price?: number;
+    prices?: ProductPrice[];
     sku?: string;
     brand?: ProductBrand;
     images?: ProductImage[];
@@ -45,7 +53,9 @@ export default function ProductCard({
     const [isTogglingWishlist, setIsTogglingWishlist] = useState(false);
 
     const primaryImage = product.images?.find((img) => img.is_primary) || product.images?.[0];
-    const imageUrl = primaryImage?.url || '/placeholder-product.jpg';
+    const imageUrl = primaryImage?.url || primaryImage?.path || '/placeholder-product.jpg';
+
+    const price = Number(product.price) || (product.prices && product.prices.length > 0 ? Number(product.prices[0].amount) : 0);
 
     const handleWishlistToggle = (e: React.MouseEvent) => {
         e.preventDefault();
@@ -141,8 +151,8 @@ export default function ProductCard({
                         </a>
                     </h3>
                     <div className="flex items-center justify-between gap-2">
-                        {product.price !== undefined ? (
-                            <p className="font-bold text-lg">${product.price.toFixed(2)}</p>
+                        {price > 0 ? (
+                            <p className="font-bold text-lg">${price.toFixed(2)}</p>
                         ) : (
                             <p className="font-bold text-lg">View Details</p>
                         )}

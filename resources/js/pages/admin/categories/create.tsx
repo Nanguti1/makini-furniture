@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -27,19 +26,13 @@ export default function CategoryCreate({ categories = [] }: CategoryCreateProps)
         sort_order: 0,
     });
 
-    const breadcrumbs = [
-        { title: 'Categories', href: admin.categories.index.url() },
-        { title: 'Create', href: admin.categories.create.url() },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(admin.categories.store.url());
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Create Category</h1>
@@ -176,6 +169,5 @@ export default function CategoryCreate({ categories = [] }: CategoryCreateProps)
                     </CardContent>
                 </Card>
             </div>
-        </AdminLayout>
     );
 }

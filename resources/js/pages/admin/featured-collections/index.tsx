@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -38,10 +37,6 @@ export default function FeaturedCollectionIndex() {
     const { props } = usePage() as unknown as { props: FeaturedCollectionProps };
     const { featuredCollections } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-    const breadcrumbs = [
-        { title: 'Featured Collections', href: admin.featuredCollections.index.url() },
-    ];
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to remove this featured collection?')) {
@@ -115,30 +110,28 @@ export default function FeaturedCollectionIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Featured Collections</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage featured collections across your store
-                        </p>
-                    </div>
-                    <Link href={admin.featuredCollections.create.url()}>
-                        <Button>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Feature Collection
-                        </Button>
-                    </Link>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Featured Collections</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage featured collections across your store
+                    </p>
                 </div>
-
-                <DataTable
-                    data={featuredCollections.data}
-                    columns={columns}
-                    pagination={featuredCollections.links}
-                    emptyMessage="No featured collections found"
-                />
+                <Link href={admin.featuredCollections.create.url()}>
+                    <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Feature Collection
+                    </Button>
+                </Link>
             </div>
-        </AdminLayout>
+
+            <DataTable
+                data={featuredCollections.data}
+                columns={columns}
+                pagination={featuredCollections.links}
+                emptyMessage="No featured collections found"
+            />
+        </div>
     );
 }

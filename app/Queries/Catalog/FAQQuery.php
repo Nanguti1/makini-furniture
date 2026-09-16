@@ -4,6 +4,7 @@ namespace App\Queries\Catalog;
 
 use App\Models\FAQ;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection as SupportCollection;
 
 class FAQQuery
 {
@@ -24,9 +25,9 @@ class FAQQuery
     }
 
     /**
-     * @return Collection<int, string>
+     * @return SupportCollection<int, string>
      */
-    public function getCategories(): Collection
+    public function getCategories(): SupportCollection
     {
         return FAQ::query()
             ->where('is_active', true)

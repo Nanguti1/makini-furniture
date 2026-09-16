@@ -32,15 +32,21 @@ export default function HomePage({
 }: HomePageProps) {
     // Transform featured products to match the shared ProductCard interface
     const transformProducts = (products: any[]) => {
-        return products.map((fp) => ({
-            id: fp.product?.id || fp.id,
-            name: fp.product?.name || fp.name,
-            slug: fp.product?.slug || fp.slug,
-            price: fp.product?.price || fp.price,
-            brand: fp.product?.brand || fp.brand,
-            images: fp.product?.images || fp.images,
-            is_new: fp.product?.is_new || fp.is_new,
-        }));
+        return products.map((fp) => {
+            const product = fp.product || fp;
+            const prices = product.prices || [];
+            const price = prices.length > 0 ? Number(prices[0].amount) : 0;
+
+            return {
+                id: product.id,
+                name: product.name,
+                slug: product.slug,
+                price: price,
+                brand: product.brand,
+                images: product.images,
+                is_new: product.is_new,
+            };
+        });
     };
 
     const transformedFeaturedProducts = transformProducts(featuredProducts);

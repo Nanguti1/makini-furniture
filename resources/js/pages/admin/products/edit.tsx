@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -103,21 +102,14 @@ export default function ProductEdit({ product, brands = [], categories = [], col
         meta_description: product.meta_description || '',
     });
 
-    const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
-        { title: 'Products', href: admin.products.index.url() },
-        { title: 'Edit', href: admin.products.edit.url({ product: product.slug }) },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         put(admin.products.update.url({ product: product.slug }));
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Edit Product</h1>
                         <p className="text-muted-foreground mt-2">
@@ -892,6 +884,5 @@ export default function ProductEdit({ product, brands = [], categories = [], col
                     </div>
                 </form>
             </div>
-        </AdminLayout>
     );
 }

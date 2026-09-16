@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -22,19 +21,13 @@ export default function BrandCreate() {
         sort_order: 0,
     });
 
-    const breadcrumbs = [
-        { title: 'Brands', href: admin.brands.index.url() },
-        { title: 'Create', href: admin.brands.create.url() },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(admin.brands.store.url());
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Create Brand</h1>
@@ -193,6 +186,5 @@ export default function BrandCreate() {
                     </CardContent>
                 </Card>
             </div>
-        </AdminLayout>
     );
 }

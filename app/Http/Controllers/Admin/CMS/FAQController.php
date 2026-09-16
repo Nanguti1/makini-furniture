@@ -40,9 +40,10 @@ class FAQController extends Controller
             }
         }
 
-        return Inertia::render('Admin/FAQs/Index', [
+        return Inertia::render('admin/faqs/index', [
             'faqs' => $query->paginate(),
             'filters' => request()->only(['search', 'status']),
+            'breadcrumbs' => [['title' => 'FAQs', 'href' => route('admin.faqs.index')]],
         ]);
     }
 
@@ -50,7 +51,9 @@ class FAQController extends Controller
     {
         $this->authorize('create', FAQ::class);
 
-        return Inertia::render('Admin/FAQs/Create');
+        return Inertia::render('admin/faqs/create', [
+            'breadcrumbs' => [['title' => 'FAQs', 'href' => route('admin.faqs.index')], ['title' => 'Create', 'href' => route('admin.faqs.create')]],
+        ]);
     }
 
     public function store(StoreFAQRequest $request, CreateFAQ $action): RedirectResponse
@@ -65,8 +68,9 @@ class FAQController extends Controller
     {
         $this->authorize('update', $faq);
 
-        return Inertia::render('Admin/FAQs/Edit', [
+        return Inertia::render('admin/faqs/edit', [
             'faq' => $faq,
+            'breadcrumbs' => [['title' => 'FAQs', 'href' => route('admin.faqs.index')], ['title' => 'Edit', 'href' => route('admin.faqs.edit', $faq)]],
         ]);
     }
 

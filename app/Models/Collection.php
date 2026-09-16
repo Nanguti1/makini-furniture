@@ -21,5 +21,6 @@ class Collection extends Model
     public function products(): HasMany { return $this->hasMany(Product::class); }
     public function productFamilies(): HasMany { return $this->hasMany(ProductFamily::class); }
     public function featuredEntries(): HasMany { return $this->hasMany(FeaturedCollection::class); }
+    public function productEntries(): BelongsToMany { return $this->belongsToMany(Product::class, 'collection_product')->withTimestamps(); }
 }
 

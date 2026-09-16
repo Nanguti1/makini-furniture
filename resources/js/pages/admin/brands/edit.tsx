@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -37,19 +36,13 @@ export default function BrandEdit({ brand }: BrandEditProps) {
         sort_order: brand.sort_order,
     });
 
-    const breadcrumbs = [
-        { title: 'Brands', href: admin.brands.index.url() },
-        { title: 'Edit', href: admin.brands.edit.url({ brand: brand.id }) },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         put(admin.brands.update.url({ brand: brand.id }));
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Edit Brand</h1>
@@ -208,6 +201,5 @@ export default function BrandEdit({ brand }: BrandEditProps) {
                     </CardContent>
                 </Card>
             </div>
-        </AdminLayout>
     );
 }

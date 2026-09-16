@@ -40,9 +40,10 @@ class PageController extends Controller
             $query->where('status', request('status'));
         }
 
-        return Inertia::render('Admin/Pages/Index', [
+        return Inertia::render('admin/pages/index', [
             'pages' => $query->latest()->paginate(),
             'filters' => request()->only(['search', 'status']),
+            'breadcrumbs' => [['title' => 'Pages', 'href' => route('admin.pages.index')]],
         ]);
     }
 
@@ -50,7 +51,9 @@ class PageController extends Controller
     {
         $this->authorize('create', Page::class);
 
-        return Inertia::render('Admin/Pages/Create');
+        return Inertia::render('admin/pages/create', [
+            'breadcrumbs' => [['title' => 'Pages', 'href' => route('admin.pages.index')], ['title' => 'Create', 'href' => route('admin.pages.create')]],
+        ]);
     }
 
     public function store(StorePageRequest $request, CreatePage $action): RedirectResponse
@@ -67,8 +70,9 @@ class PageController extends Controller
 
         $page->load('sections');
 
-        return Inertia::render('Admin/Pages/Edit', [
+        return Inertia::render('admin/pages/edit', [
             'page' => $page,
+            'breadcrumbs' => [['title' => 'Pages', 'href' => route('admin.pages.index')], ['title' => 'Edit', 'href' => route('admin.pages.edit', $page)]],
         ]);
     }
 

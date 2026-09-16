@@ -11,13 +11,14 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Admin/settings/index', [
+        return Inertia::render('admin/settings/index', [
             'settings' => [
                 'app_name' => Setting::get('app_name', config('app.name')),
                 'app_url' => Setting::get('app_url', config('app.url')),
                 'mail_from_address' => Setting::get('mail_from_address', config('mail.from.address')),
                 'mail_from_name' => Setting::get('mail_from_name', config('mail.from.name')),
             ],
+            'breadcrumbs' => [['title' => 'Settings', 'href' => route('admin.settings.index')]],
         ]);
     }
 

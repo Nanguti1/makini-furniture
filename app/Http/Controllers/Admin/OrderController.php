@@ -30,9 +30,10 @@ class OrderController extends Controller
             $query->where('status', request('status'));
         }
 
-        return Inertia::render('Admin/Orders/Index', [
+        return Inertia::render('admin/orders/index', [
             'orders' => $query->latest()->paginate(),
             'filters' => request()->only(['search', 'status']),
+            'breadcrumbs' => [['title' => 'Orders', 'href' => route('admin.orders.index')]],
         ]);
     }
 
@@ -40,8 +41,9 @@ class OrderController extends Controller
     {
         $this->authorize('view', $order);
 
-        return Inertia::render('Admin/Orders/Show', [
+        return Inertia::render('admin/orders/show', [
             'order' => $order->load(['items', 'user', 'items.product:id,name,slug,price', 'items.variant:id,name,sku']),
+            'breadcrumbs' => [['title' => 'Orders', 'href' => route('admin.orders.index')], ['title' => 'Show', 'href' => route('admin.orders.show', $order)]],
         ]);
     }
 

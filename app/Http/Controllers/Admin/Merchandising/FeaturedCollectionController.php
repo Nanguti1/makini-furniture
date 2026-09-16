@@ -20,12 +20,13 @@ class FeaturedCollectionController extends Controller
     {
         $this->authorize('viewAny', FeaturedCollection::class);
 
-        return Inertia::render('Admin/FeaturedCollections/Index', [
+        return Inertia::render('admin/featured-collections/index', [
             'featuredCollections' => FeaturedCollection::query()
                 ->with('collection:id,name,slug')
                 ->orderBy('sort_order')
                 ->orderBy('created_at')
                 ->paginate(),
+            'breadcrumbs' => [['title' => 'Featured Collections', 'href' => route('admin.featured-collections.index')]],
         ]);
     }
 
@@ -33,8 +34,9 @@ class FeaturedCollectionController extends Controller
     {
         $this->authorize('create', FeaturedCollection::class);
 
-        return Inertia::render('Admin/FeaturedCollections/Create', [
+        return Inertia::render('admin/featured-collections/create', [
             'collections' => \App\Models\Collection::select(['id', 'name', 'slug'])->get(),
+            'breadcrumbs' => [['title' => 'Featured Collections', 'href' => route('admin.featured-collections.index')], ['title' => 'Create', 'href' => route('admin.featured-collections.create')]],
         ]);
     }
 
@@ -52,9 +54,10 @@ class FeaturedCollectionController extends Controller
 
         $featuredCollection->load('collection:id,name,slug');
 
-        return Inertia::render('Admin/FeaturedCollections/Edit', [
+        return Inertia::render('admin/featured-collections/edit', [
             'featuredCollection' => $featuredCollection,
             'collections' => \App\Models\Collection::select(['id', 'name', 'slug'])->get(),
+            'breadcrumbs' => [['title' => 'Featured Collections', 'href' => route('admin.featured-collections.index')], ['title' => 'Edit', 'href' => route('admin.featured-collections.edit', $featuredCollection)]],
         ]);
     }
 

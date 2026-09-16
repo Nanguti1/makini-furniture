@@ -22,11 +22,12 @@ class BannerController extends Controller
     {
         $this->authorize('viewAny', Banner::class);
 
-        return Inertia::render('Admin/Banners/Index', [
+        return Inertia::render('admin/banners/index', [
             'banners' => Banner::query()
                 ->orderBy('sort_order')
                 ->orderBy('created_at')
                 ->paginate(),
+            'breadcrumbs' => [['title' => 'Banners', 'href' => route('admin.banners.index')]],
         ]);
     }
 
@@ -34,7 +35,9 @@ class BannerController extends Controller
     {
         $this->authorize('create', Banner::class);
 
-        return Inertia::render('Admin/Banners/Create');
+        return Inertia::render('admin/banners/create', [
+            'breadcrumbs' => [['title' => 'Banners', 'href' => route('admin.banners.index')], ['title' => 'Create', 'href' => route('admin.banners.create')]],
+        ]);
     }
 
     public function store(StoreBannerRequest $request, CreateBanner $action): RedirectResponse
@@ -49,8 +52,9 @@ class BannerController extends Controller
     {
         $this->authorize('update', $banner);
 
-        return Inertia::render('Admin/Banners/Edit', [
+        return Inertia::render('admin/banners/edit', [
             'banner' => $banner,
+            'breadcrumbs' => [['title' => 'Banners', 'href' => route('admin.banners.index')], ['title' => 'Edit', 'href' => route('admin.banners.edit', $banner)]],
         ]);
     }
 

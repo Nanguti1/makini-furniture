@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { StatCard } from '@/components/admin';
 import { DataTable } from '@/components/admin';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -58,10 +57,6 @@ interface DashboardProps {
 export default function AdminDashboard() {
     const { props } = usePage() as unknown as { props: DashboardProps };
     const { stats, recentOrders, recentCustomers, lowStockProducts } = props;
-
-    const breadcrumbs = [
-        { title: 'Dashboard', href: admin.dashboard.url() },
-    ];
 
     const statCards = [
         {
@@ -139,168 +134,166 @@ export default function AdminDashboard() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-                    <p className="text-muted-foreground mt-2">
-                        Welcome to the Makini Queens Furniture admin panel
-                    </p>
-                </div>
+        <div className="space-y-6">
+            <div>
+                <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+                <p className="text-muted-foreground mt-2">
+                    Welcome to the Makini Queens Furniture admin panel
+                </p>
+            </div>
 
-                {/* Stats Grid */}
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    {statCards.map((stat) => (
-                        <StatCard
-                            key={stat.title}
-                            title={stat.title}
-                            value={stat.value}
-                            icon={stat.icon}
-                        />
-                    ))}
-                </div>
+            {/* Stats Grid */}
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {statCards.map((stat) => (
+                    <StatCard
+                        key={stat.title}
+                        title={stat.title}
+                        value={stat.value}
+                        icon={stat.icon}
+                    />
+                ))}
+            </div>
 
-                {/* Quick Actions */}
+            {/* Quick Actions */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Quick Actions</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div className="grid gap-4 md:grid-cols-2">
+                        {quickActions.map((action) => {
+                            const Icon = action.icon;
+                            return (
+                                <Link
+                                    key={action.title}
+                                    href={action.href}
+                                    className="block"
+                                >
+                                    <Button
+                                        variant="outline"
+                                        className="h-auto w-full flex-col items-start gap-2 p-4"
+                                    >
+                                        <div className="flex items-center gap-2 w-full">
+                                            <Icon className="h-5 w-5" />
+                                            <span className="font-medium">{action.title}</span>
+                                        </div>
+                                        <p className="text-sm text-muted-foreground text-left">
+                                            {action.description}
+                                        </p>
+                                        <ArrowRight className="h-4 w-4 ml-auto" />
+                                    </Button>
+                                </Link>
+                            );
+                        })}
+                    </div>
+                </CardContent>
+            </Card>
+
+            {/* Additional Stats */}
+            <div className="grid gap-4 md:grid-cols-2">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Quick Actions</CardTitle>
+                        <CardTitle>Pending Orders</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="grid gap-4 md:grid-cols-2">
-                            {quickActions.map((action) => {
-                                const Icon = action.icon;
-                                return (
-                                    <Link
-                                        key={action.title}
-                                        href={action.href}
-                                        className="block"
-                                    >
-                                        <Button
-                                            variant="outline"
-                                            className="h-auto w-full flex-col items-start gap-2 p-4"
-                                        >
-                                            <div className="flex items-center gap-2 w-full">
-                                                <Icon className="h-5 w-5" />
-                                                <span className="font-medium">{action.title}</span>
-                                            </div>
-                                            <p className="text-sm text-muted-foreground text-left">
-                                                {action.description}
-                                            </p>
-                                            <ArrowRight className="h-4 w-4 ml-auto" />
-                                        </Button>
-                                    </Link>
-                                );
-                            })}
-                        </div>
+                        <div className="text-3xl font-bold">{stats.pending_orders}</div>
+                        <p className="text-sm text-muted-foreground mt-2">
+                            Orders awaiting processing
+                        </p>
                     </CardContent>
                 </Card>
-
-                {/* Additional Stats */}
-                <div className="grid gap-4 md:grid-cols-2">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Pending Orders</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold">{stats.pending_orders}</div>
-                            <p className="text-sm text-muted-foreground mt-2">
-                                Orders awaiting processing
-                            </p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Active Products</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-3xl font-bold">{stats.active_products}</div>
-                            <p className="text-sm text-muted-foreground mt-2">
-                                Products currently available
-                            </p>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                {/* Recent Orders */}
                 <Card>
                     <CardHeader>
-                        <CardTitle>Recent Orders</CardTitle>
+                        <CardTitle>Active Products</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        {recentOrders.length > 0 ? (
-                            <DataTable
-                                data={recentOrders}
-                                columns={orderColumns}
-                                emptyMessage="No recent orders"
-                            />
+                        <div className="text-3xl font-bold">{stats.active_products}</div>
+                        <p className="text-sm text-muted-foreground mt-2">
+                            Products currently available
+                        </p>
+                    </CardContent>
+                </Card>
+            </div>
+
+            {/* Recent Orders */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Recent Orders</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {recentOrders.length > 0 ? (
+                        <DataTable
+                            data={recentOrders}
+                            columns={orderColumns}
+                            emptyMessage="No recent orders"
+                        />
+                    ) : (
+                        <p className="text-sm text-muted-foreground text-center py-8">
+                            No recent orders found
+                        </p>
+                    )}
+                </CardContent>
+            </Card>
+
+            {/* Recent Customers & Low Stock */}
+            <div className="grid gap-4 md:grid-cols-2">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Recent Customers</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {recentCustomers.length > 0 ? (
+                            <div className="space-y-4">
+                                {recentCustomers.map((customer) => (
+                                    <div key={customer.id} className="flex items-center justify-between">
+                                        <div>
+                                            <div className="font-medium">{customer.name}</div>
+                                            <div className="text-sm text-muted-foreground">{customer.email}</div>
+                                        </div>
+                                        <div className="text-sm text-muted-foreground">
+                                            {formatDate(customer.created_at)}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
                         ) : (
                             <p className="text-sm text-muted-foreground text-center py-8">
-                                No recent orders found
+                                No recent customers found
                             </p>
                         )}
                     </CardContent>
                 </Card>
 
-                {/* Recent Customers & Low Stock */}
-                <div className="grid gap-4 md:grid-cols-2">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Recent Customers</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            {recentCustomers.length > 0 ? (
-                                <div className="space-y-4">
-                                    {recentCustomers.map((customer) => (
-                                        <div key={customer.id} className="flex items-center justify-between">
-                                            <div>
-                                                <div className="font-medium">{customer.name}</div>
-                                                <div className="text-sm text-muted-foreground">{customer.email}</div>
-                                            </div>
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                            <AlertTriangle className="h-5 w-5 text-yellow-500" />
+                            Low Stock Alert
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        {lowStockProducts.length > 0 ? (
+                            <div className="space-y-4">
+                                {lowStockProducts.map((product) => (
+                                    <div key={product.id} className="flex items-center justify-between">
+                                        <div>
+                                            <div className="font-medium">{product.name}</div>
                                             <div className="text-sm text-muted-foreground">
-                                                {formatDate(customer.created_at)}
+                                                {product.variants.length} variant(s) low on stock
                                             </div>
                                         </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className="text-sm text-muted-foreground text-center py-8">
-                                    No recent customers found
-                                </p>
-                            )}
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <AlertTriangle className="h-5 w-5 text-yellow-500" />
-                                Low Stock Alert
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            {lowStockProducts.length > 0 ? (
-                                <div className="space-y-4">
-                                    {lowStockProducts.map((product) => (
-                                        <div key={product.id} className="flex items-center justify-between">
-                                            <div>
-                                                <div className="font-medium">{product.name}</div>
-                                                <div className="text-sm text-muted-foreground">
-                                                    {product.variants.length} variant(s) low on stock
-                                                </div>
-                                            </div>
-                                            <Badge variant="destructive">Low Stock</Badge>
-                                        </div>
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className="text-sm text-muted-foreground text-center py-8">
-                                    No products with low stock
-                                </p>
-                            )}
-                        </CardContent>
-                    </Card>
-                </div>
+                                        <Badge variant="destructive">Low Stock</Badge>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            <p className="text-sm text-muted-foreground text-center py-8">
+                                No products with low stock
+                            </p>
+                        )}
+                    </CardContent>
+                </Card>
             </div>
-        </AdminLayout>
+        </div>
     );
 }

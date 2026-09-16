@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -49,11 +48,6 @@ export default function LookbookEdit({ lookbook, products = [] }: LookbookEditPr
 
     const [newItemProductId, setNewItemProductId] = useState('');
 
-    const breadcrumbs = [
-        { title: 'Lookbooks', href: admin.lookbooks.index.url() },
-        { title: 'Edit', href: admin.lookbooks.edit.url({ id: lookbook.id }) },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         put(admin.lookbooks.update.url({ id: lookbook.id }));
@@ -78,9 +72,8 @@ export default function LookbookEdit({ lookbook, products = [] }: LookbookEditPr
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Edit Lookbook</h1>
                         <p className="text-muted-foreground mt-2">
@@ -248,6 +241,5 @@ export default function LookbookEdit({ lookbook, products = [] }: LookbookEditPr
                     </TabsContent>
                 </Tabs>
             </div>
-        </AdminLayout>
     );
 }

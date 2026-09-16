@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -10,11 +9,6 @@ import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import admin from '@/routes/admin';
 
 export default function FAQCreate() {
-    const breadcrumbs = [
-        { title: 'FAQs', href: admin.faqs.index.url() },
-        { title: 'Create FAQ', href: admin.faqs.create.url() },
-    ];
-
     const { data, setData, post, processing, errors } = useForm({
         question: '',
         answer: '',
@@ -29,8 +23,7 @@ export default function FAQCreate() {
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Create FAQ</h1>
@@ -131,6 +124,5 @@ export default function FAQCreate() {
                     </div>
                 </form>
             </div>
-        </AdminLayout>
     );
 }

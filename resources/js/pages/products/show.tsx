@@ -70,7 +70,6 @@ interface ProductReview {
     rating: number;
     title: string;
     body?: string;
-    comment?: string;
     status: string;
     verified_purchase: boolean;
     user: {
@@ -129,7 +128,7 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
 
     const images = product.images || [];
     const selectedImage = images[selectedImageIndex];
-    const currentPrice = selectedVariant ? effectivePrices[selectedVariant.id] : productPrice;
+    const currentPrice = selectedVariant ? (effectivePrices[selectedVariant.id] || productPrice) : productPrice;
     const comparePrice = selectedVariant?.compare_at_price;
 
     const handlePreviousImage = () => {
@@ -391,10 +390,10 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
 
                     {/* Price */}
                     <div className="flex items-baseline gap-3">
-                        <span className="text-2xl md:text-3xl font-bold">${currentPrice.toFixed(2)}</span>
+                        <span className="text-2xl md:text-3xl font-bold">${currentPrice?.toFixed(2) || '0.00'}</span>
                         {comparePrice && comparePrice > currentPrice && (
                             <span className="text-base md:text-lg text-muted-foreground line-through">
-                                ${comparePrice.toFixed(2)}
+                                ${comparePrice?.toFixed(2) || '0.00'}
                             </span>
                         )}
                     </div>

@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -87,11 +86,6 @@ interface OrderShowProps {
 }
 
 export default function OrderShow({ order }: OrderShowProps) {
-    const breadcrumbs = [
-        { title: 'Orders', href: admin.orders.index.url() },
-        { title: order.order_number, href: admin.orders.show.url({ order: order.id }) },
-    ];
-
     const { data, setData, put, processing } = useForm({
         status: order.status,
     });
@@ -207,9 +201,8 @@ export default function OrderShow({ order }: OrderShowProps) {
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">{order.order_number}</h1>
                         <p className="text-muted-foreground mt-2">
@@ -542,6 +535,5 @@ export default function OrderShow({ order }: OrderShowProps) {
                     </TabsContent>
                 </Tabs>
             </div>
-        </AdminLayout>
     );
 }

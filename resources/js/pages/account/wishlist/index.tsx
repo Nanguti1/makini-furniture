@@ -116,7 +116,13 @@ export default function AccountWishlistIndexPage({ wishlist, cart }: WishlistInd
     };
 
     const getProductPrice = (item: WishlistItem) => {
-        return item.variant?.price || item.product.price;
+        if (item.variant?.prices && item.variant.prices.length > 0) {
+            return Number(item.variant.prices[0].amount);
+        }
+        if (item.product?.prices && item.product.prices.length > 0) {
+            return Number(item.product.prices[0].amount);
+        }
+        return Number(item.variant?.price) || Number(item.product?.price) || 0;
     };
 
     if (isEmpty) {

@@ -6,52 +6,30 @@ import AppLayout from '@/layouts/app-layout';
 import AuthLayout from '@/layouts/auth-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import StoreLayout from '@/layouts/store-layout';
+import AdminLayout from '@/layouts/admin-layout';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 void createInertiaApp({
     title: (title) => (title ? `${title} - ${appName}` : appName),
     layout: (name) => {
-        const storefrontRoutes = [
-            'home',
-            'catalog.index',
-            'products.show',
-            'cart.show',
-            'checkout.create',
-            'lookbooks.index',
-            'lookbooks.show',
-            'pages.show',
-            'faqs.index',
-            'storefront.lookbooks.index',
-            'storefront.lookbooks.show',
-            'storefront.pages.show',
-            'storefront.faqs.index',
-        ];
-
-        const accountRoutes = [
-            'account.addresses.index',
-            'account.wishlist.index',
-            'account.orders.index',
-            'account.orders.show',
-            'account.reviews.index',
-            'account.profile',
-            'orders.index',
-            'orders.show',
-        ];
-
-        if (storefrontRoutes.includes(name) || accountRoutes.includes(name) || name.startsWith('account.')) {
-            return StoreLayout;
+        // Admin routes - use AdminLayout with sidebar (check first to avoid conflicts)
+        if (name?.startsWith('admin/') || name?.startsWith('Admin/')) {
+            return AdminLayout;
         }
 
-        if (name.startsWith('auth/')) {
+        // Auth routes - use AuthLayout
+        if (name?.startsWith('auth/')) {
             return AuthLayout;
         }
 
-        if (name.startsWith('settings/')) {
+        // Settings routes - use SettingsLayout
+        if (name?.startsWith('settings/')) {
             return [AppLayout, SettingsLayout];
         }
 
-        return AppLayout;
+        // All other routes (storefront, account, etc.) - use StoreLayout (no sidebar)
+        return StoreLayout;
     },
     strictMode: true,
     withApp(app) {

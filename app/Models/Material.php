@@ -14,5 +14,5 @@ class Material extends Model
         return ['is_active'=>'boolean'];
     }
 
-    public function products(): BelongsToMany { return $this->belongsToMany(Product::class)->withTimestamps(); }
+    public function products(): BelongsToMany { return $this->belongsToMany(Product::class, 'material_product')->withTimestamps(); }
 }

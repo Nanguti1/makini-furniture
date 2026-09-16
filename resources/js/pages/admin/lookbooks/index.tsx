@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -34,10 +33,6 @@ export default function LookbookIndex() {
     const { props } = usePage() as unknown as { props: LookbookProps };
     const { lookbooks } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-    const breadcrumbs = [
-        { title: 'Lookbooks', href: admin.lookbooks.index.url() },
-    ];
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this lookbook?')) {
@@ -132,30 +127,28 @@ export default function LookbookIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Lookbooks</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage curated product collections and style guides
-                        </p>
-                    </div>
-                    <Link href={admin.lookbooks.create.url()}>
-                        <Button>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Create Lookbook
-                        </Button>
-                    </Link>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Lookbooks</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage curated product collections and style guides
+                    </p>
                 </div>
-
-                <DataTable
-                    data={lookbooks.data}
-                    columns={columns}
-                    pagination={lookbooks.links}
-                    emptyMessage="No lookbooks found"
-                />
+                <Link href={admin.lookbooks.create.url()}>
+                    <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Create Lookbook
+                    </Button>
+                </Link>
             </div>
-        </AdminLayout>
+
+            <DataTable
+                data={lookbooks.data}
+                columns={columns}
+                pagination={lookbooks.links}
+                emptyMessage="No lookbooks found"
+            />
+        </div>
     );
 }

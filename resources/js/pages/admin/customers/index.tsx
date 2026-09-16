@@ -1,12 +1,9 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SearchBar } from '@/components/admin';
 import { Link } from '@inertiajs/react';
 import { Eye, User, Mail, Calendar, Building2 } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
-import { useState } from 'react';
 import { router } from '@inertiajs/react';
 import admin from '@/routes/admin';
 
@@ -34,22 +31,7 @@ interface CustomerProps {
 
 export default function CustomerIndex() {
     const { props } = usePage() as unknown as { props: CustomerProps };
-    const { customers, filters } = props;
-    const [searchTerm, setSearchTerm] = useState(filters?.search || '');
-
-    const breadcrumbs = [
-        { title: 'Customers', href: admin.customers.index.url() },
-    ];
-
-    const handleSearch = (term: string) => {
-        setSearchTerm(term);
-        router.get(admin.customers.index.url(), { 
-            search: term
-        }, { 
-            preserveState: true,
-            replace: true 
-        });
-    };
+    const { customers } = props;
 
     const columns = [
         {
@@ -113,32 +95,22 @@ export default function CustomerIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage customer accounts and information
-                        </p>
-                    </div>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Customers</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage customer accounts and information
+                    </p>
                 </div>
-
-                <div className="flex items-center gap-4">
-                    <SearchBar 
-                        placeholder="Search customers..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                    />
-                </div>
-
-                <DataTable
-                    data={customers.data}
-                    columns={columns}
-                    pagination={customers.links}
-                    emptyMessage="No customers found"
-                />
             </div>
-        </AdminLayout>
+
+            <DataTable
+                data={customers.data}
+                columns={columns}
+                pagination={customers.links}
+                emptyMessage="No customers found"
+            />
+        </div>
     );
 }

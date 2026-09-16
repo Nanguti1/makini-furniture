@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -24,19 +23,13 @@ export default function BannerCreate() {
         sort_order: 0,
     });
 
-    const breadcrumbs = [
-        { title: 'Banners', href: admin.banners.index.url() },
-        { title: 'Create', href: admin.banners.create.url() },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(admin.banners.store.url());
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Create Banner</h1>
@@ -231,6 +224,5 @@ export default function BannerCreate() {
                     </Card>
                 </form>
             </div>
-        </AdminLayout>
     );
 }

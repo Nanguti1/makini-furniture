@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -43,20 +42,13 @@ export default function ProductFamilyEdit({ productFamily, brands = [], collecti
         sort_order: productFamily.sort_order,
     });
 
-    const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
-        { title: 'Product Families', href: admin.productFamilies.index.url() },
-        { title: 'Edit', href: admin.productFamilies.edit.url({ product_family: productFamily.id }) },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         put(admin.productFamilies.update.url({ product_family: productFamily.id }));
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Edit Product Family</h1>
@@ -215,6 +207,5 @@ export default function ProductFamilyEdit({ productFamily, brands = [], collecti
                     </CardContent>
                 </Card>
             </div>
-        </AdminLayout>
     );
 }

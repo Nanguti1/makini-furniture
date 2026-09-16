@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -38,10 +37,6 @@ export default function FeaturedProductIndex() {
     const { props } = usePage() as unknown as { props: FeaturedProductProps };
     const { featuredProducts } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-    const breadcrumbs = [
-        { title: 'Featured Products', href: admin.featuredProducts.index.url() },
-    ];
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to remove this featured product?')) {
@@ -115,30 +110,28 @@ export default function FeaturedProductIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Featured Products</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage featured products across your store
-                        </p>
-                    </div>
-                    <Link href={admin.featuredProducts.create.url()}>
-                        <Button>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Feature Product
-                        </Button>
-                    </Link>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Featured Products</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage featured products across your store
+                    </p>
                 </div>
-
-                <DataTable
-                    data={featuredProducts.data}
-                    columns={columns}
-                    pagination={featuredProducts.links}
-                    emptyMessage="No featured products found"
-                />
+                <Link href={admin.featuredProducts.create.url()}>
+                    <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Feature Product
+                    </Button>
+                </Link>
             </div>
-        </AdminLayout>
+
+            <DataTable
+                data={featuredProducts.data}
+                columns={columns}
+                pagination={featuredProducts.links}
+                emptyMessage="No featured products found"
+            />
+        </div>
     );
 }

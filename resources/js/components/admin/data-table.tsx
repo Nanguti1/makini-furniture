@@ -70,12 +70,9 @@ export function DataTable<T extends Record<string, any>>({
 
     const handleSort = (column: string) => {
         if (!onSort) return;
-        
-        if (sortColumn === column) {
-            onSort(column, sortDirection === 'asc' ? 'desc' : 'asc');
-        } else {
-            onSort(column, 'asc');
-        }
+
+        const newDirection = sortColumn === column && sortDirection === 'asc' ? 'desc' : 'asc';
+        onSort(column, newDirection);
     };
 
     const getSortIcon = (column: string) => {

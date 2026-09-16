@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -43,20 +42,13 @@ export default function CollectionEdit({ collection, brands = [] }: CollectionEd
         sort_order: collection.sort_order,
     });
 
-    const breadcrumbs = [
-        { title: 'Catalog', href: '#' },
-        { title: 'Collections', href: admin.collections.index.url() },
-        { title: 'Edit', href: admin.collections.edit.url({ collection: collection.id }) },
-    ];
-
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         put(admin.collections.update.url({ collection: collection.id }));
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Edit Collection</h1>
@@ -231,6 +223,5 @@ export default function CollectionEdit({ collection, brands = [] }: CollectionEd
                     </CardContent>
                 </Card>
             </div>
-        </AdminLayout>
     );
 }

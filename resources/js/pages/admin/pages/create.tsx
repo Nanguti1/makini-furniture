@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -9,11 +8,6 @@ import { ArrowLeft, Save, Loader2 } from 'lucide-react';
 import admin from '@/routes/admin';
 
 export default function PageCreate() {
-    const breadcrumbs = [
-        { title: 'Pages', href: admin.pages.index.url() },
-        { title: 'Create Page', href: admin.pages.create.url() },
-    ];
-
     const { data, setData, post, processing, errors } = useForm({
         title: '',
         slug: '',
@@ -30,8 +24,7 @@ export default function PageCreate() {
     };
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
+        <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
                         <h1 className="text-3xl font-bold tracking-tight">Create Page</h1>
@@ -158,6 +151,5 @@ export default function PageCreate() {
                     </div>
                 </form>
             </div>
-        </AdminLayout>
     );
 }

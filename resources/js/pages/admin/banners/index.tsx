@@ -1,4 +1,3 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -38,10 +37,6 @@ export default function BannerIndex() {
     const { props } = usePage() as unknown as { props: BannerProps };
     const { banners } = props;
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-
-    const breadcrumbs = [
-        { title: 'Banners', href: admin.banners.index.url() },
-    ];
 
     const handleDelete = (id: number) => {
         if (confirm('Are you sure you want to delete this banner?')) {
@@ -142,30 +137,28 @@ export default function BannerIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Homepage Banners</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage homepage banners and promotional content
-                        </p>
-                    </div>
-                    <Link href={admin.banners.create.url()}>
-                        <Button>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Add Banner
-                        </Button>
-                    </Link>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Homepage Banners</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage homepage banners and promotional content
+                    </p>
                 </div>
-
-                <DataTable
-                    data={banners.data}
-                    columns={columns}
-                    pagination={banners.links}
-                    emptyMessage="No banners found"
-                />
+                <Link href={admin.banners.create.url()}>
+                    <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Banner
+                    </Button>
+                </Link>
             </div>
-        </AdminLayout>
+
+            <DataTable
+                data={banners.data}
+                columns={columns}
+                pagination={banners.links}
+                emptyMessage="No banners found"
+            />
+        </div>
     );
 }

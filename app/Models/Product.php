@@ -28,14 +28,14 @@ class Product extends Model
     public function videos(): HasMany { return $this->hasMany(ProductVideo::class); }
     public function documents(): HasMany { return $this->hasMany(ProductDocument::class); }
     public function dimensions(): HasMany { return $this->hasMany(ProductDimension::class); }
-    public function categories(): BelongsToMany { return $this->belongsToMany(Category::class)->withTimestamps(); }
-    public function collections(): BelongsToMany { return $this->belongsToMany(Collection::class)->withTimestamps(); }
-    public function materials(): BelongsToMany { return $this->belongsToMany(Material::class)->withTimestamps(); }
-    public function finishes(): BelongsToMany { return $this->belongsToMany(Finish::class)->withTimestamps(); }
-    public function colors(): BelongsToMany { return $this->belongsToMany(Color::class)->withTimestamps(); }
-    public function tags(): BelongsToMany { return $this->belongsToMany(Tag::class)->withTimestamps(); }
-    public function features(): BelongsToMany { return $this->belongsToMany(Feature::class)->withTimestamps(); }
-    public function rooms(): BelongsToMany { return $this->belongsToMany(Room::class)->withPivot('sort_order')->withTimestamps(); }
+    public function categories(): BelongsToMany { return $this->belongsToMany(Category::class, 'category_product')->withTimestamps(); }
+    public function collections(): BelongsToMany { return $this->belongsToMany(Collection::class, 'collection_product')->withTimestamps(); }
+    public function materials(): BelongsToMany { return $this->belongsToMany(Material::class, 'material_product')->withTimestamps(); }
+    public function finishes(): BelongsToMany { return $this->belongsToMany(Finish::class, 'finish_product')->withTimestamps(); }
+    public function colors(): BelongsToMany { return $this->belongsToMany(Color::class, 'color_product')->withTimestamps(); }
+    public function tags(): BelongsToMany { return $this->belongsToMany(Tag::class, 'tag_product')->withTimestamps(); }
+    public function features(): BelongsToMany { return $this->belongsToMany(Feature::class, 'feature_product')->withTimestamps(); }
+    public function rooms(): BelongsToMany { return $this->belongsToMany(Room::class, 'room_product')->withPivot('sort_order')->withTimestamps(); }
     public function relatedProducts(): BelongsToMany { return $this->belongsToMany(self::class, 'related_products', 'product_id', 'related_product_id')->withPivot(['relationship_type','sort_order'])->withTimestamps(); }
     public function relatedToProducts(): BelongsToMany { return $this->belongsToMany(self::class, 'related_products', 'related_product_id', 'product_id')->withPivot(['relationship_type','sort_order'])->withTimestamps(); }
     public function prices(): HasMany { return $this->hasMany(Price::class); }

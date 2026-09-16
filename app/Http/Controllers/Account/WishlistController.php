@@ -31,7 +31,7 @@ class WishlistController extends Controller
             request()->session()->getId()
         );
 
-        return Inertia::render('Account/Wishlist/Index', [
+        return Inertia::render('account/wishlist/index', [
             'wishlist' => $wishlist,
             'cart' => $cart,
         ]);

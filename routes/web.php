@@ -6,8 +6,12 @@ use App\Http\Controllers\Storefront\LookbookController;
 use App\Http\Controllers\Storefront\PageController;
 use App\Http\Controllers\Storefront\FAQController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 Route::get('/', [CatalogController::class, 'home'])->name('home');
+Route::get('/about', function () {
+    return Inertia::render('about');
+})->name('about');
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 Route::get('/products/{product:slug}', [ProductController::class, 'show'])->name('products.show');
 
@@ -19,7 +23,7 @@ Route::get('/pages/{slug}', [PageController::class, 'show'])->name('pages.show')
 Route::get('/faqs', [FAQController::class, 'index'])->name('faqs.index');
 
 Route::middleware(['auth', 'verified'])->prefix('account')->name('account.')->group(function () {
-    Route::get('/', [\App\Http\Controllers\Settings\ProfileController::class, 'edit'])->name('profile');
+    Route::get('/', [\App\Http\Controllers\Account\IndexController::class, 'index'])->name('index');
 
     Route::prefix('addresses')->name('addresses.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Account\AddressController::class, 'index'])->name('index');

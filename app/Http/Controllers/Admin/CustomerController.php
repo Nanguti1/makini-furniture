@@ -19,9 +19,10 @@ class CustomerController extends Controller
                 ->orWhere('email', 'like', '%' . request('search') . '%');
         }
 
-        return Inertia::render('Admin/Customers/Index', [
+        return Inertia::render('admin/customers/index', [
             'customers' => $query->latest()->paginate(),
             'filters' => request()->only(['search']),
+            'breadcrumbs' => [['title' => 'Customers', 'href' => route('admin.customers.index')]],
         ]);
     }
 
@@ -29,7 +30,7 @@ class CustomerController extends Controller
     {
         $this->authorize('view', $customer);
 
-        return Inertia::render('Admin/Customers/Show', [
+        return Inertia::render('admin/customers/show', [
             'customer' => $customer->load([
                 'addresses',
                 'orders' => function ($query) {
@@ -40,6 +41,7 @@ class CustomerController extends Controller
                 },
                 'wishlists.items.product:id,name,slug,price',
             ]),
+            'breadcrumbs' => [['title' => 'Customers', 'href' => route('admin.customers.index')], ['title' => 'View', 'href' => route('admin.customers.show', $customer)]],
         ]);
     }
 }

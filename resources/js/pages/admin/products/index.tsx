@@ -1,13 +1,11 @@
-import AdminLayout from '@/layouts/admin-layout';
 import { DataTable } from '@/components/admin';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { SearchBar } from '@/components/admin';
 import { BulkActionBar } from '@/components/admin/bulk-action-bar';
 import { Link } from '@inertiajs/react';
-import { 
-    Plus, 
-    Edit, 
+import {
+    Plus,
+    Edit,
     Trash2,
     Eye,
     Check,
@@ -15,7 +13,7 @@ import {
     Star
 } from 'lucide-react';
 import { usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { router } from '@inertiajs/react';
 import admin from '@/routes/admin';
 
@@ -64,41 +62,35 @@ interface ProductProps {
 }
 
 export default function ProductIndex() {
-    const { props } = usePage() as unknown as { props: ProductProps };
-    const { products, filters } = props;
+    const page = usePage();
+    const props = page.props as unknown as ProductProps;
+    const products = props?.products;
+    const filters = props?.filters;
+    
     const [selectedIds, setSelectedIds] = useState<number[]>([]);
-    const [searchTerm, setSearchTerm] = useState(filters?.search || '');
-    const [statusFilter, setStatusFilter] = useState(filters?.status || 'all');
-    const [featuredFilter, setFeaturedFilter] = useState(filters?.featured || 'all');
-    const [sortColumn, setSortColumn] = useState(filters?.sort || 'created_at');
-    const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>(filters?.direction as 'asc' | 'desc' || 'desc');
+    const [statusFilter, setStatusFilter] = useState('all');
+    const [featuredFilter, setFeaturedFilter] = useState('all');
 
-    const breadcrumbs = [
-        { title: 'Products', href: admin.products.index.url() },
-    ];
+    // Initialize filters from props if available
+    useEffect(() => {
+        if (filters) {
+            if (filters.status) setStatusFilter(filters.status);
+            if (filters.featured) setFeaturedFilter(filters.featured);
+        }
+    }, [filters]);
 
-    const handleSearch = (term: string) => {
-        setSearchTerm(term);
-        router.get(admin.products.index.url(), {
-            search: term,
-            status: statusFilter,
-            featured: featuredFilter,
-            sort: sortColumn,
-            direction: sortDirection
-        }, {
-            preserveState: true,
-            replace: true
-        });
-    };
+    // Ensure products data exists
+    if (!products || !products.data) {
+        return <div>Loading...</div>;
+    }
 
     const handleStatusFilter = (status: string) => {
         setStatusFilter(status);
         router.get(admin.products.index.url(), {
-            search: searchTerm,
             status,
             featured: featuredFilter,
-            sort: sortColumn,
-            direction: sortDirection
+            sort: filters?.sort || 'created_at',
+            direction: filters?.direction || 'desc'
         }, {
             preserveState: true,
             replace: true
@@ -108,11 +100,10 @@ export default function ProductIndex() {
     const handleFeaturedFilter = (featured: string) => {
         setFeaturedFilter(featured);
         router.get(admin.products.index.url(), {
-            search: searchTerm,
             status: statusFilter,
             featured,
-            sort: sortColumn,
-            direction: sortDirection
+            sort: filters?.sort || 'created_at',
+            direction: filters?.direction || 'desc'
         }, {
             preserveState: true,
             replace: true
@@ -120,10 +111,7 @@ export default function ProductIndex() {
     };
 
     const handleSort = (column: string, direction: 'asc' | 'desc') => {
-        setSortColumn(column);
-        setSortDirection(direction);
         router.get(admin.products.index.url(), {
-            search: searchTerm,
             status: statusFilter,
             featured: featuredFilter,
             sort: column,
@@ -309,76 +297,69 @@ export default function ProductIndex() {
     ];
 
     return (
-        <AdminLayout breadcrumbs={breadcrumbs}>
-            <div className="space-y-6">
-                <div className="flex items-center justify-between">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight">Products</h1>
-                        <p className="text-muted-foreground mt-2">
-                            Manage your product catalog
-                        </p>
-                    </div>
-                    <Link href={admin.products.create.url()}>
-                        <Button>
-                            <Plus className="h-4 w-4 mr-2" />
-                            Add Product
-                        </Button>
-                    </Link>
+        <div className="space-y-6">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight">Products</h1>
+                    <p className="text-muted-foreground mt-2">
+                        Manage your product catalog
+                    </p>
                 </div>
-
-                <div className="flex items-center gap-4">
-                    <SearchBar 
-                        placeholder="Search products..."
-                        value={searchTerm}
-                        onChange={handleSearch}
-                    />
-                    <select
-                        value={statusFilter}
-                        onChange={(e) => handleStatusFilter(e.target.value)}
-                        className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                        <option value="all">All Status</option>
-                        <option value="active">Active</option>
-                        <option value="draft">Draft</option>
-                        <option value="archived">Archived</option>
-                    </select>
-                    <select
-                        value={featuredFilter}
-                        onChange={(e) => handleFeaturedFilter(e.target.value)}
-                        className="rounded-md border border-input bg-background px-3 py-2 text-sm"
-                    >
-                        <option value="all">All Products</option>
-                        <option value="featured">Featured</option>
-                        <option value="new">New</option>
-                        <option value="bestseller">Bestsellers</option>
-                    </select>
-                </div>
-
-                {selectedIds.length > 0 && (
-                    <BulkActionBar 
-                        selectedCount={selectedIds.length}
-                        actions={bulkActions}
-                        onAction={(action: string) => {
-                            if (action === 'delete') {
-                                handleBulkDelete();
-                            } else if (action === 'publish') {
-                                handleBulkPublish();
-                            }
-                        }}
-                        onClearSelection={() => setSelectedIds([])}
-                    />
-                )}
-
-                <DataTable
-                    data={products.data}
-                    columns={columns}
-                    onSort={handleSort}
-                    sortColumn={sortColumn}
-                    sortDirection={sortDirection}
-                    pagination={products.links}
-                    emptyMessage="No products found"
-                />
+                <Link href={admin.products.create.url()}>
+                    <Button>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Product
+                    </Button>
+                </Link>
             </div>
-        </AdminLayout>
+
+            <div className="flex items-center gap-4">
+                <select
+                    value={statusFilter}
+                    onChange={(e) => handleStatusFilter(e.target.value)}
+                    className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                    <option value="all">All Status</option>
+                    <option value="active">Active</option>
+                    <option value="draft">Draft</option>
+                    <option value="archived">Archived</option>
+                </select>
+                <select
+                    value={featuredFilter}
+                    onChange={(e) => handleFeaturedFilter(e.target.value)}
+                    className="rounded-md border border-input bg-background px-3 py-2 text-sm"
+                >
+                    <option value="all">All Products</option>
+                    <option value="featured">Featured</option>
+                    <option value="new">New</option>
+                    <option value="bestseller">Bestsellers</option>
+                </select>
+            </div>
+
+            {selectedIds.length > 0 && (
+                <BulkActionBar
+                    selectedCount={selectedIds.length}
+                    actions={bulkActions}
+                    onAction={(action: string) => {
+                        if (action === 'delete') {
+                            handleBulkDelete();
+                        } else if (action === 'publish') {
+                            handleBulkPublish();
+                        }
+                    }}
+                    onClearSelection={() => setSelectedIds([])}
+                />
+            )}
+
+            <DataTable
+                data={products.data}
+                columns={columns}
+                onSort={handleSort}
+                sortColumn={filters?.sort || 'created_at'}
+                sortDirection={(filters?.direction as 'asc' | 'desc') || 'desc'}
+                pagination={products.links}
+                emptyMessage="No products found"
+            />
+        </div>
     );
 }
