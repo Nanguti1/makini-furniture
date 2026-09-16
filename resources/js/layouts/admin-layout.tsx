@@ -39,7 +39,7 @@ export default function AdminLayout({ children, breadcrumbs = [] }: AdminLayoutP
                     <div className="absolute left-0 top-0 h-full w-64 bg-white dark:bg-gray-800 shadow-lg overflow-y-auto">
                         <div className="p-4 border-b border-gray-200 dark:border-gray-700">
                             <div className="flex justify-between items-center">
-                                <span className="text-lg font-bold">Makini Admin</span>
+                                <span className="text-lg font-bold">Makini Queens Furniture</span>
                                 <Button
                                     variant="ghost"
                                     size="icon"
