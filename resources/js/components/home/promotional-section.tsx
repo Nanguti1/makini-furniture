@@ -1,13 +1,10 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 
 interface PromotionalSectionProps {
     title?: string;
     description?: string;
     ctaText?: string;
     ctaLink?: string;
-    backgroundColor?: string;
-    imagePosition?: 'left' | 'right';
 }
 
 export default function PromotionalSection({
@@ -15,35 +12,24 @@ export default function PromotionalSection({
     description = 'Get 20% off your first order with code MAKINI20',
     ctaText = 'Shop Now',
     ctaLink = '/catalog',
-    backgroundColor = 'bg-primary/10',
-    imagePosition = 'right',
 }: PromotionalSectionProps) {
     return (
-        <section className={`py-16 md:py-24 ${backgroundColor}`}>
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                <Card className="border-0 shadow-lg">
-                    <CardContent className="p-6 md:p-8 lg:p-12">
-                        <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
-                            <div className={`flex-1 ${imagePosition === 'right' ? 'order-1' : 'order-2'}`}>
-                                <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
-                                <p className="text-lg text-muted-foreground mb-6 max-w-xl">
-                                    {description}
-                                </p>
-                                <Button size="lg" asChild>
-                                    <a href={ctaLink}>{ctaText}</a>
-                                </Button>
-                            </div>
-                            <div className={`flex-1 ${imagePosition === 'right' ? 'order-2' : 'order-1'}`}>
-                                <div className="aspect-video bg-muted/30 rounded-lg flex items-center justify-center">
-                                    <div className="text-center">
-                                        <p className="text-6xl font-bold text-primary/20">20%</p>
-                                        <p className="text-muted-foreground">OFF</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+        <section className="relative overflow-hidden py-16 md:py-24 min-h-[400px]">
+            <div 
+                className="absolute inset-0 bg-cover bg-center bg-no-repeat z-0"
+                style={{ backgroundImage: 'url(/images/elegance-and-luxury-in-a-luxurious-design-furniture-vitrine-furniture-5861752.webp)' }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-br from-navy/80 to-navy/60 z-10" />
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-20">
+                <div className="max-w-3xl mx-auto text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gold-metallic">{title}</h2>
+                    <p className="text-lg text-secondary mb-6 font-medium mx-auto max-w-2xl">
+                        {description}
+                    </p>
+                    <Button size="lg" asChild>
+                        <a href={ctaLink}>{ctaText}</a>
+                    </Button>
+                </div>
             </div>
         </section>
     );

@@ -58,7 +58,7 @@ export default function ReviewCard({
                 );
             case 'pending':
                 return (
-                    <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200">
+                    <Badge className="bg-primary/20 text-primary border-primary/30">
                         <Clock className="h-3 w-3 mr-1" />
                         Pending
                     </Badge>

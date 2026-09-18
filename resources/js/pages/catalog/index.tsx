@@ -290,8 +290,8 @@ export default function CatalogPage({ products, filters = {}, categories = [] }:
                         )}
                         {localFilters.min_price && (
                             <div className="inline-flex items-center gap-1 bg-secondary rounded-full px-3 py-1 text-sm">
-                                <span>Price: ${localFilters.min_price}</span>
-                                {localFilters.max_price && <span>- ${localFilters.max_price}</span>}
+                                <span>Price: Ksh {localFilters.min_price}</span>
+                                {localFilters.max_price && <span>- Ksh {localFilters.max_price}</span>}
                                 <Button
                                     variant="ghost"
                                     size="icon"

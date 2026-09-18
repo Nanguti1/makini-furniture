@@ -30,7 +30,7 @@ export function AdminTopNav({ user, onMobileMenuClick }: AdminTopNavProps) {
     };
 
     return (
-        <header className="sticky top-0 z-40 w-full border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+        <header className="sticky top-0 z-40 w-full border-b border-primary/20 bg-navy">
             <div className="flex h-16 items-center justify-between px-4 lg:px-8">
                 {/* Mobile menu button */}
                 <Button 

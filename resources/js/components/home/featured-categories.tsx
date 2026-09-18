@@ -24,10 +24,10 @@ export default function FeaturedCategories({
     }
 
     return (
-        <section className="py-16 md:py-24">
+        <section id="categories" className="py-16 md:py-24">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">{title}</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gold-metallic">{title}</h2>
                     <p className="text-muted-foreground max-w-2xl mx-auto">
                         Explore our carefully curated collections designed for every room
                     </p>
@@ -40,7 +40,7 @@ export default function FeaturedCategories({
                             href={`/catalog?category=${category.slug}`}
                             className="group"
                         >
-                            <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                            <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 p-0">
                                 <CardContent className="p-0">
                                     <div className="aspect-square bg-muted/30 flex items-center justify-center relative overflow-hidden">
                                         {category.hero_image ? (
@@ -58,7 +58,7 @@ export default function FeaturedCategories({
                                     <div className="p-4">
                                         <div className="flex items-center justify-between">
                                             <h3 className="font-semibold">{category.name}</h3>
-                                            <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
+                                            <ChevronRight className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
                                         </div>
                                     </div>
                                 </CardContent>

@@ -105,7 +105,7 @@ export default function ProductCard({
     };
 
     return (
-        <Card className="overflow-hidden group hover:shadow-lg transition-shadow duration-300">
+        <Card className="overflow-hidden group hover:shadow-lg transition-shadow duration-300 p-0">
             <CardContent className="p-0">
                 <div className="relative aspect-square bg-muted/30 overflow-hidden">
                     <img
@@ -140,7 +140,7 @@ export default function ProductCard({
                 </div>
                 <div className="p-4">
                     {product.brand && (
-                        <p className="text-sm text-muted-foreground mb-1">{product.brand.name}</p>
+                        <p className="text-sm text-secondary mb-1">{product.brand.name}</p>
                     )}
                     <h3 className="font-semibold mb-2 line-clamp-2">
                         <a
@@ -152,9 +152,9 @@ export default function ProductCard({
                     </h3>
                     <div className="flex items-center justify-between gap-2">
                         {price > 0 ? (
-                            <p className="font-bold text-lg">${price.toFixed(2)}</p>
+                            <p className="font-bold text-lg text-primary">Ksh {price.toFixed(2)}</p>
                         ) : (
-                            <p className="font-bold text-lg">View Details</p>
+                            <p className="font-bold text-lg text-primary">View Details</p>
                         )}
                         {showAddToCart && (
                             <Button size="sm" variant="outline" aria-label="Add to cart" className="flex-shrink-0">

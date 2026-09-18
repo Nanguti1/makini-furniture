@@ -145,7 +145,7 @@ export default function ProductShow({ product }: ProductShowProps) {
                 <Badge variant={product.status === 'active' ? 'default' : 'secondary'}>
                     {product.status}
                 </Badge>
-                {product.is_featured && <Star className="h-4 w-4 text-yellow-500" />}
+                {product.is_featured && <Star className="h-4 w-4 text-primary" />}
                 {product.is_new && <Badge variant="outline">New</Badge>}
                 {product.is_bestseller && <Badge variant="outline">Bestseller</Badge>}
                 {product.is_customizable && <Badge variant="outline">Customizable</Badge>}
@@ -211,7 +211,7 @@ export default function ProductShow({ product }: ProductShowProps) {
                                     </div>
                                     <div>
                                         <p className="text-sm font-medium text-muted-foreground">Featured</p>
-                                        {product.is_featured ? <Star className="h-4 w-4 text-yellow-500" /> : <X className="h-4 w-4 text-gray-400" />}
+                                        {product.is_featured ? <Star className="h-4 w-4 text-primary" /> : <X className="h-4 w-4 text-gray-400" />}
                                     </div>
                                     <div>
                                         <p className="text-sm font-medium text-muted-foreground">Sort Order</p>
@@ -506,7 +506,7 @@ export default function ProductShow({ product }: ProductShowProps) {
                                                     <p className="font-medium">{variant.name}</p>
                                                     <p className="text-sm text-muted-foreground">SKU: {variant.sku}</p>
                                                 </div>
-                                                <p className="font-medium">${variant.price}</p>
+                                                <p className="font-medium">Ksh {variant.price}</p>
                                             </div>
                                         ))}
                                     </div>

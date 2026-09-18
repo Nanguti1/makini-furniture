@@ -117,7 +117,7 @@ export default function CollectionIndex() {
                     <div className="flex items-center gap-2">
                         <span className="font-medium">{row.name}</span>
                         {row.is_featured && (
-                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            <Star className="h-4 w-4 text-primary fill-primary" />
                         )}
                     </div>
                     <div className="text-sm text-muted-foreground">{row.slug}</div>

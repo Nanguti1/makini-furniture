@@ -41,7 +41,7 @@ export default function LookbooksIndexPage({ lookbooks }: LookbooksIndexProps) {
             {lookbooks && lookbooks.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {lookbooks.map((lookbook) => (
-                        <Card key={lookbook.id} className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow">
+                        <Card key={lookbook.id} className="overflow-hidden group cursor-pointer hover:shadow-lg transition-shadow p-0">
                             <div
                                 className="aspect-[4/3] bg-muted/30 relative overflow-hidden"
                                 onClick={() => router.visit(`/lookbooks/${lookbook.slug}`)}

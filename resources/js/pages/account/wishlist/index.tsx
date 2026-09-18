@@ -162,7 +162,7 @@ export default function AccountWishlistIndexPage({ wishlist, cart }: WishlistInd
                     const isAddingToCart = addingToCart[item.id];
 
                     return (
-                        <Card key={item.id} className="overflow-hidden group">
+                        <Card key={item.id} className="overflow-hidden group p-0">
                             <CardContent className="p-0">
                                 <div className="relative">
                                     {/* Product Image */}
@@ -216,7 +216,7 @@ export default function AccountWishlistIndexPage({ wishlist, cart }: WishlistInd
                                     {/* Price */}
                                     {productPrice && (
                                         <p className="font-bold text-lg mb-4">
-                                            ${productPrice.toFixed(2)}
+                                            Ksh {productPrice.toFixed(2)}
                                         </p>
                                     )}
 

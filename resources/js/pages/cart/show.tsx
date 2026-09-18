@@ -165,7 +165,7 @@ export default function CartShowPage({ cart }: CartShowProps) {
                         const isRemoving = removingItems[item.id];
 
                         return (
-                            <Card key={item.id} className="overflow-hidden">
+                            <Card key={item.id} className="overflow-hidden p-0">
                                 <CardContent className="p-0">
                                     <div className="flex flex-col sm:flex-row">
                                         {/* Product Image */}
@@ -261,9 +261,9 @@ export default function CartShowPage({ cart }: CartShowProps) {
 
                                                     {/* Price */}
                                                     <div className="text-right">
-                                                        <p className="font-bold">${productPrice.toFixed(2)}</p>
+                                                        <p className="font-bold">Ksh {productPrice.toFixed(2)}</p>
                                                         <p className="text-sm text-muted-foreground">
-                                                            ${itemTotal.toFixed(2)} total
+                                                            Ksh {itemTotal.toFixed(2)} total
                                                         </p>
                                                     </div>
                                                 </div>
@@ -287,7 +287,7 @@ export default function CartShowPage({ cart }: CartShowProps) {
                             <div className="space-y-2">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Subtotal</span>
-                                    <span className="font-medium">${calculateSubtotal().toFixed(2)}</span>
+                                    <span className="font-medium">Ksh {calculateSubtotal().toFixed(2)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Shipping</span>
@@ -303,7 +303,7 @@ export default function CartShowPage({ cart }: CartShowProps) {
 
                             <div className="flex justify-between">
                                 <span className="font-semibold">Total</span>
-                                <span className="font-bold text-lg">${calculateTotal().toFixed(2)}</span>
+                                <span className="font-bold text-lg">Ksh {calculateTotal().toFixed(2)}</span>
                             </div>
 
                             <div className="space-y-2 pt-2">

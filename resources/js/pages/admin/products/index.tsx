@@ -221,7 +221,7 @@ export default function ProductIndex() {
             header: 'Badges',
             cell: (row: any) => (
                 <div className="flex items-center gap-1">
-                    {row.is_featured && <Star className="h-4 w-4 text-yellow-500" />}
+                    {row.is_featured && <Star className="h-4 w-4 text-primary" />}
                     {row.is_new && <Badge variant="outline" className="text-xs">New</Badge>}
                     {row.is_bestseller && <Badge variant="outline" className="text-xs">Bestseller</Badge>}
                 </div>

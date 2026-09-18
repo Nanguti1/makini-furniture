@@ -113,7 +113,7 @@ export default function LookbookShowPage({ lookbook }: LookbookShowProps) {
                     <h2 className="text-2xl font-bold mb-6">Collection Items</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {sortedItems.map((item) => (
-                            <Card key={item.id} className="overflow-hidden group">
+                            <Card key={item.id} className="overflow-hidden group p-0">
                                 <div className="aspect-[4/3] bg-muted/30 relative overflow-hidden">
                                     {item.image ? (
                                         <img
@@ -143,7 +143,7 @@ export default function LookbookShowPage({ lookbook }: LookbookShowProps) {
                                             </p>
                                             {(item.product.price || (item.product.prices && item.product.prices.length > 0)) && (
                                                 <p className="text-lg font-bold mb-3">
-                                                    ${(item.product.prices && item.product.prices.length > 0 ? Number(item.product.prices[0].amount) : Number(item.product.price) || 0).toFixed(2)}
+                                                    Ksh {(item.product.prices && item.product.prices.length > 0 ? Number(item.product.prices[0].amount) : Number(item.product.price) || 0).toFixed(2)}
                                                 </p>
                                             )}
                                             <Button

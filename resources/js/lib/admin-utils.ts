@@ -19,8 +19,8 @@ export function useIsAdmin() {
 /**
  * Format currency for admin display
  */
-export function formatCurrency(amount: number, currency = 'USD'): string {
-    return new Intl.NumberFormat('en-US', {
+export function formatCurrency(amount: number, currency = 'KES'): string {
+    return new Intl.NumberFormat('en-KE', {
         style: 'currency',
         currency,
     }).format(amount);

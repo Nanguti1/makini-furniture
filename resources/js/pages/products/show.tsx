@@ -390,10 +390,10 @@ export default function ProductShowPage({ product, effectivePrices, productPrice
 
                     {/* Price */}
                     <div className="flex items-baseline gap-3">
-                        <span className="text-2xl md:text-3xl font-bold">${currentPrice?.toFixed(2) || '0.00'}</span>
+                        <span className="text-2xl md:text-3xl font-bold">Ksh {currentPrice?.toFixed(2) || '0.00'}</span>
                         {comparePrice && comparePrice > currentPrice && (
                             <span className="text-base md:text-lg text-muted-foreground line-through">
-                                ${comparePrice?.toFixed(2) || '0.00'}
+                                Ksh {comparePrice?.toFixed(2) || '0.00'}
                             </span>
                         )}
                     </div>

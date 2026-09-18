@@ -118,7 +118,7 @@ export default function AccountIndexPage({ auth }: AccountIndexProps) {
                             <div className="space-y-2 text-sm">
                                 <div className="flex justify-between">
                                     <span className="text-muted-foreground">Email Verified</span>
-                                    <span className={user.email_verified_at ? 'text-green-600' : 'text-amber-600'}>
+                                    <span className={user.email_verified_at ? 'text-green-600' : 'text-primary'}>
                                         {user.email_verified_at ? 'Yes' : 'No'}
                                     </span>
                                 </div>

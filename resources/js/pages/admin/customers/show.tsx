@@ -349,7 +349,7 @@ export default function CustomerShow({ customer }: CustomerShowProps) {
                                                                     key={i}
                                                                     className={`h-4 w-4 ${
                                                                         i < review.rating
-                                                                            ? 'fill-yellow-400 text-yellow-400'
+                                                                            ? 'fill-primary text-primary'
                                                                             : 'text-gray-300'
                                                                     }`}
                                                                 />
@@ -424,7 +424,7 @@ export default function CustomerShow({ customer }: CustomerShowProps) {
                                                                             {item.product.name}
                                                                             </p>
                                                                             <p className="text-sm text-muted-foreground">
-                                                                                ${(item.product.prices && item.product.prices.length > 0 ? Number(item.product.prices[0].amount) : Number(item.product.price) || 0).toFixed(2)}
+                                                                                Ksh {(item.product.prices && item.product.prices.length > 0 ? Number(item.product.prices[0].amount) : Number(item.product.price) || 0).toFixed(2)}
                                                                             </p>
                                                                         </div>
                                                                         <Link

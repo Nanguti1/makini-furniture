@@ -34,11 +34,11 @@ export default function FeaturedProducts({
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
                     <div>
-                        <h2 className="text-3xl md:text-4xl font-bold mb-2">{title}</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold mb-2 text-gold-metallic">{title}</h2>
                         <p className="text-muted-foreground">{subtitle}</p>
                     </div>
                     {showViewAll && (
-                        <Button variant="ghost" asChild className="mt-4 md:mt-0">
+                        <Button variant="ghost" asChild className="mt-4 md:mt-0 hover:text-primary hover:bg-primary/10">
                             <a href={viewAllLink}>
                                 View All
                                 <ArrowRight className="ml-2 h-4 w-4" />

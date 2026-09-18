@@ -254,8 +254,8 @@ export function AdminSidebar({ mobile = false, onClose, onCollapsedChange }: Adm
                 {/* Logo */}
                 <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
                     {!collapsed && (
-                        <span className="text-lg font-bold text-gray-900 dark:text-white">
-                            Makini Queens Furniture
+                        <span className="text-lg font-bold text-gold-metallic">
+                            Makini Queens Furnitures
                         </span>
                     )}
                     <Button

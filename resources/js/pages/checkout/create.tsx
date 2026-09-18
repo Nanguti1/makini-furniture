@@ -415,9 +415,9 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
                                                     </p>
                                                     <div className="flex justify-between items-center">
                                                         <span className="text-sm text-muted-foreground">
-                                                            Qty: {item.quantity} × ${item.unit_price.toFixed(2)}
+                                                            Qty: {item.quantity} × Ksh {item.unit_price.toFixed(2)}
                                                         </span>
-                                                        <span className="font-semibold">${itemTotal.toFixed(2)}</span>
+                                                        <span className="font-semibold">Ksh {itemTotal.toFixed(2)}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -441,7 +441,7 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
                                 <div className="space-y-2">
                                     <div className="flex justify-between text-sm">
                                         <span className="text-muted-foreground">Subtotal</span>
-                                        <span className="font-medium">${calculateSubtotal().toFixed(2)}</span>
+                                        <span className="font-medium">Ksh {calculateSubtotal().toFixed(2)}</span>
                                     </div>
                                     <div className="flex justify-between text-sm">
                                         <span className="text-muted-foreground">Shipping</span>
@@ -457,7 +457,7 @@ export default function CheckoutCreatePage({ cart, addresses, defaultCurrency }:
 
                                 <div className="flex justify-between">
                                     <span className="font-semibold">Total</span>
-                                    <span className="font-bold text-lg">${calculateTotal().toFixed(2)}</span>
+                                    <span className="font-bold text-lg">Ksh {calculateTotal().toFixed(2)}</span>
                                 </div>
 
                                 <Separator />
